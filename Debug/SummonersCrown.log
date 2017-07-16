@@ -1,0 +1,15 @@
+﻿  Player.cpp
+c:\users\舩山大\documents\visual studio 2017\projects\summonerscrown\source\ssplayer\common\animator\ssplayer_cellmap.h(13): warning C4099: 'ss::SsCell': タイプ名は最初 'class' として使われていましたが 'struct' として使われています。
+  c:\users\舩山大\documents\visual studio 2017\projects\summonerscrown\source\ssplayer\common\animator\ssplayer_cellmap.h(12): note: 'ss::SsCell' の宣言を確認してください
+c:\users\舩山大\documents\visual studio 2017\projects\summonerscrown\source\ssplayer\common\animator\ssplayer_effect.h(144): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+c:\users\舩山大\documents\visual studio 2017\projects\summonerscrown\source\ssplayer\common\animator\ssplayer_effect2.h(23): warning C4099: 'ss::SsPartState': タイプ名は最初 'struct' として使われていましたが 'class' として使われています。
+  c:\users\舩山大\documents\visual studio 2017\projects\summonerscrown\source\ssplayer\common\animator\ssplayer_effect.h(19): note: 'ss::SsPartState' の宣言を確認してください
+c:\users\舩山大\documents\visual studio 2017\projects\summonerscrown\source\ssplayer\common\animator\ssplayer_effect2.h(25): warning C4099: 'ss::SsCell': タイプ名は最初 'struct' として使われていましたが 'class' として使われています。
+  c:\users\舩山大\documents\visual studio 2017\projects\summonerscrown\source\ssplayer\common\animator\ssplayer_cellmap.h(13): note: 'ss::SsCell' の宣言を確認してください
+c:\users\舩山大\documents\visual studio 2017\projects\summonerscrown\source\player\player.cpp(127): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
+c:\users\舩山大\documents\visual studio 2017\projects\summonerscrown\source\player\player.cpp(287): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
+c:\users\舩山大\documents\visual studio 2017\projects\summonerscrown\source\player\player.cpp(288): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
+c:\users\舩山大\documents\visual studio 2017\projects\summonerscrown\source\player\player.cpp(624): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
+c:\users\舩山大\documents\visual studio 2017\projects\summonerscrown\source\player\player.cpp(634): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
+  SummonersCrown.vcxproj -> C:\Users\舩山大\documents\visual studio 2017\Projects\SummonersCrown\Debug\SummonersCrown.exe
+  SummonersCrown.vcxproj -> C:\Users\舩山大\documents\visual studio 2017\Projects\SummonersCrown\Debug\SummonersCrown.pdb (Partial PDB)

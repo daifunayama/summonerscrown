@@ -1,0 +1,112 @@
+;EDGE用アニメーションデータ
+ANIME_VERSION=1
+
+
+;--------------------------
+PATTERN_NAME=noname000
+
+	FRAME_NUMBER=1
+		FILENAME=C:\Users\Dai\Documents\Visual Studio 2008\Projects\Summon\Data\arms\PrimalSpheres\animeAU1.png
+		WIN_TITLE=animeAU1.png
+		SRC_X=0
+		SRC_Y=0
+		LAYER_NUM=0
+		WIDTH=130
+		HEIGHT=120
+		DEST_X=0
+		DEST_Y=0
+		DELAY=33
+		LAYER_ADD=0
+		CKEY_ENABLE=0
+		CKEY_NUM=0
+
+	FRAME_NUMBER=2
+		FILENAME=C:\Users\Dai\Documents\Visual Studio 2008\Projects\Summon\Data\arms\PrimalSpheres\animeAU1.png
+		WIN_TITLE=animeAU1.png
+		SRC_X=0
+		SRC_Y=120
+		LAYER_NUM=0
+		WIDTH=130
+		HEIGHT=120
+		DEST_X=0
+		DEST_Y=0
+		DELAY=33
+		LAYER_ADD=0
+		CKEY_ENABLE=0
+		CKEY_NUM=0
+
+	FRAME_NUMBER=3
+		FILENAME=C:\Users\Dai\Documents\Visual Studio 2008\Projects\Summon\Data\arms\PrimalSpheres\animeAU1.png
+		WIN_TITLE=animeAU1.png
+		SRC_X=0
+		SRC_Y=240
+		LAYER_NUM=0
+		WIDTH=130
+		HEIGHT=120
+		DEST_X=0
+		DEST_Y=0
+		DELAY=33
+		LAYER_ADD=0
+		CKEY_ENABLE=0
+		CKEY_NUM=0
+
+	FRAME_NUMBER=4
+		FILENAME=C:\Users\Dai\Documents\Visual Studio 2008\Projects\Summon\Data\arms\PrimalSpheres\animeAU1.png
+		WIN_TITLE=animeAU1.png
+		SRC_X=0
+		SRC_Y=360
+		LAYER_NUM=0
+		WIDTH=130
+		HEIGHT=120
+		DEST_X=0
+		DEST_Y=0
+		DELAY=33
+		LAYER_ADD=0
+		CKEY_ENABLE=0
+		CKEY_NUM=0
+
+	FRAME_NUMBER=5
+		FILENAME=C:\Users\Dai\Documents\Visual Studio 2008\Projects\Summon\Data\arms\PrimalSpheres\animeAU1.png
+		WIN_TITLE=animeAU1.png
+		SRC_X=0
+		SRC_Y=480
+		LAYER_NUM=0
+		WIDTH=130
+		HEIGHT=120
+		DEST_X=0
+		DEST_Y=0
+		DELAY=33
+		LAYER_ADD=0
+		CKEY_ENABLE=0
+		CKEY_NUM=0
+
+	FRAME_NUMBER=6
+		FILENAME=C:\Users\Dai\Documents\Visual Studio 2008\Projects\Summon\Data\arms\PrimalSpheres\animeAU1.png
+		WIN_TITLE=animeAU1.png
+		SRC_X=0
+		SRC_Y=600
+		LAYER_NUM=0
+		WIDTH=130
+		HEIGHT=120
+		DEST_X=0
+		DEST_Y=0
+		DELAY=33
+		LAYER_ADD=0
+		CKEY_ENABLE=0
+		CKEY_NUM=0
+
+	FRAME_NUMBER=7
+		FILENAME=C:\Users\Dai\Documents\Visual Studio 2008\Projects\Summon\Data\arms\PrimalSpheres\animeAU1.png
+		WIN_TITLE=animeAU1.png
+		SRC_X=0
+		SRC_Y=720
+		LAYER_NUM=0
+		WIDTH=130
+		HEIGHT=120
+		DEST_X=0
+		DEST_Y=0
+		DELAY=33
+		LAYER_ADD=0
+		CKEY_ENABLE=0
+		CKEY_NUM=0
+

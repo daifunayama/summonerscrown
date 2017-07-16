@@ -1,0 +1,417 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="ソース ファイル">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="ヘッダー ファイル">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="リソース ファイル">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="ソース ファイル\SSPlayer">
+      <UniqueIdentifier>{27f167e7-c680-4a11-b14d-26fcd192cf73}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\SSPlayer\common">
+      <UniqueIdentifier>{6bcf7294-6884-47f7-a4bc-28742c3d5ba5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\SSPlayer\common\Animator">
+      <UniqueIdentifier>{c49b2fd1-c05a-49cd-a683-23fc72744b32}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\SSPlayer\common\Helper">
+      <UniqueIdentifier>{425dd37a-2b6b-489a-8c9d-123d7f9ae11b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\SSPlayer\common\Loader">
+      <UniqueIdentifier>{97dcce87-69ae-440b-93e3-2f6e078a12db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Input">
+      <UniqueIdentifier>{14e7903a-370d-463d-9117-f44c51642fca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Player">
+      <UniqueIdentifier>{68babb79-c15f-49d6-8589-62e334cf8631}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Source\Application.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\main.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Parameter.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SSPlayer\SS5Player.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SSPlayer\SS5PlayerPlatform.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SSPlayer\common\Animator\ssplayer_effect.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SSPlayer\common\Animator\ssplayer_effect2.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SSPlayer\common\Animator\ssplayer_effectfunction.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SSPlayer\common\Animator\ssplayer_matrix.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SSPlayer\common\Animator\ssplayer_PartState.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SSPlayer\common\Helper\DebugPrint.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Input\Input.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Player\Player.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene\Scene.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene\TitleScene.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene\BattleScene.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Player\Character\Ein.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\BackGround\BackGround.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Atack\Atack.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Input\Controller.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\UI\HPGauge.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Effekseer\AnimationController.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Arms\FollowerArms.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Arms\Arms.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SSEffect\SSEffectController.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Arms\Category\PrimalSpheres\Cyanos.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Player\Character\Ria.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\UI\Chain.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\UI\ContractCircle.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Arms\Category\Comander\Cavalier.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Player\Character\Kare-meshi.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Arms\Category\ArticArts\Alpha.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Camera\Camera.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\UI\EXGauge.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene\CharaSelectScene.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Player\Character\Kureha.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Player\Character\Carol.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Player\Character\Remnant.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Arms\Category\HollyKnights\Southern.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="SSPlayer\SS5Player.h">
+      <Filter>ソース ファイル\SSPlayer</Filter>
+    </ClInclude>
+    <ClInclude Include="SSPlayer\SS5PlayerData.h">
+      <Filter>ソース ファイル\SSPlayer</Filter>
+    </ClInclude>
+    <ClInclude Include="SSPlayer\SS5PlayerPlatform.h">
+      <Filter>ソース ファイル\SSPlayer</Filter>
+    </ClInclude>
+    <ClInclude Include="SSPlayer\SS5PlayerTypes.h">
+      <Filter>ソース ファイル\SSPlayer</Filter>
+    </ClInclude>
+    <ClInclude Include="SSPlayer\ssShader_frag.h">
+      <Filter>ソース ファイル\SSPlayer</Filter>
+    </ClInclude>
+    <ClInclude Include="SSPlayer\common\Animator\MersenneTwister.h">
+      <Filter>ソース ファイル\SSPlayer\common\Animator</Filter>
+    </ClInclude>
+    <ClInclude Include="SSPlayer\common\Animator\ssplayer_cellmap.h">
+      <Filter>ソース ファイル\SSPlayer\common\Animator</Filter>
+    </ClInclude>
+    <ClInclude Include="SSPlayer\common\Animator\ssplayer_effect.h">
+      <Filter>ソース ファイル\SSPlayer\common\Animator</Filter>
+    </ClInclude>
+    <ClInclude Include="SSPlayer\common\Animator\ssplayer_effect2.h">
+      <Filter>ソース ファイル\SSPlayer\common\Animator</Filter>
+    </ClInclude>
+    <ClInclude Include="SSPlayer\common\Animator\ssplayer_effectfunction.h">
+      <Filter>ソース ファイル\SSPlayer\common\Animator</Filter>
+    </ClInclude>
+    <ClInclude Include="SSPlayer\common\Animator\ssplayer_macro.h">
+      <Filter>ソース ファイル\SSPlayer\common\Animator</Filter>
+    </ClInclude>
+    <ClInclude Include="SSPlayer\common\Animator\ssplayer_matrix.h">
+      <Filter>ソース ファイル\SSPlayer\common\Animator</Filter>
+    </ClInclude>
+    <ClInclude Include="SSPlayer\common\Animator\ssplayer_PartState.h">
+      <Filter>ソース ファイル\SSPlayer\common\Animator</Filter>
+    </ClInclude>
+    <ClInclude Include="SSPlayer\common\Animator\xorshift32.h">
+      <Filter>ソース ファイル\SSPlayer\common\Animator</Filter>
+    </ClInclude>
+    <ClInclude Include="SSPlayer\common\Helper\DebugPrint.h">
+      <Filter>ソース ファイル\SSPlayer\common\Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="SSPlayer\common\Loader\SsEffectBehavior.h">
+      <Filter>ソース ファイル\SSPlayer\common\Loader</Filter>
+    </ClInclude>
+    <ClInclude Include="SSPlayer\common\Loader\SsEffectElement.h">
+      <Filter>ソース ファイル\SSPlayer\common\Loader</Filter>
+    </ClInclude>
+    <ClInclude Include="SSPlayer\common\Loader\ssloader.h">
+      <Filter>ソース ファイル\SSPlayer\common\Loader</Filter>
+    </ClInclude>
+    <ClInclude Include="SSPlayer\common\Loader\ssloader_ssee.h">
+      <Filter>ソース ファイル\SSPlayer\common\Loader</Filter>
+    </ClInclude>
+    <ClInclude Include="SSPlayer\common\Loader\sstypes.h">
+      <Filter>ソース ファイル\SSPlayer\common\Loader</Filter>
+    </ClInclude>
+    <ClInclude Include="Input\Input.h">
+      <Filter>ソース ファイル\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Player\Player.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource\Resource.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\Scene.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\TitleScene.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Player\Character\Ein.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Application.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Parameter.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SSPlayer\SS5Player.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SSPlayer\SS5PlayerData.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SSPlayer\SS5PlayerPlatform.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SSPlayer\SS5PlayerTypes.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SSPlayer\ssShader_frag.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SSPlayer\common\Animator\MersenneTwister.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SSPlayer\common\Animator\ssplayer_cellmap.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SSPlayer\common\Animator\ssplayer_effect.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SSPlayer\common\Animator\ssplayer_effect2.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SSPlayer\common\Animator\ssplayer_effectfunction.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SSPlayer\common\Animator\ssplayer_macro.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SSPlayer\common\Animator\ssplayer_matrix.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SSPlayer\common\Animator\ssplayer_PartState.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SSPlayer\common\Animator\xorshift32.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SSPlayer\common\Helper\DebugPrint.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SSPlayer\common\Loader\SsEffectBehavior.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SSPlayer\common\Loader\SsEffectElement.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SSPlayer\common\Loader\ssloader.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SSPlayer\common\Loader\ssloader_ssee.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SSPlayer\common\Loader\sstypes.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Input\Input.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Player\Character\Ein.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Player\Player.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene\Scene.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene\TitleScene.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene\BattleScene.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Utility.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\BackGround\BackGround.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Arms\Arms.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\HitBox\HitBox.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Atack\Atack.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\HitBox\BoxData.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Atack\FrameData.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Atack\PlayerAtack.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Input\Controller.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\UI\HPGauge.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Effekseer\EffAnimation.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Effekseer\AnimationController.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\HitBox\Box.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Arms\Category\PrimalSpheres\Cyanos.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Atack\FollowerArmsAtack.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Arms\FollowerArms.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SSEffect\SSEffectController.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Player\Character\Ria.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\UI\Chain.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\UI\ContractCircle.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Arms\Category\Comander\Cavalier.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Player\Character\Kare-meshi.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Arms\Category\ArticArts\Alpha.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Camera\Camera.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\UI\EXGauge.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene\CharaSelectScene.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Player\Profile.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Player\Character\Kureha.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Player\Character\Carol.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Player\Character\Random.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Player\Character\Remnant.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Arms\Category\HollyKnights\Southern.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
