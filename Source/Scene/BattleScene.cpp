@@ -157,6 +157,8 @@ void BattleScene::Drawing() {
 	mContractCircle[0].Draw();
 	mContractCircle[1].Draw();
 
+	AnimationController::getInstance().DrawLayer3();
+
 	mPlayer[0]->DrawArmsBack();
 	mPlayer[1]->DrawArmsBack();
 

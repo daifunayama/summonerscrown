@@ -53,8 +53,6 @@ public:
 	static const int S_PLAYER_STEP		  = 13;
 	static const int S_PLAYER_GUARD		  = 14;
 	static const int S_PLAYER_GUARD_S	  = 15;
-	static const int S_PLAYER_BARRIER	  = 28;
-	static const int S_PLAYER_BARRIER_S   = 29;
 	static const int S_PLAYER_STOP		  = 16;
 	static const int S_PLAYER_DOWN		  = 17;
 	static const int S_PLAYER_ATACK_A     = 18;
@@ -67,6 +65,7 @@ public:
 	static const int S_PLAYER_ATACK_JB    = 25;
 	static const int S_PLAYER_ATACK_3B	  = 26;
 	static const int S_PLAYER_ATACK_6B    = 27;
+	static const int S_PLAYER_BURST  	  = 28;
 
 	//ñÇãÔÇÃèÛë‘
 	static const int S_ARMS_NORMAL		= 1;

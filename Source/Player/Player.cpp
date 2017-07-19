@@ -64,6 +64,8 @@ void Player::LoadGraphic() {
 	mGraphSummonEffect1 = LoadGraph("Data/graphic/animation/summon_effect1.png");
 	mGraphSummonEffect2 = LoadGraph("Data/graphic/animation/summon_effect2.png");
 	mAnimeBarrier = LoadGraph("Data/graphic/animation/barrier.png");
+	mAnimeBurst1 = LoadGraph("Data/graphic/animation/burst1.png");
+	mAnimeBurst2 = LoadGraph("Data/graphic/animation/burst2.png");
 }
 
 /*武器データのロード*/
@@ -104,7 +106,9 @@ void Player::LoadCommonSound() {
 	mSoundDamage = LoadSoundMem("Data/se/手足・殴る、蹴る10.mp3");
 	mSoundSummon = LoadSoundMem("Data/se/decision11.mp3");
 	mSoundGuard = LoadSoundMem("Data/se/sen_ka_katana_04.mp3");
+	mSoundBurst = LoadSoundMem("Data/se/burst.mp3");
 
+	ChangeVolumeSoundMem(128, mSoundBurst);
 	ChangeVolumeSoundMem(128, mSoundDamage);
 }
 
@@ -133,6 +137,14 @@ void Player::Move(Player& another) {
 	else if (mBarrier) {
 		mBarrier = false;
 		AnimationController::getInstance().Remove(mBarrierId);
+	}
+
+	if (mController.getKey(5) > 0 && mController.getKey(4) == 1) {
+		mState = Parameter::S_PLAYER_BURST;
+		mCounter = 60;
+		AnimationController::getInstance().Create(mAnimeBurst1, 1, mPositionX, mPositionY, 500, 500, 1.5, 0, 4, 1, 63, -1, mRight, false);
+		AnimationController::getInstance().Create(mAnimeBurst2, 3, mPositionX, mPositionY, 500, 500, 1.5, 0, 4, 1, 63, -1, mRight, false);
+		PlaySoundMem(mSoundBurst, DX_PLAYTYPE_BACK, true);
 	}
 
 	//静止・歩行状態のとき
@@ -209,6 +221,12 @@ void Player::Move(Player& another) {
 		DoStep();
 	}
 
+	//バースト
+	else if (mState == Parameter::S_PLAYER_BURST) {
+		mAcceleX = 0;
+		mAcceleY = 0;
+	}
+
 	//ダメージ中
 	else if (isDamageState())DoDamaged();
 
@@ -244,7 +262,7 @@ void Player::Move(Player& another) {
 	DecrementCounter(another);
 
 	//重力の処理
-	if (!mGround)mAcceleY -= 2;
+	if (!mGround && mState != Parameter::S_PLAYER_BURST)mAcceleY -= 2;
 
 	//プレイヤーの移動
 	mPositionDX += mAcceleX;
@@ -506,6 +524,9 @@ void Player::DecrementCounter(Player &another) {
 			if (mState == Parameter::S_PLAYER_GUARD_S) {
 				mState = Parameter::S_PLAYER_SQUAT;
 				mAcceleX = 0;
+			}
+			if (mState == Parameter::S_PLAYER_BURST) {
+				mState = Parameter::S_PLAYER_NORMAL;
 			}
 		}
 	}
@@ -995,6 +1016,72 @@ void Player::CheckPlayersAtackHit(Player& another) {
 							}
 						}
 					}
+				}
+			}
+		}
+	}
+
+	if (mState == Parameter::S_PLAYER_BURST && mCounter == 50) {
+		//相手のヒットボックスと比較
+		for (int j = 0; j < 10 && !atackHit; j++) {
+
+			//相手のダメージボックスが存在するとき
+			if (another.mDamageBox[another.mState][j].getExist()) {
+
+				//自身が右向き
+				if (mRight) {
+					box1.x = mPositionX - 250;
+				}
+				//自身が左向き
+				else
+					box1.x = mPositionX + 250;
+
+				box1.y = mPositionY - 250;
+				box1.width = 500;
+				box1.height = 500;
+
+				//相手が右向き
+				if (another.mRight) {
+					box2.x = another.mPositionX + another.mDamageBox[another.mState][j].getPositionX();
+				}
+				//相手が左向き
+				else {
+					box2.x = another.mPositionX
+						- another.mDamageBox[another.mState][j].getPositionX() - another.mDamageBox[another.mState][j].getWidth();
+				}
+				box2.y = another.mPositionY + another.mDamageBox[another.mState][j].getPositionY();
+				box2.width = another.mDamageBox[another.mState][j].getWidth();
+				box2.height = another.mDamageBox[another.mState][j].getHeight();
+
+				//攻撃が相手にヒット
+				if (Utility::CheckBoxHit(box1, box2)) {
+					BoxData boxData;
+					boxData.setAtackType(0);
+					boxData.setEffectType(-1);
+					boxData.setSEType(0);
+					boxData.setGuardType(0);
+					boxData.setAllowMultHit(0);
+					boxData.setHitStop(20);
+					boxData.setDecHitStop(0);
+					boxData.setBindTime(0);
+					boxData.setContinueAtackAfterOffset(0);
+					boxData.setForceDown(0);
+					boxData.setFloorBound(0);
+					boxData.setWallBound(0);
+					boxData.setShakeWindow(0);
+					boxData.setVectorX(40);
+					boxData.setVectorY(40);
+					boxData.setAirVectorX(30);
+					boxData.setAirVectorY(5);
+					boxData.setPower(0);
+					boxData.setEXGain(0);
+				
+					//相手に攻撃を与える
+					another.EatAtack(mRight, boxData);
+					atackHit = true;
+
+
+					break;
 				}
 			}
 		}

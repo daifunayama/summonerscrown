@@ -6,6 +6,7 @@
 */
 class BackGround {
 public:
+	inline void setBlackCounter(int p, int n) { mBlackoutCounter[p] = n; }
 	void LoadGraphic();
 	void GetPlayer(Player&, Player&);
 	void Draw();

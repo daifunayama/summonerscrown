@@ -152,11 +152,11 @@
 	<effectFileNames>
 		<value>light.ssee</value>
 	</effectFileNames>
-	<lastAnimeFile>ein2.ssae</lastAnimeFile>
-	<lastAnimeName>idle</lastAnimeName>
-	<lastCellMapFile>ein2.ssce</lastCellMapFile>
+	<lastAnimeFile>ein1.ssae</lastAnimeFile>
+	<lastAnimeName>burst</lastAnimeName>
+	<lastCellMapFile>ein.ssce</lastCellMapFile>
 	<lastEffectFile>light.ssee</lastEffectFile>
-	<lastCell>mayuge2</lastCell>
-	<lastPart>root</lastPart>
+	<lastCell>right_wing3</lastCell>
+	<lastPart>left_wing3</lastPart>
 	<setupmode>0</setupmode>
 </SpriteStudioProject>

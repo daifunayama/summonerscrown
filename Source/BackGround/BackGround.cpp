@@ -15,6 +15,7 @@ void BackGround::LoadGraphic() {
 
 /*ƒvƒŒƒCƒ„[î•ñ‚Ìæ“¾*/
 void BackGround::GetPlayer(Player& player1, Player& player2) {
+	if (player1.getController().getKey(5) && player1.getController().getKey(4) == 1)mBlackoutCounter[0] = 60;
 
 	if (player1.getArms(player1.getArmsId())->getState() == Parameter::S_ARMS_SUMMON) {
 		if (player1.getArms(player1.getArmsId())->getCounter() == 1) {

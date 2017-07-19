@@ -139,10 +139,13 @@ protected:
 	int mGraphSummonEffect2;		//召喚陣のグラフィックハンドル2
 	int mGraphDamage;				//ダメージエフェクトのグラフィックハンドル
 	int mAnimeBarrier;				//バリアのグラフィックハンドル
+	int mAnimeBurst1;
+	int mAnimeBurst2;
 
 	int mSoundOpenCircle;			//契約陣を開くSE
 	int mSoundSummon;				//召喚SE
 	int mSoundDamage;				//ダメージSE
 	int mSoundGuard;				//ガードSE
+	int mSoundBurst;				//バーストSE
 	int mSoundPlayerAtack[10];		//攻撃用SE
 };

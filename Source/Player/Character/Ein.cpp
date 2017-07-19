@@ -3,6 +3,7 @@
 #include "../../SSPlayer/SS5Player.h"
 #include "../../Utility.h"
 #include "../../Atack/FrameData.h"
+#include "../../Effekseer/AnimationController.h"
 #include "Ein.h"
 
 Profile Ein::getProfile() {
@@ -26,6 +27,8 @@ Profile Ein::getProfile() {
 
 /*サウンドのロード*/
 void Ein::LoadSound() {
+	mAnimeDrill = LoadGraph("Data/graphic/animation/dorill.png");
+
 	mSoundDash = LoadSoundMem("Data/se/highspeed-movement1.mp3");
 	mSoundStep = mSoundDash;
 	
@@ -372,22 +375,11 @@ void Ein::UpdateAnimation() {
 			mSprite->play(name + "guard_d");
 		}
 	}
-	//立ちバリア状態
-	else if (mState == Parameter::S_PLAYER_BARRIER && mGround) {
-		if (mSprite->getPlayAnimeName() != "idle") {
-			mSprite->play(name + "idle");
-		}
-	}
-	//しゃがみバリア状態
-	else if (mState == Parameter::S_PLAYER_BARRIER_S && mGround) {
-		if (mSprite->getPlayAnimeName() != "squat") {
-			mSprite->play(name + "squat");
-		}
-	}
-	//空中バリア状態
-	else if (mState == Parameter::S_PLAYER_BARRIER) {
-		if (mSprite->getPlayAnimeName() != "jump") {
-			mSprite->play(name + "jump");
+	//バースト
+	else if (mState == Parameter::S_PLAYER_BURST) {
+		if (mSprite->getPlayAnimeName() != "burst") {
+			mSprite->play(name + "burst");
+			mSprite->setStep(0.5f);
 		}
 	}
 	//A攻撃
@@ -519,9 +511,14 @@ void Ein::StartStep() {
 }
 
 void Ein::ProcessAtack() {
+	static int animeKey;
 	if (mState == Parameter::S_PLAYER_ATACK_6B) {
+		if (mPlayerAtack[Parameter::P_ATACK_6B].getCounter() == 2) {
+			animeKey = AnimationController::getInstance().Create(mAnimeDrill, 2, 0,0, 500, 300, 3, 0, 4, 1, 30, -1, mRight, true);
+		}
+
 		if (mPlayerAtack[Parameter::P_ATACK_6B].getCounter() >= 2 && mPlayerAtack[Parameter::P_ATACK_6B].getCounter() < 20) {
-			if(mRight)mAcceleX = 25;
+			if (mRight)mAcceleX = 25;
 			else mAcceleX = -25;
 		}
 		if (mPlayerAtack[Parameter::P_ATACK_6B].getCounter() >= 20) {
@@ -534,5 +531,6 @@ void Ein::ProcessAtack() {
 				if (mAcceleX > 0)mAcceleX = 0;
 			}
 		}
+		AnimationController::getInstance().SetPosition(animeKey, mPositionX + (mRight? -100:+100) , mPositionY - 20);
 	}
 }

@@ -21,4 +21,5 @@ public:
 private:
 	int mSoundDash;
 	int mSoundStep;
+	int mAnimeDrill;
 };
