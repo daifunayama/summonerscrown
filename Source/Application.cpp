@@ -50,5 +50,5 @@ void  Application::AddSpriteResource() {
 	Application::resman->addData("Data/sprite_carol/carol.ssbp");
 	Application::resman->addData("Data/sprite_remnant/remnant.ssbp");
 
-	Application::resman->addData("Data/kare-meshi/kare-messhi.ssbp");
+	Application::resman->addData("Data/kare-meshi/kare-meshi.ssbp");
 }

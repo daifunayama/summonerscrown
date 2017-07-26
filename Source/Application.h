@@ -14,8 +14,21 @@ public:
 	Application() {
 		Parameter::InitFont();
 		resman = ss::ResourceManager::getInstance();
-		mScene = new TitleScene();
 		AddSpriteResource();
+		WaitKey();
+		if (CheckHitKey(KEY_INPUT_B) == 1) {
+			mScene = new BattleScene();
+			mOldSceneId = Parameter::SCENE_BATTLE;
+		}
+		else if (CheckHitKey(KEY_INPUT_S) == 1) {
+			mScene = new CharaSelectScene();
+			mOldSceneId = Parameter::SCENE_CHARASELECT;
+		}
+		else {
+			mScene = new TitleScene();
+			mOldSceneId = Parameter::SCENE_TITLE;
+		}
+		mNextSceneId = mOldSceneId;
 	}
 	~Application(){}
 

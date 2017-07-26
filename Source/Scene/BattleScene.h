@@ -14,13 +14,14 @@
 */
 class BattleScene : public Scene {
 public:
-	BattleScene() :Scene(Parameter::SCENE_TITLE) {
+	BattleScene() :Scene(Parameter::SCENE_BATTLE) {
 		Load();
 	}
 
 	void Load();
 	virtual void Process();
 	virtual void Drawing();
+	virtual int CheckDrawPriority(Player& p1, Player& p2);
 
 private:
 	Player* mPlayer[2];						//êÌì¨ÉvÉåÉCÉÑÅ[

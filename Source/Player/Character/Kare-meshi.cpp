@@ -9,34 +9,19 @@ Profile KareMeshi::getProfile() {
 	Profile p;
 	p.name = "カレーメシ";
 	p.eName = "Kare-meshi";
+	p.pass = "kare-meshi";
+
+	p.size = 0.36f;
+	p.speed = 1.0f;
+	p.distX = 0;
+	p.distY = 0;
+
 	p.cAtack = 3;
 	p.lAtack = 5;
 	p.aut = 2;
 	p.pAtack = 3;
 	p.sAtack = 3;
 	return p;
-}
-
-/*グラフィックのロード*/
-void KareMeshi::LoadGraphic() {
-	//プレイヤーの作成
-	mSprite = ss::Player::create();
-
-	//プレイヤーにリソースを割り当て
-	mSprite->setData("kare-messhi");// ssbpファイル名
-
-	mSprite->play("kare-meshi/idle");// アニメーション名を指定
-
-	//表示位置を設定
-	mSprite->setPosition(400, 300);
-	//スケール設定
-	mSprite->setScale(0.25f, 0.25f);
-
-	mGraphShadow = LoadGraph("Data/graphic/game/shadow.png");
-	mGraphDamage = LoadGraph("Data/graphic/animation/slash3.png");
-
-	mGraphSummonEffect1 = LoadGraph("Data/graphic/animation/summon_effect1.png");
-	mGraphSummonEffect2 = LoadGraph("Data/graphic/animation/summon_effect2.png");
 }
 
 /*サウンドのロード*/
@@ -134,12 +119,14 @@ void KareMeshi::LoadAtack() {
 	BoxData boxData;
 	HitBox hitBox;
 
-	for (int a = 0; a < 4; a++) {
+	for (int a = 0; a < 6; a++) {
 
 		if (a == 0)mPlayerAtack[Parameter::P_ATACK_A].ClearFrameData();
 		if (a == 1)mPlayerAtack[Parameter::P_ATACK_B].ClearFrameData();
 		if (a == 2)mPlayerAtack[Parameter::P_ATACK_2A].ClearFrameData();
 		if (a == 3)mPlayerAtack[Parameter::P_ATACK_2B].ClearFrameData();
+		if (a == 4)mPlayerAtack[Parameter::P_ATACK_3B].ClearFrameData();
+		if (a == 5)mPlayerAtack[Parameter::P_ATACK_6B].ClearFrameData();
 
 		hitBox.setExist(false);
 		for (int i = 0; i < 20; i++) {
@@ -150,10 +137,25 @@ void KareMeshi::LoadAtack() {
 
 		if (a == 0)ifs.open("Data/character/kare-meshi/a.txt");
 		if (a == 1)ifs.open("Data/character/kare-meshi/b.txt");
-		if (a == 2)ifs.open("Data/character/kare-meshi/ad.txt");
-		if (a == 3)ifs.open("Data/character/kare-meshi/bd.txt");
+		if (a == 2)ifs.open("Data/character/kare-meshi/2a.txt");
+		if (a == 3)ifs.open("Data/character/kare-meshi/2b.txt");
+		if (a == 4)ifs.open("Data/character/kare-meshi/3b.txt");
+		if (a == 5)ifs.open("Data/character/kare-meshi/6b.txt");
+
 
 		if (ifs) {
+
+			for (int i = 0; i < 9; i++) {
+				ifs >> tmp;
+				if (a == 0)mPlayerAtack[Parameter::P_ATACK_A].setAllowCancel(i, Utility::StringToInt(tmp));
+				if (a == 1)mPlayerAtack[Parameter::P_ATACK_B].setAllowCancel(i, Utility::StringToInt(tmp));
+				if (a == 2)mPlayerAtack[Parameter::P_ATACK_2A].setAllowCancel(i, Utility::StringToInt(tmp));
+				if (a == 3)mPlayerAtack[Parameter::P_ATACK_2B].setAllowCancel(i, Utility::StringToInt(tmp));
+				if (a == 4)mPlayerAtack[Parameter::P_ATACK_3B].setAllowCancel(i, Utility::StringToInt(tmp));
+				if (a == 5)mPlayerAtack[Parameter::P_ATACK_6B].setAllowCancel(i, Utility::StringToInt(tmp));
+			}
+
+
 			//ボックスデータの読み込み
 			for (int i = 0; i < 5; i++) {
 				ifs >> tmp;
@@ -164,6 +166,8 @@ void KareMeshi::LoadAtack() {
 				boxData.setSEType(Utility::StringToInt(tmp));
 				ifs >> tmp;
 				boxData.setGuardType(Utility::StringToInt(tmp));
+				ifs >> tmp;
+				boxData.setAllowMultHit(Utility::StringToInt(tmp));
 				ifs >> tmp;
 				boxData.setHitStop(Utility::StringToInt(tmp));
 				ifs >> tmp;
@@ -205,6 +209,8 @@ void KareMeshi::LoadAtack() {
 					if (a == 1)mPlayerAtack[Parameter::P_ATACK_B].PushFrameData(frameData);
 					if (a == 2)mPlayerAtack[Parameter::P_ATACK_2A].PushFrameData(frameData);
 					if (a == 3)mPlayerAtack[Parameter::P_ATACK_2B].PushFrameData(frameData);
+					if (a == 4)mPlayerAtack[Parameter::P_ATACK_3B].PushFrameData(frameData);
+					if (a == 5)mPlayerAtack[Parameter::P_ATACK_6B].PushFrameData(frameData);
 
 					boxCounter = 0;
 
@@ -212,6 +218,10 @@ void KareMeshi::LoadAtack() {
 					for (int i = 0; i < 20; i++) {
 						frameData.setAtackBox(i, hitBox);
 					}
+
+					//キャンセル可能フラグ
+					ifs >> tmp;
+					frameData.setAllowCancel(Utility::StringToInt(tmp));
 
 					//デフォルトではサウンドはなし
 					frameData.setSoundId(0);
@@ -253,10 +263,11 @@ void KareMeshi::LoadAtack() {
 
 /*アニメーションの更新*/
 void KareMeshi::UpdateAnimation() {
+	string name;
+	name = getProfile().pass + Utility::IntToString(getColor()) + "/";
 
 	//振り向き
-	if (mRight)mSprite->setScale(0.36, 0.36);
-	else mSprite->setScale(-0.36, 0.36);
+	mSprite->setScale(mRight ? getProfile().size : -getProfile().size, getProfile().size);
 
 	//通常時（待機・前進・後退・ジャンプ）
 	if (mState == Parameter::S_PLAYER_NORMAL) {
@@ -267,7 +278,7 @@ void KareMeshi::UpdateAnimation() {
 			//プレイヤーが静止している
 			if (mAcceleX == 0) {
 				if (mSprite->getPlayAnimeName() != "idle") {
-					mSprite->play("kare-meshi/idle");
+					mSprite->play(name + "idle");
 				}
 			}
 			//プレイヤーが右に進んでいる
@@ -275,12 +286,12 @@ void KareMeshi::UpdateAnimation() {
 				//プレイヤーが右向き
 				if (mRight) {
 					if (mSprite->getPlayAnimeName() != "walk") {
-						mSprite->play("kare-meshi/walk");
+						mSprite->play(name + "walk");
 					}
 				}
 				//プレイヤーが左向き
 				else if (mSprite->getPlayAnimeName() != "walk") {
-					mSprite->play("kare-meshi/walk");
+					mSprite->play(name + "walk");
 				}
 			}
 			//プレイヤーが左に進んでいる
@@ -288,55 +299,99 @@ void KareMeshi::UpdateAnimation() {
 				//プレイヤーが左向き
 				if (!mRight) {
 					if (mSprite->getPlayAnimeName() != "walk") {
-						mSprite->play("kare-meshi/walk");
+						mSprite->play(name + "walk");
 					}
 				}
 				//プレイヤーが右向き
 				else if (mSprite->getPlayAnimeName() != "walk") {
-					mSprite->play("kare-meshi/walk");
+					mSprite->play(name + "walk");
 				}
 			}
 		}
 		//プレイヤーが空中にいる
 		//else {
 		//	if (mSprite->getPlayAnimeName() != "jump") {
-		//		mSprite->play("kare-meshi/jump");
+		//		mSprite->play(name + "jump");
 		//	}
 		//}
 
 	}
+	//プレイヤーがしゃがんでいる
+	else if (mState == Parameter::S_PLAYER_SQUAT) {
+		if (mSprite->getPlayAnimeName() != "squat") {
+			mSprite->play(name + "squat");
+		}
+	}
 	//上段ダメージ状態
 	else if (mState == Parameter::S_PLAYER_DAMAGE_U && mDamageCounter == 1) {
-		mSprite->play("kare-meshi/damage_u");
+		mSprite->play(name + "damage_u");
 		mSprite->setStep(0.9f);
 
 	}
 	//下段ダメージ状態
 	else if (mState == Parameter::S_PLAYER_DAMAGE_D && mDamageCounter == 1) {
-		mSprite->play("kare-meshi/damage_d");
+		mSprite->play(name + "damage_d");
 		mSprite->setStep(0.9f);
 	}
 	//しゃがみダメージ状態
 	else if (mState == Parameter::S_PLAYER_DAMAGE_S && mDamageCounter == 1) {
-		//mSprite->play("kare-meshi/damage_squat");
+		//mSprite->play(name + "damage_squat");
 	}
 	else if (mState == Parameter::S_PLAYER_DAMAGE_AIR && mDamageCounter == 1) {
-		mSprite->play("kare-meshi/damage_air");
+		mSprite->play(name + "damage_air");
 		mSprite->setStep(0.7f);
 	}
 	else if (mState == Parameter::S_PLAYER_DAMAGE_AIR2 && mDamageCounter == 1) {
-		mSprite->play("kare-meshi/damage_air");
+		mSprite->play(name + "damage_air");
 		mSprite->setStep(0.7f);
 	}
 	else if (mState == Parameter::S_PLAYER_DOWN && mCounter == 39) {
-		mSprite->play("kare-meshi/down");
+		mSprite->play(name + "down");
 		mSprite->setStep(0.8f);
 	}
-	
+	//投げぬけ
+	else if (mState == Parameter::S_PLAYER_ESCAPE) {
+		if (mSprite->getPlayAnimeName() != "damage_u") {
+			mSprite->play(name + "damage_u");
+		}
+	}
+	//A攻撃
+	else if (mState == Parameter::S_PLAYER_ATACK_A &&
+		mPlayerAtack[Parameter::P_ATACK_A].getCounter() == 1)
+	{
+		mSprite->play(name + "a");
+	}
+	//A下攻撃
+	else if (mState == Parameter::S_PLAYER_ATACK_2A &&
+		mPlayerAtack[Parameter::P_ATACK_2A].getCounter() == 1)
+	{
+		mSprite->play(name + "2a");
+	}
+	//6B攻撃
+	else if (mState == Parameter::S_PLAYER_ATACK_6B &&
+		mPlayerAtack[Parameter::P_ATACK_6B].getCounter() == 1)
+	{
+		mSprite->play(name + "6a");
+		mSprite->setStep(0.7f);
+	}
+	//つかみ
+	else if (mState == Parameter::S_PLAYER_CATCH){
+		if (mSprite->getPlayAnimeName() != "catch") {
+			mSprite->play(name + "catch");
+			mSprite->setStep(0.5f);
+		}
+	}
+	//投げ攻撃
+	else if (mState == Parameter::S_PLAYER_THROW) {
+		if (mSprite->getPlayAnimeName() != "throw") {
+			mSprite->play(name + "throw");
+			mSprite->setStep(0.7f);
+		}
+	}
 
 	//表示位置の更新
-	if(mRight)mSprite->setPosition(mPositionX - (Camera::getInstance().getCenterX() - Parameter::WINDOW_WIDTH / 2), Parameter::GROUND_LINE - mPositionY-120);
-	else mSprite->setPosition(mPositionX - (Camera::getInstance().getCenterX() - Parameter::WINDOW_WIDTH / 2) +25, Parameter::GROUND_LINE - mPositionY - 120);
+	if(mRight)mSprite->setPosition(mPositionX - (Camera::getInstance().getCenterX() - Parameter::WINDOW_WIDTH / 2), Parameter::GROUND_LINE - mPositionY-150);
+	else mSprite->setPosition(mPositionX - (Camera::getInstance().getCenterX() - Parameter::WINDOW_WIDTH / 2) +25, Parameter::GROUND_LINE - mPositionY - 150);
 	//プレイヤーの更新、引数は前回の更新処理から経過した時間
 	mSprite->update((float)30 / 1000);
 }
@@ -344,3 +399,18 @@ void KareMeshi::UpdateAnimation() {
 
 //オーバーロード
 
+void KareMeshi::ProcessAtack() {
+	static int animeKey;
+	if (mState == Parameter::S_PLAYER_ATACK_6B) {
+		if (mPlayerAtack[Parameter::P_ATACK_6B].getCounter() == 2) {
+			mAcceleY += 30;
+			mGround = false;
+		}
+
+		if (mPlayerAtack[Parameter::P_ATACK_6B].getCounter() >= 2 && mPlayerAtack[Parameter::P_ATACK_6B].getCounter() < 20) {
+			
+		}
+		if (mPlayerAtack[Parameter::P_ATACK_6B].getCounter() >= 20) {
+		}
+	}
+}

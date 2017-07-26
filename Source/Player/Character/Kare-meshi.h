@@ -6,7 +6,6 @@ class KareMeshi : public Player {
 public:
 	
 	Profile getProfile();
-	void LoadGraphic();
 	void LoadSound();
 	void LoadVoice();
 	void LoadData();
@@ -14,6 +13,7 @@ public:
 	void UpdateAnimation();
 
 	//オーバーロード
+	void ProcessAtack();
 
 private:
 	int mSoundDash;

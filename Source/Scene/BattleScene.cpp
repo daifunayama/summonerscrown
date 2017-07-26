@@ -163,8 +163,14 @@ void BattleScene::Drawing() {
 	mPlayer[1]->DrawArmsBack();
 
 	//プレイヤーの描画
-	mPlayer[1]->Draw();
-	mPlayer[0]->Draw();
+	if(CheckDrawPriority(*mPlayer[0],*mPlayer[1]) == 0){
+		mPlayer[1]->Draw();
+		mPlayer[0]->Draw();
+	}
+	else {
+		mPlayer[0]->Draw();
+		mPlayer[1]->Draw();
+	}
 
 	AnimationController::getInstance().DrawLayer2();
 
@@ -204,4 +210,27 @@ void BattleScene::Drawing() {
 	if (mPlayer[1]->isDamageState()) {
 		DrawBox(100, 200, mPlayer[1]->getCounter() * 4 + 100, 250, Parameter::COLOR_RED, true);
 	}
+}
+
+/*描画の優先順位を返す*/
+int BattleScene::CheckDrawPriority(Player& p1, Player& p2) {
+	//ダメージ中のプレイヤーを後ろに
+	if (p1.isDamageState() && !p2.isDamageState())return 1;
+	if (p2.isDamageState() && !p1.isDamageState())return 0;
+	if (p1.isDamageState() && p2.isDamageState())return 0;
+
+	//ガード中のプレイヤーを後ろに
+	if (p1.isGuardState() && !p2.isGuardState())return 1;
+	if (p2.isGuardState() && !p1.isGuardState())return 0;
+	if (p1.isGuardState() && p2.isGuardState())return 0;
+
+	//攻撃中のプレイヤーを前に　両方の場合後出しの方を優先
+	if (p1.isAtackState() && !p2.isAtackState())return 0;
+	if (p2.isAtackState() && !p1.isAtackState())return 1;
+	if (p1.isAtackState() && p2.isAtackState()) {
+		return p1.getPlayerAtack(p1.getState() - 18).getCounter() <= p2.getPlayerAtack(p1.getState() - 18).getCounter() ?
+			0 : 1;
+	}
+
+	return 0;
 }

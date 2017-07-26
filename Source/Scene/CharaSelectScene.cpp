@@ -58,6 +58,7 @@ void CharaSelectScene::Load() {
 	mGraphEmblem[9] = LoadGraph("Data/graphic/emblem/EvilAnima.png");
 
 	mSoundCursor = LoadSoundMem("Data/se/sen_ge_pis_kamaeru02.mp3");
+	mSoundMetal = LoadSoundMem("Data/se/gun-reload1.mp3");
 	mSoundEnter = LoadSoundMem("Data/se/decision16.mp3");
 	mSoundCancel = LoadSoundMem("Data/se/cancel5.mp3");
 	mBGM = LoadSoundMem("Data/bgm/nobasita.mp3");
@@ -71,8 +72,8 @@ void CharaSelectScene::Load() {
 	mAnimeCounter[0] = 0;
 	mAnimeCounter[1] = 0;
 
-	mCursor[0] = 0;
-	mCursor[1] = 1;
+	mCursor[0] = 2;
+	mCursor[1] = 8;
 
 	mDecided[0] = 0;
 	mDecided[1] = 0;
@@ -159,6 +160,10 @@ void CharaSelectScene::Process() {
 
 	//アニメーションのプロセス
 	AnimationController::getInstance().Process();
+
+	mCounter++;
+	mAnimeCounter[0]++;
+	mAnimeCounter[1]++;
 }
 
 void CharaSelectScene::ChangePlayerSprite(int p, int id) {
@@ -216,64 +221,113 @@ void CharaSelectScene::Drawing() {
 	AnimationController::getInstance().DrawLayer1();
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
+	if (CheckHitKey(KEY_INPUT_R) == 1)mCounter = 0;
+
 	//立ち絵
-	DrawGraph(0, 0, mGraphStand[mCursor[0]], true);
-	DrawTurnGraph(Parameter::WINDOW_WIDTH - 500, 0, mGraphStand[mCursor[1]], true);
+	if (mCounter == 90) {
+		mAnimeCounter[0] = 0;
+		mAnimeCounter[1] = 0;
+	}
+	if (mCounter > 90) {
+		mAnimeCounter[0] < 10 ?
+			DrawGraph(-600 + mAnimeCounter[0] * 60, 0, mGraphStand[mCursor[0]], true):
+			DrawGraph(0, 0, mGraphStand[mCursor[0]], true);
+
+		mAnimeCounter[1] < 10 ?
+			DrawTurnGraph(Parameter::WINDOW_WIDTH - 500 + 600 - mAnimeCounter[1] * 60, 0, mGraphStand[mCursor[1]], true):
+			DrawTurnGraph(Parameter::WINDOW_WIDTH - 500, 0, mGraphStand[mCursor[1]], true);
+	}
 
 	//顔グラ
-	for (int i = 0; i < 11; i++) {
-		DrawGraph(340 + i * 55, 180 + 40 * (i % 2), mGraphFace[i], true);
+	if (mCounter < 90) {
+		for (int i = 0; i < 11; i++) {
+			if (i < 6)mCounter < (30 + i * 10) ?
+				DrawGraph(340 + 55 * (5 - i) - (1200 + i * 400) + (mCounter * 40), 200, mGraphFace[5 - i], true) :
+				DrawGraph(340 + 55 * (5 - i), 200, mGraphFace[5 - i], true);
+			else mCounter < (35 + (i-6) * 10) ?
+				DrawGraph(340 + 55 * i + 1400 + (i - 6) * 400 - (mCounter * 40), 200, mGraphFace[i], true) :
+				DrawGraph(340 + 55 * i, 200, mGraphFace[i], true);
+		}
+		if (mCounter >= 30 && mCounter <= 65 && mCounter % 5 == 0)PlaySoundMem(mSoundCursor, DX_PLAYTYPE_BACK);
+	}
+	else {
+		if (mCounter == 90)PlaySoundMem(mSoundCursor, DX_PLAYTYPE_BACK);
+		for (int i = 0; i < 11; i++)DrawGraph(340 + i * 55, 180 + 40 * (i % 2), mGraphFace[i], true);
 	}
 
 	//カーソル
-	if (!mDecided[1])DrawGraph(340 + mCursor[1] * 55, 180 + 40 * (mCursor[1] % 2), mGraphCursor[1], true);
-	else DrawGraph(340 + mCursor[1] * 55, 180 + 40 * (mCursor[1] % 2), mGraphCursor2[1], true);
+	if (mCounter > 65) {
+		if (mCounter < 90) {
+			DrawGraph(340 + mCursor[1] * 55, 180 + 1000 - (mCounter - 65) * 40, mGraphCursor[1], true);
+			DrawGraph(340 + mCursor[0] * 55, 180 - 1000 + (mCounter - 65) * 40, mGraphCursor[0], true);
+		}
+		else {
+			if (!mDecided[1])DrawGraph(340 + mCursor[1] * 55, 180 + 40 * (mCursor[1] % 2), mGraphCursor[1], true);
+			else DrawGraph(340 + mCursor[1] * 55, 180 + 40 * (mCursor[1] % 2), mGraphCursor2[1], true);
+			if (!mDecided[0])DrawGraph(340 + mCursor[0] * 55, 180 + 40 * (mCursor[0] % 2), mGraphCursor[0], true);
+			else DrawGraph(340 + mCursor[0] * 55, 180 + 40 * (mCursor[0] % 2), mGraphCursor2[0], true);
+		}
+	}
 	
-	if (!mDecided[0])DrawGraph(340 + mCursor[0] * 55, 180 + 40 * (mCursor[0] % 2), mGraphCursor[0], true);
-	else DrawGraph(340 + mCursor[0] * 55, 180 + 40 * (mCursor[0] % 2), mGraphCursor2[0], true);
+	if (mCounter > 90) {
+		//エンブレム
+		DrawRotaEmblem(mCursor[0], -30, 350);
+		DrawRotaEmblem(mCursor[1], Parameter::WINDOW_WIDTH - 300 + 30, 350);
 
-	//エンブレム
-	DrawRotaEmblem(mCursor[0], -30, 350);
-	DrawRotaEmblem(mCursor[1], Parameter::WINDOW_WIDTH - 300 + 30, 350);
+		//キャラの影
+		DrawGraph(90, 640, mGraphShadow, true);
+		DrawGraph(Parameter::WINDOW_WIDTH - 210, 640, mGraphShadow, true);
 
-	//キャラの影
-	DrawGraph(90, 640, mGraphShadow, true);
-	DrawGraph(Parameter::WINDOW_WIDTH - 210, 640, mGraphShadow, true);
+		//キャラスプライト
+		if (mCursor[0] != 5)mSprite[0]->draw();
+		if (mCursor[1] != 5)mSprite[1]->draw();
 
-	//キャラスプライト
-	if (mCursor[0] != 5)mSprite[0]->draw();
-	if (mCursor[1] != 5)mSprite[1]->draw();
+		//P1キャラクター名
+		Profile p = mPlayer[0]->getProfile();
+		if (mAnimeCounter[0] < 10) {
+			DrawFormatStringToHandle(50, 640 + 100 - mAnimeCounter[0] * 10, Parameter::COLOR_WHITE, Parameter::FONT_80_FERRUM,
+				"%s", p.eName.c_str());
+			DrawFormatStringToHandle(60, 700 + 100 - mAnimeCounter[0] * 10, Parameter::COLOR_WHITE, Parameter::FONT_20,
+				"%s", p.name.c_str());
+		}
+		else {
+			DrawFormatStringToHandle(50, 640, Parameter::COLOR_WHITE, Parameter::FONT_80_FERRUM,
+				"%s", p.eName.c_str());
+			DrawFormatStringToHandle(60, 700, Parameter::COLOR_WHITE, Parameter::FONT_20,
+				"%s", p.name.c_str());
+		}
+		//キャラプロファイル
+		DrawProfile(0,p, 230, 500);
 
-	//P1キャラクター名
-	Profile p = mPlayer[0]->getProfile();
-	DrawFormatStringToHandle(50, 640, Parameter::COLOR_WHITE, Parameter::FONT_80_FERRUM,
-		"%s", p.eName.c_str());
-	DrawFormatStringToHandle(60, 700, Parameter::COLOR_WHITE, Parameter::FONT_20,
-		"%s", p.name.c_str());
+		//P2キャラクター名
+		p = mPlayer[1]->getProfile();
 
-	//キャラプロファイル
-	DrawProfile(p, 230, 500);
+		if (mAnimeCounter[1] < 10) {
+			DrawFormatStringToHandle(Parameter::WINDOW_WIDTH - p.eName.length() * 30 - 30, 640 + 100 - mAnimeCounter[1] * 10, Parameter::COLOR_WHITE,
+				Parameter::FONT_80_FERRUM, "%s", p.eName.c_str());
+			DrawFormatStringToHandle(Parameter::WINDOW_WIDTH - p.eName.length() * 30 - 20, 700 + 100- mAnimeCounter[1] * 10, Parameter::COLOR_WHITE,
+				Parameter::FONT_20, "%s", p.name.c_str());
+		}
+		else {
+			DrawFormatStringToHandle(Parameter::WINDOW_WIDTH - p.eName.length() * 30 - 30, 640, Parameter::COLOR_WHITE,
+				Parameter::FONT_80_FERRUM, "%s", p.eName.c_str());
+			DrawFormatStringToHandle(Parameter::WINDOW_WIDTH - p.eName.length() * 30 - 20, 700, Parameter::COLOR_WHITE,
+				Parameter::FONT_20, "%s", p.name.c_str());
+		}
 
-	//P2キャラクター名
-	p = mPlayer[1]->getProfile();
-	DrawFormatStringToHandle(Parameter::WINDOW_WIDTH - p.eName.length() * 30 - 30, 640, Parameter::COLOR_WHITE,
-		Parameter::FONT_80_FERRUM, "%s", p.eName.c_str());
-	DrawFormatStringToHandle(Parameter::WINDOW_WIDTH - p.eName.length() * 30 - 20, 700, Parameter::COLOR_WHITE,
-		Parameter::FONT_20, "%s", p.name.c_str());
-
-
-	//キャラプロファイル
-	DrawProfile(p, 800, 500);
+		//キャラプロファイル
+		DrawProfile(1,p, 800, 500);
+	}
 
 	DrawStringToHandle(330, 30, "Character Select", Parameter::COLOR_YELLOW, Parameter::FONT_100_CLOISTER, 0, 0);
 	DrawStringToHandle(490, 130, "キャラクターを選択してください", Parameter::COLOR_YELLOW, Parameter::FONT_20, 0, 0);
 
-	DrawStringToHandle(500, 530, "←→　キャラクター選択", Parameter::COLOR_YELLOW, Parameter::FONT_20, 0, 0);
-	DrawStringToHandle(500, 560, "↑↓　カラー選択", Parameter::COLOR_YELLOW, Parameter::FONT_20, 0, 0);
+	//DrawStringToHandle(500, 530, "←→　キャラクター選択", Parameter::COLOR_YELLOW, Parameter::FONT_20, 0, 0);
+	//DrawStringToHandle(500, 560, "↑↓　カラー選択", Parameter::COLOR_YELLOW, Parameter::FONT_20, 0, 0);
 }
 
 void CharaSelectScene::DrawRotaEmblem(int category, int x, int y) {
-	static int animationCounter = 0;
+	static int animationCounter = 150;
 
 	animationCounter++;
 	if (animationCounter > 300)animationCounter = 0;
@@ -289,21 +343,30 @@ void CharaSelectScene::DrawRotaEmblem(int category, int x, int y) {
 	}
 }
 
-void CharaSelectScene::DrawProfile(Profile p, int x, int y) {
+void CharaSelectScene::DrawProfile(int p, Profile pf, int x, int y) {
 
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 128);
 	DrawBox(x - 10, y - 10, x + 250, y + 150, Parameter::COLOR_BLACK, true);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
 	DrawStringToHandle(x, y, "Close-Range", Parameter::COLOR_WHITE, Parameter::FONT_20, 0, 0);
-	DrawStringToHandle(x, y+30, "Long-Range", Parameter::COLOR_WHITE, Parameter::FONT_20, 0, 0);
-	DrawStringToHandle(x, y+60, "Automaton", Parameter::COLOR_WHITE, Parameter::FONT_20, 0, 0);
-	DrawStringToHandle(x, y+90, "Physical", Parameter::COLOR_WHITE, Parameter::FONT_20, 0, 0);
-	DrawStringToHandle(x, y+120, "Special", Parameter::COLOR_WHITE, Parameter::FONT_20, 0, 0);
+	DrawStringToHandle(x, y + 30, "Long-Range", Parameter::COLOR_WHITE, Parameter::FONT_20, 0, 0);
+	DrawStringToHandle(x, y + 60, "Automaton", Parameter::COLOR_WHITE, Parameter::FONT_20, 0, 0);
+	DrawStringToHandle(x, y + 90, "Physical", Parameter::COLOR_WHITE, Parameter::FONT_20, 0, 0);
+	DrawStringToHandle(x, y + 120, "Special", Parameter::COLOR_WHITE, Parameter::FONT_20, 0, 0);
 
-	DrawBox(x + 130, y, x + 130 + p.cAtack * 20, y + 20, Parameter::COLOR_RED, true);
-	DrawBox(x + 130, y+30, x + 130 + p.lAtack * 20, y + 50, Parameter::COLOR_RED, true);
-	DrawBox(x + 130, y + 60, x + 130 + p.aut * 20, y + 80, Parameter::COLOR_RED, true);
-	DrawBox(x + 130, y + 90, x + 130 + p.pAtack * 20, y + 110, Parameter::COLOR_RED, true);
-	DrawBox(x + 130, y + 120, x + 130 + p.sAtack * 20, y + 140, Parameter::COLOR_RED, true);
+	if (mAnimeCounter[p] < pf.cAtack * 5)DrawBox(x + 130, y, x + 130 + mAnimeCounter[p] * 4, y + 20, Parameter::COLOR_RED, true);
+	else DrawBox(x + 130, y, x + 130 + pf.cAtack * 20, y + 20, Parameter::COLOR_RED, true);
+
+	if (mAnimeCounter[p] < pf.lAtack * 5)DrawBox(x + 130, y+30, x + 130 + mAnimeCounter[p] * 4, y + 50, Parameter::COLOR_RED, true);
+	else DrawBox(x + 130, y+30, x + 130 + pf.lAtack * 20, y + 50, Parameter::COLOR_RED, true);
+
+	if (mAnimeCounter[p] < pf.aut * 5)DrawBox(x + 130, y+60, x + 130 + mAnimeCounter[p] * 4, y + 80, Parameter::COLOR_RED, true);
+	else DrawBox(x + 130, y+60, x + 130 + pf.aut * 20, y + 80, Parameter::COLOR_RED, true);
+
+	if (mAnimeCounter[p] < pf.pAtack * 5)DrawBox(x + 130, y+90, x + 130 + mAnimeCounter[p] * 4, y + 110, Parameter::COLOR_RED, true);
+	else DrawBox(x + 130, y+90, x + 130 + pf.pAtack * 20, y + 110, Parameter::COLOR_RED, true);
+
+	if (mAnimeCounter[p] < pf.sAtack * 5)DrawBox(x + 130, y+120, x + 130 + mAnimeCounter[p] * 4, y + 140, Parameter::COLOR_RED, true);
+	else DrawBox(x + 130, y+120, x + 130 + pf.sAtack * 20, y + 140, Parameter::COLOR_RED, true);
 }

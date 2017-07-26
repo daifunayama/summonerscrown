@@ -352,16 +352,34 @@ void Ein::UpdateAnimation() {
 	else if (mState == Parameter::S_PLAYER_DAMAGE_U && mDamageCounter == 1) {
 		mSprite->play(name + "damage_u");
 		mSprite->setStep(0.9f);
-
 	}
 	//下段ダメージ状態
 	else if (mState == Parameter::S_PLAYER_DAMAGE_D && mDamageCounter == 1) {
 		mSprite->play(name + "damage_d");
 		mSprite->setStep(0.9f);
 	}
+	//空中ダメージ状態
+	else if (mState == Parameter::S_PLAYER_DAMAGE_AIR && mDamageCounter == 1) {
+		mSprite->play(name + "damage_air");
+		mSprite->setStep(0.9f);
+	}
 	//しゃがみダメージ状態
 	else if (mState == Parameter::S_PLAYER_DAMAGE_S && mDamageCounter == 1) {
 		mSprite->play(name + "damage_squat");
+	}
+	//つかまれ状態
+	else if (mState == Parameter::S_PLAYER_CAUGHT) {
+		if (mSprite->getPlayAnimeName() != "caught") {
+			mSprite->play(name + "caught");
+			mSprite->setStep(0.9f);
+		}
+	}
+	//投げぬけ状態
+	else if (mState == Parameter::S_PLAYER_ESCAPE) {
+		if (mSprite->getPlayAnimeName() != "escape") {
+			mSprite->play(name + "escape");
+			mSprite->setStep(1.2f);
+		}
 	}
 	//立ちガード状態
 	else if (mState == Parameter::S_PLAYER_GUARD) {

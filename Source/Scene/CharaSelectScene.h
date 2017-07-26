@@ -17,7 +17,7 @@ public:
 	void Process();
 	void ChangePlayerSprite(int p,int id);
 	void Drawing();
-	void DrawProfile(Profile p, int x, int y);
+	void DrawProfile(int p,Profile pf, int x, int y);
 	void DrawRotaEmblem(int category, int x, int y);
 
 private:
@@ -41,6 +41,7 @@ private:
 	ss::Player* mSprite[2];			//プレイヤーのスプライト
 
 	int mSoundCursor;				//カーソル移動のサウンドハンドル
+	int mSoundMetal;				//ガチャン音
 	int mSoundEnter;				//決定SE
 	int mSoundCancel;				//キャンセルSE
 	int mBGM;						//BGMのサウンドハンドル

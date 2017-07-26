@@ -431,7 +431,7 @@ void FollowerArms::CheckArmsAtackHit(Player& another) {
 								int boxId = mAtack[atackId].getFrameData(counter).getAtackBox(i).getBoxId();
 
 								//‘Šè‚ÉUŒ‚‚ğ—^‚¦‚é
-								another.EatAtack(mRight, mAtack[atackId].getFrameData(counter).getAtackBoxData(boxId));
+								another.EatAtack(2,mRight, mAtack[atackId].getFrameData(counter).getAtackBoxData(boxId));
 
 								//UŒ‚‚ª‘½’iƒqƒbƒg‚ğ‹–‰Â‚µ‚È‚¢ê‡Šù‚É“–‚½‚Á‚½ƒtƒ‰ƒO‚ğ‚½‚Ä‚é
 								if (!mAtack[atackId].getFrameData(counter).getAtackBoxData(boxId).getAllowMultHit())mAtack[atackId].setAtackHit(true);

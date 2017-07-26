@@ -19,12 +19,10 @@ void Player::Init(int p) {
 	if (p == 0) {
 		mPositionDX = 300.0;
 		mRight = true;
-		mName = "Ein";
 	}
 	else {
 		mPositionDX = 500.0;
 		mRight = false;
-		mName = "Dammy";
 	}
 	mPositionDY = Parameter::GROUND_LINE - mHeight;
 	mPositionX = (int)mPositionDX;
@@ -106,6 +104,8 @@ void Player::LoadCommonSound() {
 	mSoundDamage = LoadSoundMem("Data/se/手足・殴る、蹴る10.mp3");
 	mSoundSummon = LoadSoundMem("Data/se/decision11.mp3");
 	mSoundGuard = LoadSoundMem("Data/se/sen_ka_katana_04.mp3");
+	mSoundCatch = LoadSoundMem("Data/se/つかむ・ガシッ01.mp3");
+	mSoundEscape = LoadSoundMem("Data/se/setup1.mp3");
 	mSoundBurst = LoadSoundMem("Data/se/burst.mp3");
 
 	ChangeVolumeSoundMem(128, mSoundBurst);
@@ -124,28 +124,11 @@ void Player::Move(Player& another) {
 	}
 	else mOpenCircle = false;
 
-	//バリアをはる
-	if ((mRight && mController.getLeft() > 0 || !mRight && mController.getRight() > 0)
-		&& mController.getKey(1) > 0 && mController.getKey(2) > 0 && mEXP > 0 &&
-		(mState == Parameter::S_PLAYER_NORMAL || mState == Parameter::S_PLAYER_SQUAT)) {
-		if(!mBarrier)mBarrierId = AnimationController::getInstance().Create(mAnimeBarrier, 1,0,0,200, 300, 1.2, 0, 4, 2, 144, 144, mRight, false);
-		mBarrier = true;
-		AnimationController::getInstance().SetPosition(mBarrierId, mPositionX + (mRight ? +50 : -50), 
-			mState == Parameter::S_PLAYER_NORMAL ? mPositionY : mPositionY+50);
-	}
-	//バリアを解除する
-	else if (mBarrier) {
-		mBarrier = false;
-		AnimationController::getInstance().Remove(mBarrierId);
-	}
+	//バリアをはる・解除する
+	DoBarrier();
 
-	if (mController.getKey(5) > 0 && mController.getKey(4) == 1) {
-		mState = Parameter::S_PLAYER_BURST;
-		mCounter = 60;
-		AnimationController::getInstance().Create(mAnimeBurst1, 1, mPositionX, mPositionY, 500, 500, 1.5, 0, 4, 1, 63, -1, mRight, false);
-		AnimationController::getInstance().Create(mAnimeBurst2, 3, mPositionX, mPositionY, 500, 500, 1.5, 0, 4, 1, 63, -1, mRight, false);
-		PlaySoundMem(mSoundBurst, DX_PLAYTYPE_BACK, true);
-	}
+	//コネクションブレイク
+	if (mController.getKey(5) > 0 && mController.getKey(4) == 1)DoBurst();
 
 	//静止・歩行状態のとき
 	if (mState == Parameter::S_PLAYER_NORMAL) {
@@ -240,10 +223,33 @@ void Player::Move(Player& another) {
 	}
 
 	//攻撃を始める
-	if(!mBarrier)StartAtack();
+	if(!mBarrier && mState == Parameter::S_PLAYER_NORMAL || mState == Parameter::S_PLAYER_SQUAT ||
+		isAtackState())StartAtack();
+
+	//投げを始める
+	if(mState == Parameter::S_PLAYER_NORMAL || isAtackState())StartThrow(another);
+
+	//投げぬけ
+	if (mState == Parameter::S_PLAYER_CAUGHT) {
+		if (mController.getKey(1) == 1 &&
+			(mController.getRight() > 0 && mController.getRight() < 3 || mController.getLeft() > 0 && mController.getLeft() < 3)) {
+
+			mState = Parameter::S_PLAYER_ESCAPE;
+			another.mState = Parameter::S_PLAYER_ESCAPE;
+			another.mAcceleX = mRight ? 20 : -20;
+			mAcceleX = 0;
+			mCounter = 15;
+			another.mCounter = 15;
+
+			PlaySoundMem(mSoundEscape, DX_PLAYTYPE_BACK);
+		}
+	}
 
 	//攻撃のプロセス
 	if (isAtackState())DoAtack();
+
+	//投げのプロセス
+	if (mState == Parameter::S_PLAYER_THROW)DoThrow(another);
 
 	//契約陣のカーソル
 	if (mOpenCircle) {
@@ -291,6 +297,36 @@ void Player::DoJump() {
 	mGround = false;
 }
 
+/*バリアをはる*/
+void Player::DoBarrier() {
+	//バリアをはる
+	if ((mRight && mController.getLeft() > 0 || !mRight && mController.getRight() > 0)
+		&& (mController.getKey(1) > 0 && mController.getKey(2) > 0 || mController.getKey(7) > 0) && mEXP > 0 &&
+		(mState == Parameter::S_PLAYER_NORMAL || mState == Parameter::S_PLAYER_SQUAT ||
+			mState == Parameter::S_PLAYER_GUARD || mState == Parameter::S_PLAYER_GUARD_S)) {
+
+		if (!mBarrier)mBarrierId = AnimationController::getInstance().Create(mAnimeBarrier, 1, 0, 0, 200, 300, 1.2, 0, 4, 2, 144, 144, mRight, false);
+		mBarrier = true;
+		AnimationController::getInstance().SetPosition(mBarrierId, mPositionX + (mRight ? +50 : -50),
+			mState == Parameter::S_PLAYER_NORMAL ? mPositionY : mPositionY + 50);
+	}
+	//バリアを解除する
+	else if (mBarrier) {
+		mBarrier = false;
+		AnimationController::getInstance().Remove(mBarrierId);
+	}
+
+}
+
+/*コネクションブレイク*/
+void Player::DoBurst() {
+	mState = Parameter::S_PLAYER_BURST;
+	mCounter = 60;
+	AnimationController::getInstance().Create(mAnimeBurst1, 1, mPositionX, mPositionY, 500, 500, 1.5, 0, 4, 1, 63, -1, mRight, false);
+	AnimationController::getInstance().Create(mAnimeBurst2, 3, mPositionX, mPositionY, 500, 500, 1.5, 0, 4, 1, 63, -1, mRight, false);
+	PlaySoundMem(mSoundBurst, DX_PLAYTYPE_BACK, true);
+}
+
 /*召喚を始める*/
 void Player::StartSummon() {
 	int pX;
@@ -314,8 +350,50 @@ void Player::DoSummon() {
 	
 }
 
+/*投げを始める*/
+void Player::StartThrow(Player& another) {
+	if (mController.getKey(1) == 1 && mController.getRight() > 0 && mController.getRight() < 3) {
+		if (mRight && mGround && another.mGround &&
+			mPositionX + 50 > another.mPositionX - another.mHitBox[another.mState].getPositionX() - another.mHitBox[another.mState].getWidth() &&
+			mPositionX + 50 <= another.mPositionX - another.mHitBox[another.mState].getPositionX()) {
+			mAcceleX = 0;
+			mThrowDirection = true;
+			mState = Parameter::S_PLAYER_CATCH;
+			another.mState = Parameter::S_PLAYER_CAUGHT;
+			mCounter = 30;
+			PlaySoundMem(mSoundCatch, DX_PLAYTYPE_BACK);
+		}
+	}
+	if (mController.getKey(1) == 1 && mController.getLeft() > 0 && mController.getLeft() < 3) {
+		if (!mRight && mGround && another.mGround &&
+			mPositionX - 50 <= another.mPositionX + another.mHitBox[another.mState].getPositionX() + another.mHitBox[another.mState].getWidth() &&
+			mPositionX - 50 > another.mPositionX + another.mHitBox[another.mState].getPositionX()) {
+			mAcceleX = 0;
+			mThrowDirection = true;
+			mState = Parameter::S_PLAYER_CATCH;
+			another.mState = Parameter::S_PLAYER_CAUGHT;
+			mCounter = 30;
+			PlaySoundMem(mSoundCatch, DX_PLAYTYPE_BACK);
+		}
+	}
+}
+
+/*投げる*/
+void Player::DoThrow(Player& another) {
+	if (mCounter == 25) {
+		if (mRight) another.mAcceleX = mThrowDirection ? 40 : -40;
+		else another.mAcceleX = mThrowDirection ? -40 : 40;
+		another.mAcceleY = 40;
+		another.mGround = false;
+		another.mState = Parameter::S_PLAYER_DAMAGE_AIR;
+		another.mDamageCounter = 0;
+		another.mCounter = 30;
+	}
+}
+
 /*攻撃を始める*/
 void Player::StartAtack() {
+
 	//A攻撃
 	if (mController.getKey(1) == 1 && !mController.getUp() &&
 		!mController.getDown() && mGround)
@@ -350,6 +428,14 @@ void Player::StartAtack() {
 		mState = Parameter::S_PLAYER_ATACK_2B;
 		mAcceleX = 0;
 		mPlayerAtack[Parameter::P_ATACK_2B].InitAtack();
+		//mPlayerAtack[Parameter::P_ATACK_A].PlayVoice();
+	}
+	//6B攻撃
+	if (mController.getKey(2) == 1 && !mController.getUp() && !mController.getDown() && (mRight && mController.getRight() || !mRight && mController.getLeft()) && mGround)
+	{
+		mState = Parameter::S_PLAYER_ATACK_6B;
+		mAcceleX = 0;
+		mPlayerAtack[Parameter::P_ATACK_6B].InitAtack();
 		//mPlayerAtack[Parameter::P_ATACK_A].PlayVoice();
 	}
 }
@@ -502,30 +588,42 @@ void Player::DecrementCounter(Player &another) {
 			if (mState == Parameter::S_PLAYER_DASH)mState = Parameter::S_PLAYER_NORMAL;
 
 			//ステップ→通常
-			if (mState == Parameter::S_PLAYER_STEP)mState = Parameter::S_PLAYER_NORMAL;
+			else if (mState == Parameter::S_PLAYER_STEP)mState = Parameter::S_PLAYER_NORMAL;
 
 			//ダメージ→通常
-			if (isDamageState() && mState != Parameter::S_PLAYER_DAMAGE_AIR2) {
-				mState = Parameter::S_PLAYER_NORMAL;
+			else if (isDamageState() && mState != Parameter::S_PLAYER_DAMAGE_AIR2) {
+				if(!mController.getDown())mState = Parameter::S_PLAYER_NORMAL;
+				else mState = Parameter::S_PLAYER_SQUAT;
 				another.setChain(0);
 			}
 
 			//ダウン→通常
-			if (mState == Parameter::S_PLAYER_DOWN) {
+			else if (mState == Parameter::S_PLAYER_DOWN) {
 				another.setChain(0);
 				mState = Parameter::S_PLAYER_NORMAL;
 			}
 			//立ちガード
-			if (mState == Parameter::S_PLAYER_GUARD) {
+			else if (mState == Parameter::S_PLAYER_GUARD) {
 				mState = Parameter::S_PLAYER_NORMAL;
 				mAcceleX = 0;
 			}
 			//しゃがみガード
-			if (mState == Parameter::S_PLAYER_GUARD_S) {
+			else if (mState == Parameter::S_PLAYER_GUARD_S) {
 				mState = Parameter::S_PLAYER_SQUAT;
 				mAcceleX = 0;
 			}
-			if (mState == Parameter::S_PLAYER_BURST) {
+			else if (mState == Parameter::S_PLAYER_BURST) {
+				mState = Parameter::S_PLAYER_NORMAL;
+			}
+			else if (mState == Parameter::S_PLAYER_CATCH) {
+				mState = Parameter::S_PLAYER_THROW;
+				mCounter = 30;
+				if (mRight && mController.getLeft() || !mRight && mController.getRight())mThrowDirection = false;
+			}
+			else if (mState == Parameter::S_PLAYER_THROW) {
+				mState = Parameter::S_PLAYER_NORMAL;
+			}
+			else if (mState == Parameter::S_PLAYER_ESCAPE) {
 				mState = Parameter::S_PLAYER_NORMAL;
 			}
 		}
@@ -550,9 +648,11 @@ void Player::ChangeDirection(Player& another) {
 }
 
 /*攻撃を食らう*/
-void Player::EatAtack(bool right,BoxData boxdata) {
+void Player::EatAtack(int atackType,bool right,BoxData boxdata) {
 	mEatAtackData = boxdata;
-	mEatAtackFlag = true;
+	if (atackType == 1)mEatAtackFlag = 1;
+	if (atackType == 2)mEatAtackFlag = 2;
+	if (atackType == 3)mEatAtackFlag = 3;
 	mEatAtackRight = right;
 }
 
@@ -567,10 +667,8 @@ void Player::EatDamage(Player& another) {
 	//このフレーム中ダメージを食らった
 	if (mEatAtackFlag) {
 
-		//上段ガード成功
-		if (mGround && mEatAtackData.getAtackType() == 0 &&
-			(mController.getRight() && !mRight || mController.getLeft() && mRight)) {
-		
+		//バリアガード
+		if (mBarrier && mEatAtackFlag == 1 && (mController.getRight() && !mRight || mController.getLeft() && mRight)) {
 			if (mController.getDown())mState = Parameter::S_PLAYER_GUARD_S;
 			else mState = Parameter::S_PLAYER_GUARD;
 			mCounter = 10;
@@ -578,85 +676,109 @@ void Player::EatDamage(Player& another) {
 			PlaySoundMem(mSoundGuard, DX_PLAYTYPE_BACK);
 		}
 
-		//下段ガード成功
-		else if (mGround && mEatAtackData.getAtackType() == 1 && mController.getDown() &&
-			(mController.getRight() && !mRight || mController.getLeft() && mRight)) {
-
-			mState = Parameter::S_PLAYER_GUARD_S;
-			mCounter = 10;
-
-			PlaySoundMem(mSoundGuard, DX_PLAYTYPE_BACK);
-		}
-
-		//中段ガード成功
-		else if (mGround && mEatAtackData.getAtackType() == 2 && !mController.getDown() &&
-			(mController.getRight() && !mRight || mController.getLeft() && mRight)) {
-
-			mState = Parameter::S_PLAYER_GUARD;
-			mCounter = 10;
-
-			PlaySoundMem(mSoundGuard, DX_PLAYTYPE_BACK);
-		}
-
-		//ガード失敗
 		else {
+			//上段ガード成功
+			if (mGround && mEatAtackData.getAtackType() == 0 &&
+				(mController.getRight() && !mRight || mController.getLeft() && mRight)) {
 
-			if (mGround) {
-				if (mEatAtackData.getAtackType() == 1)mState = Parameter::S_PLAYER_DAMAGE_D;
-				else mState = Parameter::S_PLAYER_DAMAGE_U;
+				if (mController.getDown())mState = Parameter::S_PLAYER_GUARD_S;
+				else mState = Parameter::S_PLAYER_GUARD;
+				mCounter = 10;
 
-				mCounter = mEatAtackData.getHitStop();
-				mHP -= mEatAtackData.getPower();
-				another.mEXP += mEatAtackData.getEXGain();
-				if (another.mEXP > 100)another.mEXP = 100;
-				mDamageCounter = 0;
-
-				mAcceleX = mEatAtackRight? mEatAtackData.getVectorX() : -mEatAtackData.getVectorX();
-
-				mAcceleY = mEatAtackData.getVectorY();
-
-				if (mAcceleY > 0) {
-					mState = Parameter::S_PLAYER_DAMAGE_AIR;
-					mGround = false;
-				}
+				PlaySoundMem(mSoundGuard, DX_PLAYTYPE_BACK);
 			}
+
+			//下段ガード成功
+			else if (mGround && mEatAtackData.getAtackType() == 1 && mController.getDown() &&
+				(mController.getRight() && !mRight || mController.getLeft() && mRight)) {
+
+				mState = Parameter::S_PLAYER_GUARD_S;
+				mCounter = 10;
+
+				PlaySoundMem(mSoundGuard, DX_PLAYTYPE_BACK);
+			}
+
+			//中段ガード成功
+			else if (mGround && mEatAtackData.getAtackType() == 2 && !mController.getDown() &&
+				(mController.getRight() && !mRight || mController.getLeft() && mRight)) {
+
+				mState = Parameter::S_PLAYER_GUARD;
+				mCounter = 10;
+
+				PlaySoundMem(mSoundGuard, DX_PLAYTYPE_BACK);
+			}
+
+			//空中ガード
+			else if (!mGround && (mController.getRight() && !mRight || mController.getLeft() && mRight)) {
+				mState = Parameter::S_PLAYER_GUARD;
+				mCounter = 10;
+
+				PlaySoundMem(mSoundGuard, DX_PLAYTYPE_BACK);
+			}
+
+			//ガード失敗
 			else {
-				mState = Parameter::S_PLAYER_DAMAGE_AIR;
 
-				mCounter = mEatAtackData.getHitStop();
-				mHP -= mEatAtackData.getPower();
-				mDamageCounter = 0;
+				if (mGround) {
+					if (mState == Parameter::S_PLAYER_SQUAT || mState == Parameter::S_PLAYER_DAMAGE_S)
+						mState = Parameter::S_PLAYER_DAMAGE_S;
+					else {
+						if (mEatAtackData.getAtackType() == 1)mState = Parameter::S_PLAYER_DAMAGE_D;
+						else mState = Parameter::S_PLAYER_DAMAGE_U;
+					}
+					mCounter = mEatAtackData.getHitStop();
+					mHP -= mEatAtackData.getPower();
+					another.mEXP += mEatAtackData.getEXGain();
+					if (another.mEXP > 100)another.mEXP = 100;
+					mDamageCounter = 0;
 
-				mAcceleX = mEatAtackRight ? mEatAtackData.getAirVectorX() : -mEatAtackData.getAirVectorX();
+					mAcceleX = mEatAtackRight ? mEatAtackData.getVectorX() : -mEatAtackData.getVectorX();
 
-				mAcceleY = mEatAtackData.getAirVectorY();
+					mAcceleY = mEatAtackData.getVectorY();
+
+					if (mAcceleY > 0) {
+						mState = Parameter::S_PLAYER_DAMAGE_AIR;
+						mGround = false;
+					}
+				}
+				else {
+					mState = Parameter::S_PLAYER_DAMAGE_AIR;
+
+					mCounter = mEatAtackData.getHitStop();
+					mHP -= mEatAtackData.getPower();
+					mDamageCounter = 0;
+
+					mAcceleX = mEatAtackRight ? mEatAtackData.getAirVectorX() : -mEatAtackData.getAirVectorX();
+
+					mAcceleY = mEatAtackData.getAirVectorY();
+				}
+
+				if (mEatAtackData.getForceDown())mState = Parameter::S_PLAYER_DAMAGE_AIR2;
+
+				//チェーンを増加させる
+				another.IncleaseChain();
+
+				PlaySoundMem(mSoundDamage, DX_PLAYTYPE_BACK);
+
+				if (mEatAtackData.getEffectType() == 0) {
+					if (mEatAtackData.getAtackType() == 0)effectY = mPositionY;
+					else effectY = mPositionY + 80;
+					AnimationController::getInstance().Create(mGraphDamage, 1, mPositionX, effectY, 600, 400, 1.2, GetRand(359), 4, 2, 48, 0, true, true);
+				}
+				if (mEatAtackData.getEffectType() == 1) {
+					if (mEatAtackData.getAtackType() == 0)effectY = mPositionY;
+					else effectY = mPositionY + 80;
+					AnimationController::getInstance().Create(mGraphDamage, 1, mPositionX, effectY, 600, 400, 2, GetRand(359), 4, 2, 48, 0, true, true);
+				}
+				if (mEatAtackData.getEffectType() == 2) {
+					if (mEatAtackData.getAtackType() == 0)effectY = mPositionY - 150;
+					else effectY = mPositionY - 250;
+					SSEffectController::getInstance().Play("mye1/mye1", mPositionX, effectY, 0.9f, 1.0f, 0.6f, GetRand(359), 200);
+				}
+
+				mHitStop = 0;
+				another.mHitStop = 0;
 			}
-
-			if (mEatAtackData.getForceDown())mState = Parameter::S_PLAYER_DAMAGE_AIR2;
-
-			//チェーンを増加させる
-			another.IncleaseChain();
-
-			PlaySoundMem(mSoundDamage, DX_PLAYTYPE_BACK);
-
-			if (mEatAtackData.getEffectType() == 0) {
-				if (mEatAtackData.getAtackType() == 0)effectY = mPositionY;
-				else effectY = mPositionY + 80;
-				AnimationController::getInstance().Create(mGraphDamage, 1, mPositionX, effectY, 600, 400, 1.2, GetRand(359), 4, 2, 48, 0, true, true);
-			}
-			if (mEatAtackData.getEffectType() == 1) {
-				if (mEatAtackData.getAtackType() == 0)effectY = mPositionY;
-				else effectY = mPositionY + 80;
-				AnimationController::getInstance().Create(mGraphDamage, 1, mPositionX, effectY, 600, 400, 2, GetRand(359), 4, 2, 48, 0, true, true);
-			}
-			if (mEatAtackData.getEffectType() == 2) {
-				if (mEatAtackData.getAtackType() == 0)effectY = mPositionY - 150;
-				else effectY = mPositionY - 250;
-				SSEffectController::getInstance().Play("mye1/mye1", mPositionX, effectY, 0.9f, 1.0f, 0.6f, GetRand(359), 200);
-			}
-
-			mHitStop = 0;
-			another.mHitStop = 0;
 		}
 	}
 
@@ -1006,7 +1128,7 @@ void Player::CheckPlayersAtackHit(Player& another) {
 								int boxId = mPlayerAtack[atackId].getFrameData(counter).getAtackBox(i).getBoxId();
 								
 								//相手に攻撃を与える
-								another.EatAtack(mRight,mPlayerAtack[atackId].getFrameData(counter).getAtackBoxData(boxId));
+								another.EatAtack(1,mRight,mPlayerAtack[atackId].getFrameData(counter).getAtackBoxData(boxId));
 								atackHit = true;
 
 								//攻撃が既に当たったフラグをたてる
@@ -1077,7 +1199,7 @@ void Player::CheckPlayersAtackHit(Player& another) {
 					boxData.setEXGain(0);
 				
 					//相手に攻撃を与える
-					another.EatAtack(mRight, boxData);
+					another.EatAtack(3,mRight, boxData);
 					atackHit = true;
 
 
@@ -1264,6 +1386,16 @@ bool Player::isDamageState() {
 		|| mState == Parameter::S_PLAYER_DAMAGE_S
 		|| mState == Parameter::S_PLAYER_DAMAGE_AIR
 		|| mState == Parameter::S_PLAYER_DAMAGE_AIR2)
+	{
+		return true;
+	}
+	else return false;
+}
+
+/*ガード状態かどうか*/
+bool Player::isGuardState() {
+	if (mState == Parameter::S_PLAYER_GUARD
+		|| mState == Parameter::S_PLAYER_GUARD_S)
 	{
 		return true;
 	}

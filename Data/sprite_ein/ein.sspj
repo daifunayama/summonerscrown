@@ -153,10 +153,9 @@
 		<value>light.ssee</value>
 	</effectFileNames>
 	<lastAnimeFile>ein1.ssae</lastAnimeFile>
-	<lastAnimeName>burst</lastAnimeName>
+	<lastAnimeName>escape</lastAnimeName>
 	<lastCellMapFile>ein.ssce</lastCellMapFile>
 	<lastEffectFile>light.ssee</lastEffectFile>
-	<lastCell>right_wing3</lastCell>
-	<lastPart>left_wing3</lastPart>
+	<lastCell>left_wing3</lastCell>
 	<setupmode>0</setupmode>
 </SpriteStudioProject>

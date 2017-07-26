@@ -19,7 +19,6 @@ public:
 	inline Controller getController() { return mController; }
 	inline int getPlayerId() { return mPlayerId; }
 	inline int getColor() { return mColor; }
-	inline string getName() { return mName; }
 	inline int getState() { return mState; }
 	inline int getCounter() { return mCounter; }
 	inline int getHitStop() { return mHitStop; }
@@ -34,6 +33,7 @@ public:
 	inline bool getArmsExist(int n) { return mArmsExist[n]; }
 	inline int getArmsId() { return mArmsId; }
 	inline int getCircleCursor() { return mCircleCursor; }
+	inline PlayerAtack getPlayerAtack(int id) { return mPlayerAtack[id]; }
 	inline HitBox getDamageBox(int n1, int n2) { return mDamageBox[n1][n2]; }
 
 	inline void setPlayerId(int playerId) { mPlayerId = playerId; }
@@ -52,8 +52,12 @@ public:
 
 	void Move(Player&);
 	void DoJump();
+	void DoBarrier();
+	void DoBurst();
 	void StartSummon();
 	void DoSummon();
+	virtual void StartThrow(Player &);
+	virtual void DoThrow(Player&);
 	virtual void StartAtack();
 	void DoAtack();
 	virtual void ProcessAtack(){}
@@ -65,7 +69,7 @@ public:
 	void DecrementCounter(Player&);
 	void DecrementHitStop();
 	void ChangeDirection(Player&);
-	void EatAtack(bool,BoxData);
+	void EatAtack(int atackType,bool,BoxData);
 	void EatDamage(Player&);
 	void IncleaseChain() { mChain++ ; }
 
@@ -89,6 +93,7 @@ public:
 	bool isAcceledState();
 	bool isAtackState();
 	bool isDamageState();
+	bool isGuardState();
 	bool isCanArmsAtackState();
 	bool isCanCancelTiming(int atackId);
 
@@ -98,10 +103,11 @@ protected:
 	int mPlayerId;					//プレイヤーID
 	int mCharaID;					//キャラID
 	int mColor;						//カラーID
-	string mName;					//キャラの名前
 	int mState;						//状態変数
 	int mCounter;					//汎用カウンタ
 	int mDamageCounter;				//ダメージカウンタ
+	int mRightCounter;				//右キーのカウンター
+	int mLeftCounter;				//左キーのカウンター
 	int mHitStop;
 	int mPositionX;					//X座標
 	int mPositionY;					//Y座標
@@ -111,8 +117,6 @@ protected:
 	double mAcceleY;				//Y加速度
 	bool mBarrier;					//バリアを展開しているかのフラグ
 	bool mOpenCircle;				//契約陣を開いているかどうかのフラグ
-	int mRightCounter;				//右キーのカウンター
-	int mLeftCounter;				//左キーのカウンター
 	int mHeight;					//プレイヤーの高さ
 	int mSquatY;					//しゃがみ時Y座標補正
 	int mDownY;						//ダウン時Y座標補正
@@ -120,10 +124,11 @@ protected:
 	int mEXP;						//EXポイント
 	bool mRight;					//プレイヤーの向き
 	bool mGround;					//プレイヤーの接地フラグ
-	PlayerAtack mPlayerAtack[15];	//プレイヤーの攻撃データ
-	HitBox mHitBox[15];				//プレイヤーの当たり判定用ヒットボックス
+	bool mThrowDirection;			//投げのむき
+	PlayerAtack mPlayerAtack[30];	//プレイヤーの攻撃データ
+	HitBox mHitBox[30];				//プレイヤーの当たり判定用ヒットボックス
 	HitBox mDamageBox[15][10];		//プレイヤーのダメージ食らい判定用のヒットボックス
-	bool mEatAtackFlag;				//攻撃を食らったかどうかのフラグ
+	int mEatAtackFlag;				//攻撃を食らったかどうかのフラグ
 	bool mEatAtackRight;			//攻撃を食らった向き
 	BoxData mEatAtackData;			//食らった攻撃を保存しておくボックスデータ
 	ss::Player *mSprite;			//プレイヤーのスプライト
@@ -146,6 +151,8 @@ protected:
 	int mSoundSummon;				//召喚SE
 	int mSoundDamage;				//ダメージSE
 	int mSoundGuard;				//ガードSE
+	int mSoundCatch;				//つかみSE
+	int mSoundEscape;
 	int mSoundBurst;				//バーストSE
 	int mSoundPlayerAtack[10];		//攻撃用SE
 };

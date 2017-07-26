@@ -41,7 +41,7 @@ void HPGauge::Process(Player& player, Player& another) {
 		if (mKeepRedzone)mKeepRedzone = false;
 		if (mHP < mRedzone)mRedzone -= 2;
 	}
-	mName = player.getName();
+	mName = player.getProfile().eName;
 	mHP = player.getHP();
 }
 

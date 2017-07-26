@@ -6,7 +6,7 @@
 void Controller::ConvertInput() {
 	if (mPlayerId == 0) {
 
-		if (GetJoypadNum() > 0) {
+		if (GetJoypadNum() == 1) {
 			pushKey[1] = Input::getInstance().GetKey(PAD_INPUT_1);
 			pushKey[2] = Input::getInstance().GetKey(PAD_INPUT_2);
 			pushKey[3] = Input::getInstance().GetKey(PAD_INPUT_3);
