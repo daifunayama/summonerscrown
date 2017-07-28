@@ -7,7 +7,7 @@ void Southern::LoadArmsGraphic() {
 	mSprite = ss::Player::create();
 
 	//アニメデータをリソースに追加
-	Application::resman->addData("Data/arms/HollyKnights/vein/vein.ssbp");
+	//Application::resman->addData("Data/arms/HollyKnights/vein/vein.ssbp");
 	//プレイヤーにリソースを割り当て
 	mSprite->setData("vein");// ssbpファイル名（拡張子不要）
 	

@@ -7,7 +7,7 @@ void Cavalier::LoadArmsGraphic() {
 	mSprite = ss::Player::create();
 
 	//アニメデータをリソースに追加
-	Application::resman->addData("Data/arms/Comander/Cavalier/cavalier.ssbp");
+	//Application::resman->addData("Data/arms/Comander/Cavalier/cavalier.ssbp");
 	//プレイヤーにリソースを割り当て
 	mSprite->setData("cavalier");// ssbpファイル名（拡張子不要）
 	//再生するモーションを設定

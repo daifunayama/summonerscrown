@@ -7,7 +7,7 @@ void Alpha::LoadArmsGraphic() {
 	mSprite = ss::Player::create();
 
 	//アニメデータをリソースに追加
-	Application::resman->addData("Data/arms/ArticArts/Alpha/alpha.ssbp");
+	//Application::resman->addData("Data/arms/ArticArts/Alpha/alpha.ssbp");
 	//プレイヤーにリソースを割り当て
 	mSprite->setData("alpha");// ssbpファイル名（拡張子不要）
 								 //再生するモーションを設定

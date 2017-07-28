@@ -8,10 +8,16 @@
 #include "../SSEffect/SSEffectController.h"
 #include "../Camera/Camera.h"
 
+
 /*リソースのロードと初期化*/
 void BattleScene::Load() {
+	int loadGraph;
+	loadGraph = LoadGraph("Data/graphic/game/loading.png");
+
 	mPlayer[0] = new Ein();
 	mPlayer[1] = new KareMeshi();
+
+	SetUseASyncLoadFlag(true);
 
 	for (int p= 0; p < 2; p++) {
 		//プレイヤーのロード
@@ -46,14 +52,35 @@ void BattleScene::Load() {
 	//背景のロード
 	mBackGround.LoadGraphic();
 
+	mBGM = LoadSoundMem("Data/bgm/night2.mp3");
+	
+	int n = 0;
+	while(CheckHandleASyncLoad(mBGM) != FALSE){
+		ProcessMessage();
+		n++;
+
+		ClearDrawScreen();
+
+		DrawRotaGraph(1100, 500, 1.3, (Parameter::PI / 360)*n, loadGraph, true, false);
+		DrawFormatString(10, 10, Parameter::COLOR_WHITE, "%d", n);
+
+		ScreenFlip();
+	}
+	SetUseASyncLoadFlag(false);
+	
+	//エフェクトのロードと初期化
 	SSEffectController::getInstance().Load();
 
 	//カメラの初期化
 	Camera::getInstance().Init();
 
-	mBGM = LoadSoundMem("Data/bgm/night2.mp3");
+	//音量の初期化
+	mPlayer[0]->InitVolume();
+	mPlayer[1]->InitVolume();
+
 	ChangeVolumeSoundMem(100, mBGM);
 	PlaySoundMem(mBGM, DX_PLAYTYPE_LOOP);
+	
 }
 
 /*更新*/

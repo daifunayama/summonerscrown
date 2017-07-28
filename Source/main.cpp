@@ -8,7 +8,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 {
 
 	SetOutApplicationLogValidFlag(false);
-
+	
 	//âÊñ ÇÃê›íË
 	ChangeWindowMode(true);
 	SetMainWindowText("");

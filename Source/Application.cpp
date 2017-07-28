@@ -51,4 +51,9 @@ void  Application::AddSpriteResource() {
 	Application::resman->addData("Data/sprite_remnant/remnant.ssbp");
 
 	Application::resman->addData("Data/kare-meshi/kare-meshi.ssbp");
+
+	Application::resman->addData("Data/arms/PrimalSpheres/Cyanos/cyanos.ssbp");
+	Application::resman->addData("Data/arms/HollyKnights/vein/vein.ssbp");
+	Application::resman->addData("Data/arms/Comander/Cavalier/cavalier.ssbp");
+	Application::resman->addData("Data/arms/ArticArts/Alpha/alpha.ssbp");
 }

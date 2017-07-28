@@ -41,6 +41,7 @@ public:
 	inline void setArmsExist(int n,bool t) { mArmsExist[n] = t; }
 
 	void Init(int);
+	void InitVolume();
 	virtual Profile getProfile() = 0;
 	virtual void LoadGraphic();
 	void LoadCommonSound();
