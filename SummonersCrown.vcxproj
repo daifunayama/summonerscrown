@@ -175,6 +175,7 @@
     <ClCompile Include="Source\Player\Player.cpp" />
     <ClCompile Include="Source\Scene\BattleScene.cpp" />
     <ClCompile Include="Source\Scene\CharaSelectScene.cpp" />
+    <ClCompile Include="Source\Scene\EyecatchScene.cpp" />
     <ClCompile Include="Source\Scene\Scene.cpp" />
     <ClCompile Include="Source\Scene\TitleScene.cpp" />
     <ClCompile Include="Source\SSEffect\SSEffectController.cpp" />
@@ -230,6 +231,7 @@
     <ClInclude Include="Source\Player\Profile.h" />
     <ClInclude Include="Source\Scene\BattleScene.h" />
     <ClInclude Include="Source\Scene\CharaSelectScene.h" />
+    <ClInclude Include="Source\Scene\EyecatchScene.h" />
     <ClInclude Include="Source\Scene\Scene.h" />
     <ClInclude Include="Source\Scene\TitleScene.h" />
     <ClInclude Include="Source\SSEffect\SSEffectController.h" />

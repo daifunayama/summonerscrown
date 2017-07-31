@@ -18,6 +18,7 @@ public:
 	void ChangePlayerSprite(int p,int id);
 	void Drawing();
 	void DrawProfile(int p,Profile pf, int x, int y);
+	void DrawStyles(int p, Styles st, int x, int y);
 	void DrawRotaEmblem(int category, int x, int y);
 
 private:
@@ -28,6 +29,7 @@ private:
 	int mCursor[2];					//カーソル位置
 	int mColor[2];					//カラーID
 	int mDecided[2];				//キャラ決定フラグ
+	bool mSwitch[2];				//表示フラグ
 
 	int mGraphBackground;			//背景のグラフィックハンドル
 	int mGraphCursor[2];			//カーソルのグラフィックハンドル

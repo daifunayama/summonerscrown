@@ -57,10 +57,12 @@ void Southern::UpdateArmsAnimation() {
 		mSprite2->setScale(-0.3f, 0.25f);
 	}
 
-	mSprite->setPosition(mPositionX - (Camera::getInstance().getCenterX() - Parameter::WINDOW_WIDTH / 2), Parameter::WINDOW_HEIGHT - mPositionY);
+	mSprite->setPosition(mPositionX - (Camera::getInstance().getCenterX() - Parameter::WINDOW_WIDTH / 2),
+		Parameter::WINDOW_HEIGHT - mPositionY + (Camera::getInstance().getCenterY() - Parameter::WINDOW_HEIGHT / 2));
 	mSprite->update((float)30 / 1000);
 
-	mSprite2->setPosition(mPositionX - (Camera::getInstance().getCenterX() - Parameter::WINDOW_WIDTH / 2), Parameter::WINDOW_HEIGHT - mPositionY);
+	mSprite2->setPosition(mPositionX - (Camera::getInstance().getCenterX() - Parameter::WINDOW_WIDTH / 2), 
+		Parameter::WINDOW_HEIGHT - mPositionY + (Camera::getInstance().getCenterY() - Parameter::WINDOW_HEIGHT / 2));
 	mSprite2->update((float)30 / 1000);
 }
 

@@ -17,12 +17,14 @@ public:
 	static int FONT_30;
 	static int FONT_50_FERRUM;
 	static int FONT_80_FERRUM;
-	static int FONT_100_CLOISTER;
+	static int FONT_100_FERRUM;
+	static int FONT_120_FERRUM;
 
 	//シーンID
 	static const int SCENE_TITLE = 1;
 	static const int SCENE_CHARASELECT = 2;
-	static const int SCENE_BATTLE = 3;
+	static const int SCENE_EYECATCH = 3;
+	static const int SCENE_BATTLE = 4;
 
 	//魔具のカテゴリID
 	static const int HK = 0;

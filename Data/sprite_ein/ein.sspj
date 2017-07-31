@@ -136,6 +136,7 @@
 	</texPackSettings>
 	<cellmapNames>
 		<value>brade.ssce</value>
+		<value>chakram.ssce</value>
 		<value>ein.ssce</value>
 		<value>ein2.ssce</value>
 		<value>einsprite2-2.ssce</value>
@@ -153,9 +154,9 @@
 		<value>light.ssee</value>
 	</effectFileNames>
 	<lastAnimeFile>ein1.ssae</lastAnimeFile>
-	<lastAnimeName>escape</lastAnimeName>
+	<lastAnimeName>jb</lastAnimeName>
 	<lastCellMapFile>ein.ssce</lastCellMapFile>
 	<lastEffectFile>light.ssee</lastEffectFile>
-	<lastCell>left_wing3</lastCell>
+	<lastCell>right_tail</lastCell>
 	<setupmode>0</setupmode>
 </SpriteStudioProject>

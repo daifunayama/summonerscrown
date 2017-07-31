@@ -13,17 +13,6 @@ void Cyanos::LoadArmsGraphic() {
 	//再生するモーションを設定
 	mSprite->play("arms/wait");// アニメーション名を指定(ssae名/アニメーション名も可能、詳しくは後述)
 
-	//表示位置を設定
-	mSprite->setPosition(400, 300);
-	//スケール設定
-	mSprite->setScale(0.3f, 0.3f);
-	//回転を設定
-	mSprite->setRotation(0.0f, 0.0f, 0.0f);
-	//透明度を設定
-	mSprite->setAlpha(255);
-	//反転を設定
-	mSprite->setFlip(false, false);
-
 	mIcon = LoadGraph("Data/arms/PrimalSpheres/Cyanos/icon.png");
 
 	mAnimation[0].setGraph(LoadGraph("Data/arms/PrimalSpheres/Cyanos/anime1.png"));
@@ -62,8 +51,8 @@ void Cyanos::UpdateArmsAnimation() {
 	if (mRight)mSprite->setScale(0.32f, 0.32f);
 	else mSprite->setScale(-0.32f, 0.32f);
 
-
-	mSprite->setPosition(mPositionX - (Camera::getInstance().getCenterX() - Parameter::WINDOW_WIDTH / 2), Parameter::WINDOW_HEIGHT - mPositionY);
+	mSprite->setPosition(mPositionX - (Camera::getInstance().getCenterX() - Parameter::WINDOW_WIDTH / 2), 
+		Parameter::WINDOW_HEIGHT - mPositionY + (Camera::getInstance().getCenterY() - Parameter::WINDOW_HEIGHT / 2));
 	mSprite->update((float)30 / 1000);
 }
 
@@ -168,7 +157,8 @@ void Cyanos::Draw() {
 	if (mState == Parameter::S_ARMS_ATACK_2C) {
 		CreateMaskScreen();
 		mask = LoadMask("Data/arms/PrimalSpheres/Cyanos/mask.png");
-		DrawMask(mPositionX - (Camera::getInstance().getCenterX() - Parameter::WINDOW_WIDTH / 2) -200,-30, mask, DX_MASKTRANS_NONE);
+		DrawMask(mPositionX - (Camera::getInstance().getCenterX() - Parameter::WINDOW_WIDTH / 2) -200,
+			-30 - (Camera::getInstance().getCenterY() - Parameter::WINDOW_HEIGHT / 2), mask, DX_MASKTRANS_NONE);
 	}
 	mSprite->draw();
 	if (mState == Parameter::S_ARMS_ATACK_2C) {

@@ -41,7 +41,7 @@ void TitleScene::Process() {
 	mSprite->update((float)30 / 1000);
 
 	if (mSprite->getFrameNo() == 38)
-		AnimationController::getInstance().Create(mGraphAnime1, 1, 0, 350, 1024, 620, 1.25, 0, 4, 4, 204, 204, 0, 0);
+		AnimationController::getInstance().Create(mGraphAnime1, 1, 640, 350, 1024, 620, 1.25, 0, 4, 4, 204, 204, 0, 0);
 
 	if (mSprite->getFrameNo() == 119)mSprite->setFrameNo(78);
 
@@ -53,7 +53,7 @@ void TitleScene::Process() {
 void TitleScene::Drawing() {
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 128);
 	//アニメーションの描画
-	AnimationController::getInstance().DrawLayer1();
+	AnimationController::getInstance().Draw();
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
 	mSprite->draw();

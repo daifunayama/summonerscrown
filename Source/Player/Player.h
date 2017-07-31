@@ -43,6 +43,7 @@ public:
 	void Init(int);
 	void InitVolume();
 	virtual Profile getProfile() = 0;
+	virtual Styles getStyles();
 	virtual void LoadGraphic();
 	void LoadCommonSound();
 	virtual void LoadSound() = 0;
@@ -53,6 +54,7 @@ public:
 
 	void Move(Player&);
 	void DoJump();
+	void DoAirJump();
 	void DoBarrier();
 	void DoBurst();
 	void StartSummon();
@@ -125,6 +127,7 @@ protected:
 	int mEXP;						//EXポイント
 	bool mRight;					//プレイヤーの向き
 	bool mGround;					//プレイヤーの接地フラグ
+	bool mAirJumped;				//空中ジャンプフラグ
 	bool mThrowDirection;			//投げのむき
 	PlayerAtack mPlayerAtack[30];	//プレイヤーの攻撃データ
 	HitBox mHitBox[30];				//プレイヤーの当たり判定用ヒットボックス

@@ -1,6 +1,7 @@
 #pragma once
 #include "Scene/TitleScene.h"
 #include "Scene/BattleScene.h"
+#include "Scene\/EyecatchScene.h"
 #include "Scene/CharaSelectScene.h"
 #include "SSPlayer/SS5Player.h"
 #include "DxLib.h"
@@ -19,6 +20,10 @@ public:
 		if (CheckHitKey(KEY_INPUT_B) == 1) {
 			mScene = new BattleScene();
 			mOldSceneId = Parameter::SCENE_BATTLE;
+		}
+		else if (CheckHitKey(KEY_INPUT_E) == 1) {
+			mScene = new EyecatchScene();
+			mOldSceneId = Parameter::SCENE_EYECATCH;
 		}
 		else if (CheckHitKey(KEY_INPUT_S) == 1) {
 			mScene = new CharaSelectScene();

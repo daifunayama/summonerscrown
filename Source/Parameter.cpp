@@ -11,7 +11,8 @@ int Parameter::FONT_20_FERRUM = -1;
 int Parameter::FONT_30 = -1;
 int Parameter::FONT_50_FERRUM = -1;
 int Parameter::FONT_80_FERRUM = -1;
-int Parameter::FONT_100_CLOISTER = -1;
+int Parameter::FONT_100_FERRUM = -1;
+int Parameter::FONT_120_FERRUM = -1;
 
 //êFíËã`
 const int Parameter::COLOR_WHITE = GetColor(255,255,255);
@@ -31,5 +32,6 @@ void Parameter::InitFont() {
 	Parameter::FONT_30 = CreateFontToHandle(NULL, 30, 8, DX_FONTTYPE_ANTIALIASING_4X4);
 	Parameter::FONT_50_FERRUM = CreateFontToHandle("Ferrum", 50, 8, DX_FONTTYPE_ANTIALIASING_4X4);
 	Parameter::FONT_80_FERRUM = CreateFontToHandle("Ferrum", 60, 8, DX_FONTTYPE_ANTIALIASING_4X4);
-	Parameter::FONT_100_CLOISTER = CreateFontToHandle("Ferrum", 100, 8, DX_FONTTYPE_ANTIALIASING_4X4);
+	Parameter::FONT_100_FERRUM = CreateFontToHandle("Ferrum", 100, 8, DX_FONTTYPE_ANTIALIASING_4X4);
+	Parameter::FONT_120_FERRUM = CreateFontToHandle("Ferrum", 120, 8, DX_FONTTYPE_ANTIALIASING_4X4);
 }

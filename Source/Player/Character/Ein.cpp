@@ -8,6 +8,7 @@
 
 Profile Ein::getProfile() {
 	Profile p;
+
 	p.name = "アイン";
 	p.eName = "Ein";
 	p.pass = "ein";
@@ -22,6 +23,7 @@ Profile Ein::getProfile() {
 	p.aut = 2;
 	p.pAtack = 3;
 	p.sAtack = 3;
+
 	return p;
 }
 
@@ -132,7 +134,7 @@ void Ein::LoadAtack() {
 	BoxData boxData;
 	HitBox hitBox;
 
-	for (int a = 0; a < 6; a++) {
+	for (int a = 0; a < 8; a++) {
 		
 		if (a == 0)mPlayerAtack[Parameter::P_ATACK_A].ClearFrameData();
 		if (a == 1)mPlayerAtack[Parameter::P_ATACK_B].ClearFrameData();
@@ -140,6 +142,8 @@ void Ein::LoadAtack() {
 		if (a == 3)mPlayerAtack[Parameter::P_ATACK_2B].ClearFrameData();
 		if (a == 4)mPlayerAtack[Parameter::P_ATACK_3B].ClearFrameData();
 		if (a == 5)mPlayerAtack[Parameter::P_ATACK_6B].ClearFrameData();
+		if (a == 6)mPlayerAtack[Parameter::P_ATACK_JA].ClearFrameData();
+		if (a == 7)mPlayerAtack[Parameter::P_ATACK_JB].ClearFrameData();
 
 		hitBox.setExist(false);
 		for (int i = 0; i < 20; i++) {
@@ -154,7 +158,8 @@ void Ein::LoadAtack() {
 		if (a == 3)ifs.open("Data/character/ein/2b.txt");
 		if (a == 4)ifs.open("Data/character/ein/3b.txt");
 		if (a == 5)ifs.open("Data/character/ein/6b.txt");
-
+		if (a == 6)ifs.open("Data/character/ein/ja.txt");
+		if (a == 7)ifs.open("Data/character/ein/jb.txt");
 
 		if (ifs) {
 
@@ -166,6 +171,8 @@ void Ein::LoadAtack() {
 				if (a == 3)mPlayerAtack[Parameter::P_ATACK_2B].setAllowCancel(i, Utility::StringToInt(tmp));
 				if (a == 4)mPlayerAtack[Parameter::P_ATACK_3B].setAllowCancel(i, Utility::StringToInt(tmp));
 				if (a == 5)mPlayerAtack[Parameter::P_ATACK_6B].setAllowCancel(i, Utility::StringToInt(tmp));
+				if (a == 6)mPlayerAtack[Parameter::P_ATACK_JA].setAllowCancel(i, Utility::StringToInt(tmp));
+				if (a == 7)mPlayerAtack[Parameter::P_ATACK_JB].setAllowCancel(i, Utility::StringToInt(tmp));
 			}
 
 
@@ -224,6 +231,8 @@ void Ein::LoadAtack() {
 					if (a == 3)mPlayerAtack[Parameter::P_ATACK_2B].PushFrameData(frameData);
 					if (a == 4)mPlayerAtack[Parameter::P_ATACK_3B].PushFrameData(frameData);
 					if (a == 5)mPlayerAtack[Parameter::P_ATACK_6B].PushFrameData(frameData);
+					if (a == 6)mPlayerAtack[Parameter::P_ATACK_JA].PushFrameData(frameData);
+					if (a == 7)mPlayerAtack[Parameter::P_ATACK_JB].PushFrameData(frameData);
 
 					boxCounter = 0;
 
@@ -324,7 +333,7 @@ void Ein::UpdateAnimation() {
 		}
 		//プレイヤーが空中にいる
 		else {
-			if (mSprite->getPlayAnimeName() != "jump") {
+			if (mAcceleY == 36 || mAcceleY == 28) {
 				mSprite->play(name + "jump");
 			}
 		}
@@ -445,9 +454,24 @@ void Ein::UpdateAnimation() {
 		mSprite->play(name + "6b");
 		mSprite->setStep(0.6);
 	}
+	//JB攻撃
+	else if (mState == Parameter::S_PLAYER_ATACK_JA &&
+		mPlayerAtack[Parameter::P_ATACK_JA].getCounter() == 1)
+	{
+		mSprite->play(name + "ja");
+		mSprite->setStep(1.0);
+	}
+	//JB攻撃
+	else if (mState == Parameter::S_PLAYER_ATACK_JB &&
+		mPlayerAtack[Parameter::P_ATACK_JB].getCounter() == 1)
+	{
+		mSprite->play(name + "jb");
+		mSprite->setStep(1.2);
+	}
 
 	//表示位置の更新
-	mSprite->setPosition(mPositionX -(Camera::getInstance().getCenterX() - Parameter::WINDOW_WIDTH / 2), Parameter::GROUND_LINE - mPositionY+20);
+	mSprite->setPosition(mPositionX -(Camera::getInstance().getCenterX() - Parameter::WINDOW_WIDTH / 2), 
+		Parameter::GROUND_LINE - mPositionY+20 + (Camera::getInstance().getCenterY() - Parameter::WINDOW_HEIGHT / 2));
 	//プレイヤーの更新、引数は前回の更新処理から経過した時間
 	mSprite->update((float)30 / 1000);
 }
@@ -512,6 +536,24 @@ void Ein::StartAtack() {
 		mPlayerAtack[Parameter::P_ATACK_6B].InitAtack();
 		//mPlayerAtack[Parameter::P_ATACK_A].PlayVoice();
 	}
+
+	//JA攻撃
+	if (mController.getKey(1) == 1 && !mController.getDown() && !mGround)
+	{
+		mState = Parameter::S_PLAYER_ATACK_JA;
+
+		mPlayerAtack[Parameter::P_ATACK_JA].InitAtack();
+		//mPlayerAtack[Parameter::P_ATACK_A].PlayVoice();
+	}
+
+	//JB攻撃
+	if (mController.getKey(2) == 1 && !mController.getDown() && !mGround)
+	{
+		mState = Parameter::S_PLAYER_ATACK_JB;
+		
+		mPlayerAtack[Parameter::P_ATACK_JB].InitAtack();
+		//mPlayerAtack[Parameter::P_ATACK_A].PlayVoice();
+	}
 }
 
 /*ダッシュを始める*/
@@ -550,5 +592,13 @@ void Ein::ProcessAtack() {
 			}
 		}
 		AnimationController::getInstance().SetPosition(animeKey, mPositionX + (mRight? -100:+100) , mPositionY - 20);
+	}
+
+	if (mState == Parameter::S_PLAYER_ATACK_JA || mState == Parameter::S_PLAYER_ATACK_JB) {
+		if (mGround) {
+			mState = Parameter::S_PLAYER_NORMAL;
+			mAcceleY = 0;
+		}
+		else if (mChain > 0)mAcceleY += 1;
 	}
 }

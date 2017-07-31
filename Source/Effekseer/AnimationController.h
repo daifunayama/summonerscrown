@@ -22,6 +22,7 @@ public:
 	void SetPosition(int id, int x, int y);
 	void Remove(int id);
 	void Reset();
+	void Draw();
 	void DrawLayer1();
 	void DrawLayer2();
 	void DrawLayer3();

@@ -27,4 +27,6 @@ private:
 private:
 	ss::Player* mSSEffect[5];
 	int mActive;
+	int mPositionX[5];
+	int mPositionY[5];
 };

@@ -13,17 +13,9 @@ void Cavalier::LoadArmsGraphic() {
 	//再生するモーションを設定
 	mSprite->play("arms/wait");// アニメーション名を指定(ssae名/アニメーション名も可能、詳しくは後述)
 
-	//表示位置を設定
-	mSprite->setPosition(400, 300);
 	//スケール設定
 	mSprite->setScale(0.25f, 0.25f);
-	//回転を設定
-	mSprite->setRotation(0.0f, 0.0f, 0.0f);
-	//透明度を設定
-	mSprite->setAlpha(255);
-	//反転を設定
-	mSprite->setFlip(false, false);
-
+	
 	mSprite->setStep(0.5f);
 
 	mIcon = LoadGraph("Data/arms/Comander/Cavalier/icon.png");
@@ -60,7 +52,8 @@ void Cavalier::UpdateArmsAnimation() {
 	else mSprite->setScale(-0.25f, 0.25f);
 
 
-	mSprite->setPosition(mPositionX - (Camera::getInstance().getCenterX() - Parameter::WINDOW_WIDTH / 2), Parameter::WINDOW_HEIGHT - mPositionY);
+	mSprite->setPosition(mPositionX - (Camera::getInstance().getCenterX() - Parameter::WINDOW_WIDTH / 2), 
+		Parameter::WINDOW_HEIGHT - mPositionY + (Camera::getInstance().getCenterY() - Parameter::WINDOW_HEIGHT / 2));
 	mSprite->update((float)30 / 1000);
 }
 

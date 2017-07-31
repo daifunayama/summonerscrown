@@ -1,3 +1,4 @@
+#include <fstream>
 #include "Player.h"
 #include "../Parameter.h"
 #include "../Input/Input.h"
@@ -10,6 +11,30 @@
 #include "../Effekseer/AnimationController.h"
 #include "../SSEffect/SSEffectController.h"
 #include "DxLib.h"
+
+Styles Player::getStyles() {
+	string pass,tmp;
+	ifstream ifs;
+	Styles s;
+
+	pass = "Data/character/";
+	pass += getProfile().pass;
+	pass += "/chara.txt";
+
+	ifs.open(pass.c_str());
+	if (ifs) {
+		ifs >> tmp;
+		ifs >> s.style;
+		ifs >> s.str_style;
+		ifs >> tmp;
+		ifs >> s.ability;
+		ifs >> s.str_ability;
+		ifs >> tmp;
+		ifs >> s.ultimate;
+		ifs >> s.str_ultimate;
+	}
+	return s;
+}
 
 /*プレイヤーデータの初期化*/
 void Player::Init(int p) {
@@ -181,10 +206,17 @@ void Player::Move(Player& another) {
 
 	if (mState == Parameter::S_PLAYER_NORMAL || isAtackState()) {
 		//ジャンプする
-		if (mController.getUp() == 2 && mGround && !mOpenCircle && 
+		if (mController.getUp() == 2 && !mOpenCircle &&
 			!mController.getKey(1) && !mController.getKey(2) && !mController.getKey(3) && !mController.getKey(4)) {
-			mState = Parameter::S_ARMS_NORMAL;
-			DoJump();
+			
+			if (mGround) {
+				mState = Parameter::S_PLAYER_NORMAL;
+				DoJump();
+			}
+			else if (!mAirJumped) {
+				mState = Parameter::S_PLAYER_NORMAL;
+				DoAirJump();
+			}
 		}
 	}
 
@@ -301,6 +333,21 @@ void Player::DoJump() {
 
 	//接地フラグをfalseに
 	mGround = false;
+}
+
+/*空中ジャンプする*/
+void Player::DoAirJump() {
+	//右向き
+	if (mController.getRight())mAcceleX = 8;
+	//左向き
+	else if (mController.getLeft())mAcceleX = -8;
+	//垂直
+	else mAcceleX = 0;
+
+	//Y軸加速度
+	mAcceleY = 30;
+
+	mAirJumped = true;
 }
 
 /*バリアをはる*/
@@ -548,6 +595,40 @@ void Player::DoAtack() {
 
 		//攻撃終了時の処理
 		if (mPlayerAtack[Parameter::P_ATACK_6B].CheckAtackEnd()) {
+			//下が押されていたらしゃがんだまま
+			if (mController.getDown())mState = Parameter::S_PLAYER_SQUAT;
+			else mState = Parameter::S_PLAYER_NORMAL;
+		}
+	}
+
+	//JA攻撃
+	if (mState == Parameter::S_PLAYER_ATACK_JA) {
+
+		//SEがある場合再生
+		sId = mPlayerAtack[Parameter::P_ATACK_JA].getFrameData(mPlayerAtack[Parameter::P_ATACK_JA].getCounter()).getSoundId();
+		if (sId > 0 && sId < 10)PlaySoundMem(mSoundPlayerAtack[sId], DX_PLAYTYPE_BACK);
+
+		mPlayerAtack[Parameter::P_ATACK_JA].IncreaseCounter();
+
+		//攻撃終了時の処理
+		if (mPlayerAtack[Parameter::P_ATACK_JA].CheckAtackEnd()) {
+			//下が押されていたらしゃがんだまま
+			if (mController.getDown())mState = Parameter::S_PLAYER_SQUAT;
+			else mState = Parameter::S_PLAYER_NORMAL;
+		}
+	}
+
+	//JB攻撃
+	if (mState == Parameter::S_PLAYER_ATACK_JB) {
+
+		//SEがある場合再生
+		sId = mPlayerAtack[Parameter::P_ATACK_JB].getFrameData(mPlayerAtack[Parameter::P_ATACK_JB].getCounter()).getSoundId();
+		if (sId > 0 && sId < 10)PlaySoundMem(mSoundPlayerAtack[sId], DX_PLAYTYPE_BACK);
+
+		mPlayerAtack[Parameter::P_ATACK_JB].IncreaseCounter();
+
+		//攻撃終了時の処理
+		if (mPlayerAtack[Parameter::P_ATACK_JB].CheckAtackEnd()) {
 			//下が押されていたらしゃがんだまま
 			if (mController.getDown())mState = Parameter::S_PLAYER_SQUAT;
 			else mState = Parameter::S_PLAYER_NORMAL;
@@ -813,7 +894,6 @@ void Player::DrawArmsBack() {
 	mArms[mArmsId]->DrawBack();
 }
 
-
 /*契約陣のカーソル移動*/
 void Player::MoveCircleCursor() {
 	if (mController.getUp() && !mController.getRight() && !mController.getLeft())mCircleCursor = 0;
@@ -1020,6 +1100,7 @@ void Player::CheckWallHit() {
 		mAcceleY = 0;
 		mAcceleX = 0;
 		mGround = true;
+		mAirJumped = false;
 		if (mState == Parameter::S_PLAYER_DAMAGE_AIR2) {
 			mState = Parameter::S_PLAYER_DOWN;
 			mCounter = 40;
@@ -1230,7 +1311,8 @@ void Player::Draw() {
 
 /*影を描画*/
 void Player::DrawShadow() {
-	DrawGraph(mPositionX - 60 - (Camera::getInstance().getCenterX() - Parameter::WINDOW_WIDTH / 2), Parameter::GROUND_LINE - 70, mGraphShadow, true);
+	DrawGraph(mPositionX - 60 - (Camera::getInstance().getCenterX() - Parameter::WINDOW_WIDTH / 2), 
+		Parameter::GROUND_LINE - 70 - (Camera::getInstance().getCenterY() - Parameter::WINDOW_HEIGHT / 2), mGraphShadow, true);
 }
 
 /*ヒットボックスの描画*/
@@ -1248,18 +1330,18 @@ void Player::DrawHitBox() {
 			if (mRight) {
 				DrawBox(
 					mPositionX + mHitBox[mState].getPositionX() - (Camera::getInstance().getCenterX() - Parameter::WINDOW_WIDTH / 2),
-					mPositionY + mHitBox[mState].getPositionY(),
+					mPositionY + mHitBox[mState].getPositionY() - (Camera::getInstance().getCenterY() - Parameter::WINDOW_HEIGHT / 2),
 					mPositionX + mHitBox[mState].getPositionX() + mHitBox[mState].getWidth() - (Camera::getInstance().getCenterX() - Parameter::WINDOW_WIDTH / 2),
-					mPositionY + mHitBox[mState].getPositionY() + mHitBox[mState].getHeight(),
+					mPositionY + mHitBox[mState].getPositionY() + mHitBox[mState].getHeight() - (Camera::getInstance().getCenterY() - Parameter::WINDOW_HEIGHT / 2),
 					Parameter::COLOR_GREEN, true);
 			}
 			//プレイヤーが左向きのとき
 			else {
 				DrawBox(
 					mPositionX - mHitBox[mState].getPositionX() - (Camera::getInstance().getCenterX() - Parameter::WINDOW_WIDTH / 2),
-					mPositionY + mHitBox[mState].getPositionY(),
+					mPositionY + mHitBox[mState].getPositionY() - (Camera::getInstance().getCenterY() - Parameter::WINDOW_HEIGHT / 2),
 					mPositionX - mHitBox[mState].getPositionX() - mHitBox[mState].getWidth() - (Camera::getInstance().getCenterX() - Parameter::WINDOW_WIDTH / 2),
-					mPositionY + mHitBox[mState].getPositionY() + mHitBox[mState].getHeight(),
+					mPositionY + mHitBox[mState].getPositionY() + mHitBox[mState].getHeight() - (Camera::getInstance().getCenterY() - Parameter::WINDOW_HEIGHT / 2),
 					Parameter::COLOR_GREEN, true);
 			}
 		}
@@ -1287,18 +1369,18 @@ void Player::DrawDamageBox() {
 				if (mRight) {
 					DrawBox(
 						mPositionX + mDamageBox[mState][i].getPositionX() - (Camera::getInstance().getCenterX() - Parameter::WINDOW_WIDTH / 2),
-						mPositionY + mDamageBox[mState][i].getPositionY(),
+						mPositionY + mDamageBox[mState][i].getPositionY() - (Camera::getInstance().getCenterY() - Parameter::WINDOW_HEIGHT / 2),
 						mPositionX + mDamageBox[mState][i].getPositionX() + mDamageBox[mState][i].getWidth() - (Camera::getInstance().getCenterX() - Parameter::WINDOW_WIDTH / 2),
-						mPositionY + mDamageBox[mState][i].getPositionY() + mDamageBox[mState][i].getHeight(),
+						mPositionY + mDamageBox[mState][i].getPositionY() + mDamageBox[mState][i].getHeight() - (Camera::getInstance().getCenterY() - Parameter::WINDOW_HEIGHT / 2),
 						Parameter::COLOR_BLUE, true);
 				}
 				//プレイヤーが左向きのとき
 				else {
 					DrawBox(
 						mPositionX - mDamageBox[mState][i].getPositionX() - (Camera::getInstance().getCenterX() - Parameter::WINDOW_WIDTH / 2),
-						mPositionY + mDamageBox[mState][i].getPositionY(),
+						mPositionY + mDamageBox[mState][i].getPositionY() - (Camera::getInstance().getCenterY() - Parameter::WINDOW_HEIGHT / 2),
 						mPositionX - mDamageBox[mState][i].getPositionX() - mDamageBox[mState][i].getWidth() - (Camera::getInstance().getCenterX() - Parameter::WINDOW_WIDTH / 2),
-						mPositionY + mDamageBox[mState][i].getPositionY() + mDamageBox[mState][i].getHeight(),
+						mPositionY + mDamageBox[mState][i].getPositionY() + mDamageBox[mState][i].getHeight() - (Camera::getInstance().getCenterY() - Parameter::WINDOW_HEIGHT / 2),
 						Parameter::COLOR_BLUE, true);
 				}
 			}
@@ -1325,11 +1407,11 @@ void Player::DrawAtackBox() {
 			if (mPlayerAtack[atackId].getFrameData(counter).getAtackBox(i).getExist()) {
 				DrawBox(
 					mPositionX + mPlayerAtack[atackId].getFrameData(counter).getAtackBox(i).getPositionX() - (Camera::getInstance().getCenterX() - Parameter::WINDOW_WIDTH / 2),
-					mPositionY + mPlayerAtack[atackId].getFrameData(counter).getAtackBox(i).getPositionY(),
+					mPositionY + mPlayerAtack[atackId].getFrameData(counter).getAtackBox(i).getPositionY() - (Camera::getInstance().getCenterY() - Parameter::WINDOW_HEIGHT / 2),
 					mPositionX + mPlayerAtack[atackId].getFrameData(counter).getAtackBox(i).getPositionX()
 					+ mPlayerAtack[atackId].getFrameData(counter).getAtackBox(i).getWidth() - (Camera::getInstance().getCenterX() - Parameter::WINDOW_WIDTH / 2),
 					mPositionY + mPlayerAtack[atackId].getFrameData(counter).getAtackBox(i).getPositionY()
-					+ mPlayerAtack[atackId].getFrameData(counter).getAtackBox(i).getHeight(),
+					+ mPlayerAtack[atackId].getFrameData(counter).getAtackBox(i).getHeight() - (Camera::getInstance().getCenterY() - Parameter::WINDOW_HEIGHT / 2),
 					Parameter::COLOR_RED, true);
 			}
 			else break;
@@ -1342,11 +1424,11 @@ void Player::DrawAtackBox() {
 			if (mPlayerAtack[atackId].getFrameData(counter).getAtackBox(i).getExist()) {
 				DrawBox(
 					mPositionX - mPlayerAtack[atackId].getFrameData(counter).getAtackBox(i).getPositionX() - (Camera::getInstance().getCenterX() - Parameter::WINDOW_WIDTH / 2),
-					mPositionY + mPlayerAtack[atackId].getFrameData(counter).getAtackBox(i).getPositionY(),
+					mPositionY + mPlayerAtack[atackId].getFrameData(counter).getAtackBox(i).getPositionY() - (Camera::getInstance().getCenterY() - Parameter::WINDOW_HEIGHT / 2),
 					mPositionX - mPlayerAtack[atackId].getFrameData(counter).getAtackBox(i).getPositionX()
 					- mPlayerAtack[atackId].getFrameData(counter).getAtackBox(i).getWidth() - (Camera::getInstance().getCenterX() - Parameter::WINDOW_WIDTH / 2),
 					mPositionY + mPlayerAtack[atackId].getFrameData(counter).getAtackBox(i).getPositionY()
-					+ mPlayerAtack[atackId].getFrameData(counter).getAtackBox(i).getHeight(),
+					+ mPlayerAtack[atackId].getFrameData(counter).getAtackBox(i).getHeight() - (Camera::getInstance().getCenterY() - Parameter::WINDOW_HEIGHT / 2),
 					Parameter::COLOR_RED, true);
 			}
 			else break;

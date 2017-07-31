@@ -390,8 +390,10 @@ void KareMeshi::UpdateAnimation() {
 	}
 
 	//表示位置の更新
-	if(mRight)mSprite->setPosition(mPositionX - (Camera::getInstance().getCenterX() - Parameter::WINDOW_WIDTH / 2), Parameter::GROUND_LINE - mPositionY-150);
-	else mSprite->setPosition(mPositionX - (Camera::getInstance().getCenterX() - Parameter::WINDOW_WIDTH / 2) +25, Parameter::GROUND_LINE - mPositionY - 150);
+	if(mRight)mSprite->setPosition(mPositionX - (Camera::getInstance().getCenterX() - Parameter::WINDOW_WIDTH / 2), 
+		Parameter::GROUND_LINE - mPositionY-150 + (Camera::getInstance().getCenterY() - Parameter::WINDOW_HEIGHT / 2));
+	else mSprite->setPosition(mPositionX - (Camera::getInstance().getCenterX() - Parameter::WINDOW_WIDTH / 2) +25,
+		Parameter::GROUND_LINE - mPositionY - 150 + (Camera::getInstance().getCenterY() - Parameter::WINDOW_HEIGHT / 2));
 	//プレイヤーの更新、引数は前回の更新処理から経過した時間
 	mSprite->update((float)30 / 1000);
 }

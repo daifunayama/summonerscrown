@@ -29,6 +29,10 @@ void Application::MainLoop() {
 			mScene = new CharaSelectScene();
 			break;
 
+		case Parameter::SCENE_EYECATCH:
+			mScene = new EyecatchScene();
+			break;
+
 		case Parameter::SCENE_BATTLE :
 			mScene = new BattleScene();
 			break;

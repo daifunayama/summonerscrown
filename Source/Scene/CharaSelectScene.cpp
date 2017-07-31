@@ -78,6 +78,9 @@ void CharaSelectScene::Load() {
 	mDecided[0] = 0;
 	mDecided[1] = 0;
 
+	mSwitch[0] = 0;
+	mSwitch[1] = 0;
+
 	mColor[0] = 1;
 	mColor[1] = 1;
 
@@ -89,13 +92,13 @@ void CharaSelectScene::Load() {
 
 	PlaySoundMem(mBGM, DX_PLAYTYPE_LOOP);
 
-	AnimationController::getInstance().Create(mGraphAnime1, 1, 0, 350, 1024, 620, 1.25, 0, 4, 4, 204, 204, 0, 0);
+	AnimationController::getInstance().Create(mGraphAnime1, 1, 640, 350, 1024, 620, 1.25, 0, 4, 4, 204, 204, 0, 0);
 }
 
 void CharaSelectScene::Process() {
 
 	if (mController[0].getKey(9) == 1) {
-		Application::mNextSceneId = Parameter::SCENE_BATTLE;
+		Application::mNextSceneId = Parameter::SCENE_EYECATCH;
 		StopSoundMem(mBGM);
 	}
 
@@ -152,6 +155,11 @@ void CharaSelectScene::Process() {
 				mDecided[p] = false;
 				PlaySoundMem(mSoundCancel, DX_PLAYTYPE_BACK);
 			}
+		}
+
+		if (mController[p].getKey(1) == 1) {
+			mSwitch[p] = !mSwitch[p]; 
+			PlaySoundMem(mSoundCursor, DX_PLAYTYPE_BACK);
 		}
 	}
 
@@ -218,7 +226,7 @@ void CharaSelectScene::Drawing() {
 
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 128);
 	//アニメーションの描画
-	AnimationController::getInstance().DrawLayer1();
+	AnimationController::getInstance().Draw();
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
 	if (CheckHitKey(KEY_INPUT_R) == 1)mCounter = 0;
@@ -297,7 +305,8 @@ void CharaSelectScene::Drawing() {
 				"%s", p.name.c_str());
 		}
 		//キャラプロファイル
-		DrawProfile(0,p, 230, 500);
+		if(!mSwitch[0])DrawProfile(0,p, 230, 500);
+		else DrawStyles(0, mPlayer[0]->getStyles(), 230, 500);
 
 		//P2キャラクター名
 		p = mPlayer[1]->getProfile();
@@ -316,10 +325,11 @@ void CharaSelectScene::Drawing() {
 		}
 
 		//キャラプロファイル
-		DrawProfile(1,p, 800, 500);
+		if (!mSwitch[1])DrawProfile(1,p, 800, 500);
+		else DrawStyles(1, mPlayer[1]->getStyles(), 800, 500);
 	}
 
-	DrawStringToHandle(330, 30, "Character Select", Parameter::COLOR_YELLOW, Parameter::FONT_100_CLOISTER, 0, 0);
+	DrawStringToHandle(330, 30, "Character Select", Parameter::COLOR_YELLOW, Parameter::FONT_100_FERRUM, 0, 0);
 	DrawStringToHandle(490, 130, "キャラクターを選択してください", Parameter::COLOR_YELLOW, Parameter::FONT_20, 0, 0);
 
 	//DrawStringToHandle(500, 530, "←→　キャラクター選択", Parameter::COLOR_YELLOW, Parameter::FONT_20, 0, 0);
@@ -369,4 +379,19 @@ void CharaSelectScene::DrawProfile(int p, Profile pf, int x, int y) {
 
 	if (mAnimeCounter[p] < pf.sAtack * 5)DrawBox(x + 130, y+120, x + 130 + mAnimeCounter[p] * 4, y + 140, Parameter::COLOR_RED, true);
 	else DrawBox(x + 130, y+120, x + 130 + pf.sAtack * 20, y + 140, Parameter::COLOR_RED, true);
+}
+
+void CharaSelectScene::DrawStyles(int p, Styles st, int x, int y) {
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 128);
+	DrawBox(x - 10, y - 10, x + 250, y + 150, Parameter::COLOR_BLACK, true);
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+
+	DrawFormatStringToHandle(x, y, Parameter::COLOR_WHITE, Parameter::FONT_15, "スタイル:%s", st.style.c_str());
+	DrawFormatStringToHandle(x, y+20, Parameter::COLOR_WHITE, Parameter::FONT_10, "%s", st.str_style.c_str());
+
+	DrawFormatStringToHandle(x, y+50, Parameter::COLOR_WHITE, Parameter::FONT_15, "アビリティ:%s", st.ability.c_str());
+	DrawFormatStringToHandle(x, y + 70, Parameter::COLOR_WHITE, Parameter::FONT_10, "%s", st.str_ability.c_str());
+
+	DrawFormatStringToHandle(x, y + 100, Parameter::COLOR_WHITE, Parameter::FONT_15, "究極召喚:%s", st.ultimate.c_str());
+	DrawFormatStringToHandle(x, y + 120, Parameter::COLOR_WHITE, Parameter::FONT_10, "%s", st.str_ultimate.c_str());
 }
