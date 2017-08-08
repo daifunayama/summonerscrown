@@ -3,6 +3,7 @@
 #include "../Effekseer/AnimationController.h"
 #include "../Player/Character/Ein.h"
 #include "../Player/Character/Ria.h"
+#include "../Player/Character/Carol.h"
 #include "../Player/Character/Kare-meshi.h"
 #include "../Arms/FollowerArms.h"
 #include "../SSEffect/SSEffectController.h"
@@ -15,7 +16,7 @@ void BattleScene::Load() {
 	loadGraph = LoadGraph("Data/graphic/game/loading.png");
 
 	mPlayer[0] = new Ein();
-	mPlayer[1] = new KareMeshi();
+	mPlayer[1] = new Carol();
 
 	SetUseASyncLoadFlag(true);
 

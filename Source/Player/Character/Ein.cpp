@@ -599,6 +599,6 @@ void Ein::ProcessAtack() {
 			mState = Parameter::S_PLAYER_NORMAL;
 			mAcceleY = 0;
 		}
-		else if (mChain > 0)mAcceleY += 1;
+		else if (mState == Parameter::S_PLAYER_ATACK_JA && mChain > 0)mAcceleY += 1;
 	}
 }

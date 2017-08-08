@@ -15,7 +15,7 @@ public:
 	~BackGround(){}
 
 private: 
-	int mGraphHandle;			//背景のグラフィックハンドル
+	int mGraphHandle[3];		//背景のグラフィックハンドル
 	int mGraphEmblem[10];		//召喚時エンブレム
 	int mBlackoutCounter[2];	//暗転カウンター
 	int mEmblemId[2];			//エンブレムID

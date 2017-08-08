@@ -4,12 +4,9 @@
 class Alpha : public FollowerArms {
 public:
 	Alpha() {
-		mName = "lŒû–‚‹ïƒ¿";
-		mCondition = "‚È‚µ";
-		mPass = "Data/arms/ArticArts/alpha";
-		mCategoryId = Parameter::AA;
+		LoadArmsName();
 	}
-
+	Profile getProfile();
 	void UpdateArmsAnimation();
 	void LoadArmsGraphic();
 	void LoadArmsSound();

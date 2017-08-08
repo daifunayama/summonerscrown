@@ -1,6 +1,16 @@
 #include "Cyanos.h"
 #include "../../../Application.h"
 
+
+Arms::Profile Cyanos::getProfile() {
+	Arms::Profile p;
+	p.category = Parameter::PS;
+	p.id = 1;
+	p.size = 0.32f;
+	p.speed = 1.0f;
+	return p;
+}
+
 /*グラフィックのロード*/
 void Cyanos::LoadArmsGraphic() {
 	//プレイヤーの作成
@@ -9,7 +19,7 @@ void Cyanos::LoadArmsGraphic() {
 	//アニメデータをリソースに追加
 	//Application::resman->addData("Data/arms/PrimalSpheres/Cyanos/cyanos.ssbp");
 	//プレイヤーにリソースを割り当て
-	mSprite->setData("cyanos");// ssbpファイル名（拡張子不要）
+	mSprite->setData("Cyanos");// ssbpファイル名（拡張子不要）
 	//再生するモーションを設定
 	mSprite->play("arms/wait");// アニメーション名を指定(ssae名/アニメーション名も可能、詳しくは後述)
 

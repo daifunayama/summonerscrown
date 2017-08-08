@@ -3,8 +3,10 @@
 #include "../Parameter.h"
 #include "../Input/Input.h"
 #include "../Arms/FollowerArms.h"
+#include "../Arms/Category/HollyKnights/Aries.h"
 #include "../Arms/Category/HollyKnights/Southern.h"
 #include "../Arms/Category/ArticArts/Alpha.h"
+#include "../Arms/Category/EvilAnima/Enikuma.h"
 #include "../Arms/Category/Comander/Cavalier.h"
 #include "../Arms/Category/PrimalSpheres/Cyanos.h"
 #include "../Utility.h"
@@ -87,6 +89,8 @@ void Player::LoadGraphic() {
 	//スケール設定
 	mSprite->setScale(getProfile().size, getProfile().size);
 
+	mSprite->setStep(getProfile().speed);
+
 	mGraphShadow = LoadGraph("Data/graphic/game/shadow.png");
 	mGraphDamage = LoadGraph("Data/graphic/animation/slash3.png");
 
@@ -105,17 +109,21 @@ void Player::LoadArms(int p) {
 		mArms[0] = new Cyanos();
 		mArms[1] = new Cavalier();
 		mArms[2] = new Southern();
+		mArms[4] = new Aries();
 		mArms[7] = new Alpha();
 		mArmsExist[0] = true;
 		mArmsExist[1] = true;
 		mArmsExist[2] = true;
+		mArmsExist[4] = true;
 		mArmsExist[7] = true;
 	}
 	else {
-		mArms[0] = new Cavalier();
+		mArms[0] = new Enikuma();
 		mArms[1] = new Cyanos();
+		mArms[2] = new Cavalier();
 		mArmsExist[0] = true;
 		mArmsExist[1] = true;
+		mArmsExist[2] = true;
 	}
 	
 	for (int i = 0; i < 8; i++) {
@@ -153,7 +161,10 @@ void Player::Move(Player& another) {
 		if (mController.getKey(5) == 1)PlaySoundMem(mSoundOpenCircle, DX_PLAYTYPE_BACK);
 		mOpenCircle = true;
 	}
-	else mOpenCircle = false;
+	else {
+		mOpenCircle = false;
+		mCircleCursor = 0;
+	}
 
 	//バリアをはる・解除する
 	DoBarrier();
@@ -905,7 +916,7 @@ void Player::MoveCircleCursor() {
 	if (!mController.getDown() && mController.getLeft() && !mController.getUp())mCircleCursor = 6;
 	if (mController.getLeft() && mController.getUp())mCircleCursor = 7;
 
-	if (!mController.getUp() && !mController.getRight() && !mController.getDown() && !mController.getLeft())mCircleCursor = 0;
+	//if (!mController.getUp() && !mController.getRight() && !mController.getDown() && !mController.getLeft())mCircleCursor = 0;
 }
 
 /*プレイヤー同士の当たり判定*/
@@ -1305,8 +1316,7 @@ void Player::CheckPlayersAtackHit(Player& another) {
 /*グラフィックの描画*/
 void Player::Draw() {
 	DrawShadow();
-	mSprite->draw();
-	//if(mPlayerId == 1)DrawFormatString(0, 0, Parameter::COLOR_RED, "%2d %2d", mState,mCounter);
+	mSprite->draw();\
 }
 
 /*影を描画*/

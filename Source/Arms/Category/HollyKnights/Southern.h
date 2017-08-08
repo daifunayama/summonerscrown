@@ -4,12 +4,10 @@
 class Southern : public FollowerArms {
 public:
 	Southern() {
-		mName = "聖夜騎装サザンクロス";
-		mCondition = "なし";
-		mPass = "Data/arms/HollyKnights/vein";
-		mCategoryId = Parameter::HK;
+		LoadArmsName();
 	}
 
+	Profile getProfile();
 	void UpdateArmsAnimation();
 	void LoadArmsGraphic();
 	void LoadArmsSound();

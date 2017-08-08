@@ -153,8 +153,11 @@
   <ItemGroup>
     <ClCompile Include="Source\Application.cpp" />
     <ClCompile Include="Source\Arms\Arms.cpp" />
+    <ClCompile Include="Source\Arms\ArmsList.cpp" />
     <ClCompile Include="Source\Arms\Category\ArticArts\Alpha.cpp" />
     <ClCompile Include="Source\Arms\Category\Comander\Cavalier.cpp" />
+    <ClCompile Include="Source\Arms\Category\EvilAnima\Enikuma.cpp" />
+    <ClCompile Include="Source\Arms\Category\HollyKnights\Aries.cpp" />
     <ClCompile Include="Source\Arms\Category\HollyKnights\Southern.cpp" />
     <ClCompile Include="Source\Arms\Category\PrimalSpheres\Cyanos.cpp" />
     <ClCompile Include="Source\Arms\FollowerArms.cpp" />
@@ -175,6 +178,7 @@
     <ClCompile Include="Source\Player\Player.cpp" />
     <ClCompile Include="Source\Scene\BattleScene.cpp" />
     <ClCompile Include="Source\Scene\CharaSelectScene.cpp" />
+    <ClCompile Include="Source\Scene\ContractScene.cpp" />
     <ClCompile Include="Source\Scene\EyecatchScene.cpp" />
     <ClCompile Include="Source\Scene\Scene.cpp" />
     <ClCompile Include="Source\Scene\TitleScene.cpp" />
@@ -201,8 +205,11 @@
     <ClInclude Include="Scene\TitleScene.h" />
     <ClInclude Include="Source\Application.h" />
     <ClInclude Include="Source\Arms\Arms.h" />
+    <ClInclude Include="Source\Arms\ArmsList.h" />
     <ClInclude Include="Source\Arms\Category\ArticArts\Alpha.h" />
     <ClInclude Include="Source\Arms\Category\Comander\Cavalier.h" />
+    <ClInclude Include="Source\Arms\Category\EvilAnima\Enikuma.h" />
+    <ClInclude Include="Source\Arms\Category\HollyKnights\Aries.h" />
     <ClInclude Include="Source\Arms\Category\HollyKnights\Southern.h" />
     <ClInclude Include="Source\Arms\Category\PrimalSpheres\Cyanos.h" />
     <ClInclude Include="Source\Arms\FollowerArms.h" />
@@ -231,6 +238,7 @@
     <ClInclude Include="Source\Player\Profile.h" />
     <ClInclude Include="Source\Scene\BattleScene.h" />
     <ClInclude Include="Source\Scene\CharaSelectScene.h" />
+    <ClInclude Include="Source\Scene\ContractScene.h" />
     <ClInclude Include="Source\Scene\EyecatchScene.h" />
     <ClInclude Include="Source\Scene\Scene.h" />
     <ClInclude Include="Source\Scene\TitleScene.h" />

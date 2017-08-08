@@ -12,7 +12,7 @@ Profile Carol::getProfile() {
 	p.pass = "carol";
 
 	p.size = 0.34f;
-	p.speed = 0.7f;
+	p.speed = 0.5f;
 	p.distX = 0;
 	p.distY = 0;
 
@@ -275,8 +275,8 @@ void Carol::LoadAtack() {
 void Carol::UpdateAnimation() {
 
 	//振り向き
-	if (mRight)mSprite->setScale(0.26, 0.26);
-	else mSprite->setScale(-0.26, 0.26);
+	if (mRight)mSprite->setScale(0.34, 0.34);
+	else mSprite->setScale(-0.34, 0.34);
 
 	//通常時（待機・前進・後退・ジャンプ）
 	if (mState == Parameter::S_PLAYER_NORMAL) {
@@ -288,6 +288,7 @@ void Carol::UpdateAnimation() {
 			if (mAcceleX == 0) {
 				if (mSprite->getPlayAnimeName() != "idle") {
 					mSprite->play("carol/idle");
+					mSprite->setStep(0.4f);
 				}
 			}
 			//プレイヤーが右に進んでいる
@@ -417,7 +418,8 @@ void Carol::UpdateAnimation() {
 	}
 
 	//表示位置の更新
-	mSprite->setPosition(mPositionX - (Camera::getInstance().getCenterX() - Parameter::WINDOW_WIDTH / 2), Parameter::GROUND_LINE - mPositionY + 20);
+	mSprite->setPosition(mPositionX - (Camera::getInstance().getCenterX() - Parameter::WINDOW_WIDTH / 2), 
+		Parameter::GROUND_LINE - mPositionY + 10 + (Camera::getInstance().getCenterY() - Parameter::WINDOW_HEIGHT / 2));
 	//プレイヤーの更新、引数は前回の更新処理から経過した時間
 	mSprite->update((float)30 / 1000);
 }

@@ -11,6 +11,7 @@ public:
 	//フォント
 	static int FONT_5;
 	static int FONT_10;
+	static int FONT_12;
 	static int FONT_15;
 	static int FONT_20;
 	static int FONT_20_FERRUM;
@@ -23,19 +24,20 @@ public:
 	//シーンID
 	static const int SCENE_TITLE = 1;
 	static const int SCENE_CHARASELECT = 2;
-	static const int SCENE_EYECATCH = 3;
-	static const int SCENE_BATTLE = 4;
+	static const int SCENE_CONTRACT = 3;
+	static const int SCENE_EYECATCH = 4;
+	static const int SCENE_BATTLE = 5;
 
 	//魔具のカテゴリID
 	static const int HK = 0;
 	static const int CM = 1;
 	static const int MG = 2;
 	static const int YT = 3;
-	static const int NT = 4;
+	static const int HC = 4;
 	static const int EA = 5;
 	static const int AA = 6;
 	static const int HR = 7;
-	static const int TZ = 8;
+	static const int MJ = 8;
 	static const int PS = 9;
 
 

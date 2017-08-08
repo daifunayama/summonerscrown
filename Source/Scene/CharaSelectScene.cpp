@@ -30,11 +30,11 @@ void CharaSelectScene::Load() {
 	mGraphFace[0] = LoadGraph("Data/graphic/charaselect/face_ein.png");
 	mGraphFace[1] = LoadGraph("Data/graphic/charaselect/face_ria.png");
 	mGraphFace[2] = LoadGraph("Data/graphic/charaselect/face_kureha.png");
-	mGraphFace[3] = LoadGraph("Data/graphic/charaselect/face_annie.png");
+	//mGraphFace[3] = LoadGraph("Data/graphic/charaselect/face_annie.png");
 
 	mGraphFace[5] = LoadGraph("Data/graphic/charaselect/face_random.png");
 
-	mGraphFace[7] = LoadGraph("Data/graphic/charaselect/face_akane.png");
+	//mGraphFace[7] = LoadGraph("Data/graphic/charaselect/face_akane.png");
 	mGraphFace[8] = LoadGraph("Data/graphic/charaselect/face_remnant.png");
 	mGraphFace[9] = LoadGraph("Data/graphic/charaselect/face_carol.png");
 
@@ -42,18 +42,18 @@ void CharaSelectScene::Load() {
 	mGraphStand[0] = LoadGraph("Data/graphic/charaselect/frame_ein.png");
 	mGraphStand[1] = LoadGraph("Data/graphic/charaselect/frame_ria.png");
 	mGraphStand[2] = LoadGraph("Data/graphic/charaselect/frame_kureha.png");
-	mGraphStand[3] = LoadGraph("Data/graphic/charaselect/frame_annie.png");
+	//mGraphStand[3] = LoadGraph("Data/graphic/charaselect/frame_annie.png");
 
-	mGraphStand[7] = LoadGraph("Data/graphic/charaselect/frame_akane.png");
+	//mGraphStand[7] = LoadGraph("Data/graphic/charaselect/frame_akane.png");
 	mGraphStand[8] = LoadGraph("Data/graphic/charaselect/frame_remnant.png");
 	mGraphStand[9] = LoadGraph("Data/graphic/charaselect/frame_carol.png");
 
 	mGraphEmblem[0] = LoadGraph("Data/graphic/emblem/PrimalSpheres.png");
 	mGraphEmblem[1] = LoadGraph("Data/graphic/emblem/Comander.png");
 	mGraphEmblem[2] = LoadGraph("Data/graphic/emblem/Yoto.png");
-	mGraphEmblem[3] = LoadGraph("Data/graphic/emblem/MasouGakudan.png");
+	//mGraphEmblem[3] = LoadGraph("Data/graphic/emblem/MasouGakudan.png");
 
-	mGraphEmblem[7] = LoadGraph("Data/graphic/emblem/ArticArts.png");
+	//mGraphEmblem[7] = LoadGraph("Data/graphic/emblem/ArticArts.png");
 	//mGraphEmblem[8] = LoadGraph("Data/graphic/emblem/Comander.png");
 	mGraphEmblem[9] = LoadGraph("Data/graphic/emblem/EvilAnima.png");
 
@@ -98,7 +98,7 @@ void CharaSelectScene::Load() {
 void CharaSelectScene::Process() {
 
 	if (mController[0].getKey(9) == 1) {
-		Application::mNextSceneId = Parameter::SCENE_EYECATCH;
+		Application::mNextSceneId = Parameter::SCENE_CONTRACT;
 		StopSoundMem(mBGM);
 	}
 
@@ -278,18 +278,19 @@ void CharaSelectScene::Drawing() {
 	}
 	
 	if (mCounter > 90) {
+		
 		//エンブレム
 		DrawRotaEmblem(mCursor[0], -30, 350);
 		DrawRotaEmblem(mCursor[1], Parameter::WINDOW_WIDTH - 300 + 30, 350);
-
+		
 		//キャラの影
 		DrawGraph(90, 640, mGraphShadow, true);
 		DrawGraph(Parameter::WINDOW_WIDTH - 210, 640, mGraphShadow, true);
-
+		
 		//キャラスプライト
 		if (mCursor[0] != 5)mSprite[0]->draw();
 		if (mCursor[1] != 5)mSprite[1]->draw();
-
+		
 		//P1キャラクター名
 		Profile p = mPlayer[0]->getProfile();
 		if (mAnimeCounter[0] < 10) {
@@ -304,6 +305,7 @@ void CharaSelectScene::Drawing() {
 			DrawFormatStringToHandle(60, 700, Parameter::COLOR_WHITE, Parameter::FONT_20,
 				"%s", p.name.c_str());
 		}
+		
 		//キャラプロファイル
 		if(!mSwitch[0])DrawProfile(0,p, 230, 500);
 		else DrawStyles(0, mPlayer[0]->getStyles(), 230, 500);
@@ -327,6 +329,7 @@ void CharaSelectScene::Drawing() {
 		//キャラプロファイル
 		if (!mSwitch[1])DrawProfile(1,p, 800, 500);
 		else DrawStyles(1, mPlayer[1]->getStyles(), 800, 500);
+		
 	}
 
 	DrawStringToHandle(330, 30, "Character Select", Parameter::COLOR_YELLOW, Parameter::FONT_100_FERRUM, 0, 0);

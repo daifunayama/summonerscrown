@@ -24,7 +24,7 @@ void ContractCircle::Process(Player& player) {
 	mController = player.getController();
 	mOpenCircle = player.getOpenCircle();
 	mCursor = player.getCircleCursor();
-	mIcon = player.getArms(player.getArmsId())->getIcon();
+	if(player.getArmsExist(mCursor))mIcon = player.getArms(player.getArmsId())->getIcon();
 
 	if (player.getArmsExist(mCursor)) {
 		mName = player.getArms(mCursor)->getName();
@@ -52,6 +52,7 @@ void ContractCircle::Draw() {
 			DrawRotaGraph(centerX, centerY, 1, Parameter::PI / 360 * (double)mAngle*0.5, mGraphCircle, true, false);
 			DrawGraph(centerX-30, centerY-115-30, mIconlist[0], true);
 			DrawGraph(centerX+81-30, centerY-81-30, mIconlist[1], true);
+			DrawGraph(centerX-30, centerY+115-30, mIconlist[4], true);
 			DrawGraph(centerX + -81 - 30, centerY - 81 - 30, mIconlist[7], true);
 			
 			if (mCursor == 0)DrawRotaGraph(centerX, centerY - 115, 1, Parameter::PI / 360 * (double)mAngle, mGraphCursor, true, false);
@@ -102,5 +103,59 @@ void ContractCircle::Draw() {
 			if (mCursor == 6)DrawRotaGraph(centerX - 115, centerY, 1, Parameter::PI / 360 * (double)mAngle, mGraphCursor, true, false);
 			if (mCursor == 7)DrawRotaGraph(centerX - 81, centerY - 81, 1, Parameter::PI / 360 * (double)mAngle, mGraphCursor, true, false);
 		}
+	}
+}
+
+
+void ContractCircle::ProcessInContract(int cursor) {
+	mCursor = cursor;
+
+	mAngle++;
+	if (mAngle >= 1440)mAngle = 0;
+}
+
+void ContractCircle::DrawInContract() {
+	int centerX, centerY;
+
+	if (mPlayerId == 0) {
+		centerX = 136;
+		centerY = 149;
+
+		DrawGraph(centerX - 30, centerY - 30, mIcon, true);
+		
+		DrawRotaGraph(centerX, centerY, 1, Parameter::PI / 360 * (double)mAngle*0.5, mGraphCircle, true, false);
+		DrawGraph(centerX - 30, centerY - 115 - 30, mIconlist[0], true);
+		DrawGraph(centerX + 81 - 30, centerY - 81 - 30, mIconlist[1], true);
+		DrawGraph(centerX + -81 - 30, centerY - 81 - 30, mIconlist[7], true);
+
+		if (mCursor == 0)DrawRotaGraph(centerX, centerY - 115, 1, Parameter::PI / 360 * (double)mAngle, mGraphCursor, true, false);
+		if (mCursor == 1)DrawRotaGraph(centerX + 81, centerY - 81, 1, Parameter::PI / 360 * (double)mAngle, mGraphCursor, true, false);
+		if (mCursor == 2)DrawRotaGraph(centerX + 115, centerY, 1, Parameter::PI / 360 * (double)mAngle, mGraphCursor, true, false);
+		if (mCursor == 3)DrawRotaGraph(centerX + 81, centerY + 81, 1, Parameter::PI / 360 * (double)mAngle, mGraphCursor, true, false);
+		if (mCursor == 4)DrawRotaGraph(centerX, centerY + 115, 1, Parameter::PI / 360 * (double)mAngle, mGraphCursor, true, false);
+		if (mCursor == 5)DrawRotaGraph(centerX - 81, centerY + 81, 1, Parameter::PI / 360 * (double)mAngle, mGraphCursor, true, false);
+		if (mCursor == 6)DrawRotaGraph(centerX - 115, centerY, 1, Parameter::PI / 360 * (double)mAngle, mGraphCursor, true, false);
+		if (mCursor == 7)DrawRotaGraph(centerX - 81, centerY - 81, 1, Parameter::PI / 360 * (double)mAngle, mGraphCursor, true, false);
+	}
+
+	else {
+		centerX = Parameter::WINDOW_WIDTH - 136;
+		centerY = 149;
+
+		DrawGraph(centerX - 30, centerY - 30, mIcon, true);
+
+		DrawRotaGraph(centerX, centerY, 1, Parameter::PI / 360 * (double)mAngle*0.5, mGraphCircle, true, false);
+		DrawGraph(centerX - 30, centerY - 115 - 30, mIconlist[0], true);
+		DrawGraph(centerX + 81 - 30, centerY - 81 - 30, mIconlist[1], true);
+
+		if (mCursor == 0)DrawRotaGraph(centerX, centerY - 115, 1, Parameter::PI / 360 * (double)mAngle, mGraphCursor, true, false);
+		if (mCursor == 1)DrawRotaGraph(centerX + 81, centerY - 81, 1, Parameter::PI / 360 * (double)mAngle, mGraphCursor, true, false);
+		if (mCursor == 2)DrawRotaGraph(centerX + 115, centerY, 1, Parameter::PI / 360 * (double)mAngle, mGraphCursor, true, false);
+		if (mCursor == 3)DrawRotaGraph(centerX + 81, centerY + 81, 1, Parameter::PI / 360 * (double)mAngle, mGraphCursor, true, false);
+		if (mCursor == 4)DrawRotaGraph(centerX, centerY + 115, 1, Parameter::PI / 360 * (double)mAngle, mGraphCursor, true, false);
+		if (mCursor == 5)DrawRotaGraph(centerX - 81, centerY + 81, 1, Parameter::PI / 360 * (double)mAngle, mGraphCursor, true, false);
+		if (mCursor == 6)DrawRotaGraph(centerX - 115, centerY, 1, Parameter::PI / 360 * (double)mAngle, mGraphCursor, true, false);
+		if (mCursor == 7)DrawRotaGraph(centerX - 81, centerY - 81, 1, Parameter::PI / 360 * (double)mAngle, mGraphCursor, true, false);
+		
 	}
 }

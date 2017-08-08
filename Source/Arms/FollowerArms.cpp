@@ -47,11 +47,13 @@ void FollowerArms::LoadArmsData() {
 
 		pass.clear();
 
-		if (a == Parameter::ATACK_C)pass = mPass + "/c.txt";
-		if (a == Parameter::ATACK_2C)pass = mPass + "/cd.txt";
-		if (a == Parameter::ATACK_8C)pass = mPass + "/cu.txt";
-		if (a == Parameter::ATACK_D)pass = mPass + "/d.txt";
-		if (a == Parameter::ATACK_2D)pass = mPass + "/dd.txt";
+
+
+		if (a == Parameter::ATACK_C)pass = ArmsList::get().getArmsPass(getProfile().category,getProfile().id) + "/c.txt";
+		if (a == Parameter::ATACK_2C)pass = ArmsList::get().getArmsPass(getProfile().category, getProfile().id) + "/cd.txt";
+		if (a == Parameter::ATACK_8C)pass = ArmsList::get().getArmsPass(getProfile().category, getProfile().id) + "/cu.txt";
+		if (a == Parameter::ATACK_D)pass = ArmsList::get().getArmsPass(getProfile().category, getProfile().id) + "/d.txt";
+		if (a == Parameter::ATACK_2D)pass = ArmsList::get().getArmsPass(getProfile().category, getProfile().id) + "/dd.txt";
 
 
 		ifs.open(pass.c_str());

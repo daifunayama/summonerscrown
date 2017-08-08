@@ -24,7 +24,7 @@ void HPGauge::Load() {
 		mGraphBar[2] = LoadGraph("Data/graphic/ui/bar3-1.png");
 	}
 	else {
-		//mGraphFace = LoadGraph("Data/graphic/ui/face_ria.png");
+		mGraphFace = LoadGraph("Data/graphic/ui/face_carol.png");
 		mGraphBar[0] = LoadGraph("Data/graphic/ui/bar1-2.png");
 		mGraphBar[1] = LoadGraph("Data/graphic/ui/bar2-2.png");
 		mGraphBar[2] = LoadGraph("Data/graphic/ui/bar3-2.png");

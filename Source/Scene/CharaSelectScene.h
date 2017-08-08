@@ -41,11 +41,11 @@ private:
 	int mGraphShadow;				//影のグラフィックハンドル
 	Player* mPlayer[2];				//プレイヤー
 	ss::Player* mSprite[2];			//プレイヤーのスプライト
+	
 
 	int mSoundCursor;				//カーソル移動のサウンドハンドル
 	int mSoundMetal;				//ガチャン音
 	int mSoundEnter;				//決定SE
 	int mSoundCancel;				//キャンセルSE
 	int mBGM;						//BGMのサウンドハンドル
-
 };

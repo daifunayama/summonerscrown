@@ -1,6 +1,15 @@
 #include "Southern.h"
 #include "../../../Application.h"
 
+Arms::Profile Southern::getProfile() {
+	Arms::Profile p;
+	p.category = Parameter::HK;
+	p.id = 3;
+	p.size = 0.3f;
+	p.speed = 0.6f;
+	return p;
+}
+
 /*グラフィックのロード*/
 void Southern::LoadArmsGraphic() {
 	//プレイヤーの作成
@@ -9,13 +18,13 @@ void Southern::LoadArmsGraphic() {
 	//アニメデータをリソースに追加
 	//Application::resman->addData("Data/arms/HollyKnights/vein/vein.ssbp");
 	//プレイヤーにリソースを割り当て
-	mSprite->setData("vein");// ssbpファイル名（拡張子不要）
+	mSprite->setData("Southern");// ssbpファイル名（拡張子不要）
 	
 	//プレイヤーの作成
 	mSprite2 = ss::Player::create();
 
 	//プレイヤーにリソースを割り当て
-	mSprite2->setData("vein");// ssbpファイル名（拡張子不要）
+	mSprite2->setData("Southern");// ssbpファイル名（拡張子不要）
 
 	mIcon = LoadGraph("Data/arms/HollyKnights/vein/icon.png");
 
@@ -30,8 +39,8 @@ void Southern::LoadArmsSound() {
 /*アニメーションの更新*/
 void Southern::UpdateArmsAnimation() {
 	if (mState == Parameter::S_ARMS_NORMAL) {
-		if (mSprite->getPlayAnimeName() != "wait") {
-			mSprite->play("arms/wait");
+		if (mSprite->getPlayAnimeName() != "wait_1") {
+			mSprite->play("arms/wait_1");
 			mSprite->setStep(0.6f);
 
 			mSprite2->play("arms/wait_back");

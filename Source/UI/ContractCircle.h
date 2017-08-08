@@ -12,6 +12,9 @@ public:
 	void Process(Player&);
 	void Draw();
 
+	void ProcessInContract(int cursor);
+	void DrawInContract();
+
 private:
 	int mPlayerId;				//プレイヤーID
 	int mGraphCircle;			//契約時のグラフィックハンドル

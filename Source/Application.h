@@ -1,8 +1,10 @@
 #pragma once
+#include "Arms\ArmsList.h"
 #include "Scene/TitleScene.h"
 #include "Scene/BattleScene.h"
 #include "Scene\/EyecatchScene.h"
 #include "Scene/CharaSelectScene.h"
+#include "Scene\/\ContractScene.h"
 #include "SSPlayer/SS5Player.h"
 #include "DxLib.h"
 
@@ -16,6 +18,7 @@ public:
 		Parameter::InitFont();
 		resman = ss::ResourceManager::getInstance();
 		AddSpriteResource();
+		ArmsList::get().init();
 		WaitKey();
 		if (CheckHitKey(KEY_INPUT_B) == 1) {
 			mScene = new BattleScene();
@@ -28,6 +31,10 @@ public:
 		else if (CheckHitKey(KEY_INPUT_S) == 1) {
 			mScene = new CharaSelectScene();
 			mOldSceneId = Parameter::SCENE_CHARASELECT;
+		}
+		else if (CheckHitKey(KEY_INPUT_C) == 1) {
+			mScene = new ContractScene();
+			mOldSceneId = Parameter::SCENE_CONTRACT;
 		}
 		else {
 			mScene = new TitleScene();

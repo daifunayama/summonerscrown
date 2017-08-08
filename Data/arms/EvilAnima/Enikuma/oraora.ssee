@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<SpriteStudioEffect version="2.00.00">
+	<name>oraora</name>
+	<exportPath></exportPath>
+	<effectData>
+		<lockRandSeed>0</lockRandSeed>
+		<isLockRandSeed>0</isLockRandSeed>
+		<fps>30</fps>
+		<bgcolor>FFB9B9B9</bgcolor>
+		<renderVersion>2</renderVersion>
+		<layoutScaleX>100</layoutScaleX>
+		<layoutScaleY>100</layoutScaleY>
+		<nodeList>
+			<node>
+				<name>Root</name>
+				<type>Root</type>
+				<arrayIndex>0</arrayIndex>
+				<parentIndex>-1</parentIndex>
+				<visible>1</visible>
+			</node>
+			<node>
+				<name>Emitter_1</name>
+				<type>Emmiter</type>
+				<arrayIndex>1</arrayIndex>
+				<parentIndex>0</parentIndex>
+				<visible>1</visible>
+				<behavior>
+					<CellName>ora1</CellName>
+					<CellMapName>arms.ssce</CellMapName>
+					<BlendType>Add</BlendType>
+					<list>
+						<value name="Basic">
+							<name>Basic</name>
+							<priority>64</priority>
+							<maximumParticle>105</maximumParticle>
+							<attimeCreate>1</attimeCreate>
+							<interval>1</interval>
+							<lifetime>30</lifetime>
+							<speed value="65.625" subvalue="88.0208358764648" />
+							<lifespan value="5" subvalue="8" />
+							<angle>272.432434082031</angle>
+							<angleVariance>44.7567558288574</angleVariance>
+						</value>
+						<value name="init_position">
+							<name>init_position</name>
+							<OffsetX value="-135.41667175293" subvalue="187.399993896484" />
+							<OffsetY value="-239.583343505859" subvalue="229.166656494141" />
+						</value>
+						<value name="trans_colorfade">
+							<name>trans_colorfade</name>
+							<disprange value="26.5625" subvalue="100" />
+						</value>
+						<value name="TurnToDirection">
+							<Rotation>91.4594573974609</Rotation>
+							<name>TurnToDirection</name>
+						</value>
+						<value name="InfiniteEmit">
+							<calcGen>0</calcGen>
+							<name>InfiniteEmit</name>
+						</value>
+					</list>
+				</behavior>
+			</node>
+			<node>
+				<name>Particle_1</name>
+				<type>Particle</type>
+				<arrayIndex>2</arrayIndex>
+				<parentIndex>1</parentIndex>
+				<visible>1</visible>
+				<behavior>
+					<CellName></CellName>
+					<CellMapName></CellMapName>
+					<BlendType>Add</BlendType>
+					<list />
+				</behavior>
+			</node>
+			<node>
+				<name>Emitter_2</name>
+				<type>Emmiter</type>
+				<arrayIndex>3</arrayIndex>
+				<parentIndex>0</parentIndex>
+				<visible>1</visible>
+				<behavior>
+					<CellName>ora2</CellName>
+					<CellMapName>arms.ssce</CellMapName>
+					<BlendType>Mix</BlendType>
+					<list>
+						<value name="Basic">
+							<name>Basic</name>
+							<priority>64</priority>
+							<maximumParticle>102</maximumParticle>
+							<attimeCreate>1</attimeCreate>
+							<interval>1</interval>
+							<lifetime>30</lifetime>
+							<speed value="68.2291717529297" subvalue="83.8541717529297" />
+							<lifespan value="5" subvalue="9" />
+							<angle>272.432434082031</angle>
+							<angleVariance>45</angleVariance>
+						</value>
+						<value name="OverWriteSeed">
+							<name>OverWriteSeed</name>
+							<Seed>0</Seed>
+						</value>
+						<value name="init_position">
+							<name>init_position</name>
+							<OffsetX value="-125.000007629395" subvalue="124.999992370605" />
+							<OffsetY value="-239.583343505859" subvalue="239.68000793457" />
+						</value>
+						<value name="trans_colorfade">
+							<name>trans_colorfade</name>
+							<disprange value="30.7291679382324" subvalue="100" />
+						</value>
+						<value name="TurnToDirection">
+							<Rotation>91.4594573974609</Rotation>
+							<name>TurnToDirection</name>
+						</value>
+						<value name="InfiniteEmit">
+							<calcGen>1118961664</calcGen>
+							<name>InfiniteEmit</name>
+						</value>
+					</list>
+				</behavior>
+			</node>
+			<node>
+				<name>Particle_2</name>
+				<type>Particle</type>
+				<arrayIndex>4</arrayIndex>
+				<parentIndex>3</parentIndex>
+				<visible>1</visible>
+				<behavior>
+					<CellName></CellName>
+					<CellMapName></CellMapName>
+					<BlendType>Add</BlendType>
+					<list />
+				</behavior>
+			</node>
+		</nodeList>
+	</effectData>
+</SpriteStudioEffect>

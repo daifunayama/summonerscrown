@@ -14,9 +14,17 @@ Follower,Automata,Spell,Blazeはこのクラスを継承し独自の処理を行う
 */
 
 class Arms {
+protected:
+
+
+	struct Profile {
+		int category;
+		int id;
+		float size;
+		float speed;
+	};
+
 public:
-	inline int getCategoryId() { return mCategoryId; }
-	inline int getArmsId() { return mArmsId; }
 	inline int getState() { return mState; }
 	inline int getCounter() { return mCounter; }
 	inline int getPositionX() { return mPositionX; }
@@ -35,7 +43,9 @@ public:
 	inline void setCounter(int counter) { mCounter = counter; }
 
 	void ReceivePlayer(Player*, Controller);
+	void LoadArmsName();
 
+	virtual Profile getProfile() = 0;
 	virtual void InitArms() = 0;
 	virtual void LoadArmsData() = 0;
 	virtual void LoadArmsGraphic() = 0;
@@ -51,7 +61,6 @@ public:
 	virtual void CheckArmsAtackHit(Player&) = 0;
 
 	virtual bool isAtackState() = 0;
-
 
 protected:
 	Player* mPlayer;				//プレイヤー
@@ -69,7 +78,7 @@ protected:
 	int mIcon;						//魔具アイコンのグラフィックハンドル
 	int mSoundAtack[10];			//SEハンドル
 	EffAnimation mAnimation[10];	//アニメーション
-	string mPass;					//魔具のディレクトリパス
+	//string mPass;					//魔具のディレクトリパス
 	string mName;					//魔具の名称
 	string mCondition;				//誓約
 };

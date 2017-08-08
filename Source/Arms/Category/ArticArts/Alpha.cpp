@@ -1,6 +1,16 @@
 #include "Alpha.h"
 #include "../../../Application.h"
 
+Arms::Profile Alpha::getProfile() {
+	Arms::Profile p;
+	p.category = Parameter::AA;
+	p.id = 0;
+	p.size = 0.25f;
+	p.speed = 0.5f;
+	return p;
+}
+
+
 /*グラフィックのロード*/
 void Alpha::LoadArmsGraphic() {
 	//プレイヤーの作成

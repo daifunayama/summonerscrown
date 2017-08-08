@@ -4,14 +4,12 @@
 class Cyanos : public FollowerArms {
 public:
 	Cyanos() {
-		mName = "Œ¹‘n–‚‹…@ƒVƒAƒmƒX";
-		mPass = "Data/arms/PrimalSpheres/Cyanos";
-		mCondition = "–‚‹ï‚É‚æ‚é‰“‹——£UŒ‚‚ğ‚P‚Oí—Şƒqƒbƒg‚³‚¹‚é";
-		mCategoryId = Parameter::PS;
+		LoadArmsName();
 		mMaxBullet = 5;
 		mBullet = mMaxBullet;
 	}
 
+	Profile getProfile();
 	void UpdateArmsAnimation();
 	void LoadArmsGraphic();
 	void LoadArmsSound();
