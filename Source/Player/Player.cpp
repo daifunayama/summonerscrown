@@ -2,9 +2,11 @@
 #include "Player.h"
 #include "../Parameter.h"
 #include "../Input/Input.h"
+#include "../BackGround/BackGround.h"
 #include "../Arms/FollowerArms.h"
 #include "../Arms/Category/HollyKnights/Aries.h"
 #include "../Arms/Category/HollyKnights/Southern.h"
+#include "../Arms/Category/HollyKnights/Hercules.h"
 #include "../Arms/Category/ArticArts/Alpha.h"
 #include "../Arms/Category/EvilAnima/Enikuma.h"
 #include "../Arms/Category/Comander/Cavalier.h"
@@ -67,14 +69,15 @@ void Player::Init(int p) {
 
 /*音量の初期化*/
 void Player::InitVolume() {
-	ChangeVolumeSoundMem(128, mSoundBurst);
-	ChangeVolumeSoundMem(128, mSoundDamage);
+	//ChangeVolumeSoundMem(128, mSoundBurst);
+	//ChangeVolumeSoundMem(128, mSoundDamage);
 }
 
 /*グラフィックのロード*/
 void Player::LoadGraphic() {
 
-	mColor = 1;
+	if(mPlayerId == 0)mColor = 1;
+	else mColor = 3;
 
 	//プレイヤーの作成
 	mSprite = ss::Player::create();
@@ -92,11 +95,14 @@ void Player::LoadGraphic() {
 	mSprite->setStep(getProfile().speed);
 
 	mGraphShadow = LoadGraph("Data/graphic/game/shadow.png");
+	mGraphThrow = LoadGraph("Data/graphic/ui/bikkuri.png");
 	mGraphDamage = LoadGraph("Data/graphic/animation/slash3.png");
+	mGraphDamage2 = LoadGraph("Data/graphic/animation/damage2.png");
 
 	mGraphSummonEffect1 = LoadGraph("Data/graphic/animation/summon_effect1.png");
 	mGraphSummonEffect2 = LoadGraph("Data/graphic/animation/summon_effect2.png");
 	mAnimeBarrier = LoadGraph("Data/graphic/animation/barrier.png");
+	mAnimeCancel = LoadGraph("Data/graphic/animation/cancel.png");
 	mAnimeBurst1 = LoadGraph("Data/graphic/animation/burst1.png");
 	mAnimeBurst2 = LoadGraph("Data/graphic/animation/burst2.png");
 }
@@ -109,16 +115,20 @@ void Player::LoadArms(int p) {
 		mArms[0] = new Cyanos();
 		mArms[1] = new Cavalier();
 		mArms[2] = new Southern();
+		mArms[3] = new Enikuma();
 		mArms[4] = new Aries();
+		mArms[6] = new Hercules();
 		mArms[7] = new Alpha();
 		mArmsExist[0] = true;
 		mArmsExist[1] = true;
 		mArmsExist[2] = true;
+		mArmsExist[3] = true;
 		mArmsExist[4] = true;
+		mArmsExist[6] = true;
 		mArmsExist[7] = true;
 	}
 	else {
-		mArms[0] = new Enikuma();
+		mArms[0] = new Aries();
 		mArms[1] = new Cyanos();
 		mArms[2] = new Cavalier();
 		mArmsExist[0] = true;
@@ -145,10 +155,8 @@ void Player::LoadCommonSound() {
 	mSoundGuard = LoadSoundMem("Data/se/sen_ka_katana_04.mp3");
 	mSoundCatch = LoadSoundMem("Data/se/つかむ・ガシッ01.mp3");
 	mSoundEscape = LoadSoundMem("Data/se/setup1.mp3");
+	mSoundCancel = LoadSoundMem("Data/se/button69.mp3");
 	mSoundBurst = LoadSoundMem("Data/se/burst.mp3");
-
-	//ChangeVolumeSoundMem(128, mSoundBurst);
-	//ChangeVolumeSoundMem(128, mSoundDamage);
 }
 
 /*プレイヤーを動かす*/
@@ -170,7 +178,7 @@ void Player::Move(Player& another) {
 	DoBarrier();
 
 	//コネクションブレイク
-	if (mController.getKey(5) > 0 && mController.getKey(4) == 1)DoBurst();
+	if (mController.getKey(5) > 0 && mController.getKey(4) == 1 && mArmsExist[mCircleCursor])DoBurst();
 
 	//静止・歩行状態のとき
 	if (mState == Parameter::S_PLAYER_NORMAL) {
@@ -263,34 +271,56 @@ void Player::Move(Player& another) {
 	else if (isDamageState())DoDamaged();
 
 	//召喚する
-	if (mState == Parameter::S_PLAYER_NORMAL || mState == Parameter::S_PLAYER_SQUAT) {
-		if (mOpenCircle && mGround) {
+	//if (mState == Parameter::S_PLAYER_NORMAL || mState == Parameter::S_PLAYER_SQUAT) {
+		if (mOpenCircle) {
 			if (mController.getKey(6) == 1) {
 				StartSummon();
 			}
 		}
-	}
+	//}
 
 	//攻撃を始める
 	if(!mBarrier && mState == Parameter::S_PLAYER_NORMAL || mState == Parameter::S_PLAYER_SQUAT ||
 		isAtackState())StartAtack();
 
+	//クイックキャンセル
+	if (!mController.getKey(5) && mController.getKey(6) == 1 && mEXP >= 25) {
+		PlaySoundMem(mSoundCancel, DX_PLAYTYPE_BACK);
+		AnimationController::getInstance().Create(mAnimeCancel, 1, mRight? mPositionX-100 : mPositionX+100, mPositionY, 
+			300, 300, 2.0f, 0, 4, 1, 30, -1, 1, 1);
+		BackGround::get().setBlackCounter(mPlayerId, 30);
+	}
+
+	//クイックアサルト
+	if (mController.getKey(5) && mController.getKey(3) == 1 && mEXP >= 50 && mArms[mCircleCursor]->getProfile().type == 1) {
+		PlaySoundMem(mSoundCancel, DX_PLAYTYPE_BACK);
+		AnimationController::getInstance().Create(mAnimeCancel, 1, mRight ? mPositionX - 100 : mPositionX + 100, mPositionY,
+			300, 300, 2.0f, 0, 4, 1, 30, -1, 1, 1);
+		BackGround::get().setBlackCounter(mPlayerId, 30);
+
+		if (mArmsExist[mCircleCursor] && mArmsId != mCircleCursor) {
+			mArmsId = mCircleCursor;
+		}
+		mVoice->PlayVoiceOver(Parameter::VOICE_SUMMON2, GetRand(2));
+	}
+
 	//投げを始める
 	if(mState == Parameter::S_PLAYER_NORMAL || isAtackState())StartThrow(another);
 
 	//投げぬけ
-	if (mState == Parameter::S_PLAYER_CAUGHT) {
+	if (mState == Parameter::S_PLAYER_CAUGHT && another.getState() == Parameter::S_PLAYER_CATCH) {
 		if (mController.getKey(1) == 1 &&
 			(mController.getRight() > 0 && mController.getRight() < 3 || mController.getLeft() > 0 && mController.getLeft() < 3)) {
 
 			mState = Parameter::S_PLAYER_ESCAPE;
-			another.mState = Parameter::S_PLAYER_ESCAPE;
+			another.mState = Parameter::S_PLAYER_DAMAGE_U;
 			another.mAcceleX = mRight ? 20 : -20;
 			mAcceleX = 0;
 			mCounter = 15;
 			another.mCounter = 15;
 
 			PlaySoundMem(mSoundEscape, DX_PLAYTYPE_BACK);
+			mVoice->PlayVoiceOver(Parameter::VOICE_ESCAPE, 0);
 		}
 	}
 
@@ -315,6 +345,11 @@ void Player::Move(Player& another) {
 
 	//カウンターを減らし、0のとき次状態へ遷移
 	DecrementCounter(another);
+
+	if (mState == Parameter::S_PLAYER_NORMAL && mAcceleX == 0 && mGround)mIdleCounter++;
+	else mIdleCounter = 0;
+
+	if (mIdleCounter == 300)mVoice->PlayVoiceIf(Parameter::VOICE_WAIT, GetRand(1));
 
 	//重力の処理
 	if (!mGround && mState != Parameter::S_PLAYER_BURST)mAcceleY -= 2;
@@ -344,6 +379,8 @@ void Player::DoJump() {
 
 	//接地フラグをfalseに
 	mGround = false;
+
+	//mVoice->PlayVoiceOver(Parameter::VOICE_JUMP, 0);
 }
 
 /*空中ジャンプする*/
@@ -359,6 +396,8 @@ void Player::DoAirJump() {
 	mAcceleY = 30;
 
 	mAirJumped = true;
+
+	//mVoice->PlayVoiceOver(Parameter::VOICE_JUMP, 0);
 }
 
 /*バリアをはる*/
@@ -394,7 +433,13 @@ void Player::DoBurst() {
 	mCounter = 60;
 	AnimationController::getInstance().Create(mAnimeBurst1, 1, mPositionX, mPositionY, 500, 500, 1.5, 0, 4, 1, 63, -1, mRight, false);
 	AnimationController::getInstance().Create(mAnimeBurst2, 3, mPositionX, mPositionY, 500, 500, 1.5, 0, 4, 1, 63, -1, mRight, false);
+	
+	BackGround::get().setBlackCounter(mPlayerId, 60);
+
+	mArmsExist[mCircleCursor] = false;
+	
 	PlaySoundMem(mSoundBurst, DX_PLAYTYPE_BACK, true);
+	mVoice->PlayVoiceOver(Parameter::VOICE_BURST, GetRand(1));
 }
 
 /*召喚を始める*/
@@ -402,16 +447,41 @@ void Player::StartSummon() {
 	int pX;
 
 	//契約陣に魔具が存在するとき
-	if (mArmsExist[mCircleCursor] && mArmsId != mCircleCursor && mArms[mArmsId]->getState() == Parameter::S_ARMS_NORMAL) {
-		pX = mRight ? mPositionX - 100 : mPositionX + 100;
+	if (mArmsExist[mCircleCursor] && mArmsId != mCircleCursor) {
 
-		mArmsId = mCircleCursor;
-		mArms[mArmsId]->StartSummon();
+		//フォロワー
+		if (mArms[mCircleCursor]->getProfile().type == 1 && mArms[mArmsId]->getState() == Parameter::S_ARMS_NORMAL &&
+			(mState == Parameter::S_PLAYER_NORMAL || mState == Parameter::S_PLAYER_SQUAT) && mGround){
+			pX = mRight ? mPositionX - 100 : mPositionX + 100;
 
-		AnimationController::getInstance().Create(mGraphSummonEffect1, 1, pX, 500, 400, 400, 1.2, 0, 4, 1, 40, 0, true, false);
-		AnimationController::getInstance().Create(mGraphSummonEffect2, 2, pX, 500, 400, 400, 1.2, 0, 4, 1, 40, 0, true, false);
+			mArmsId = mCircleCursor;
+			mArms[mArmsId]->StartSummon();
 
-		PlaySoundMem(mSoundSummon, DX_PLAYTYPE_BACK);
+			AnimationController::getInstance().Create(mGraphSummonEffect1, 1, pX, 500, 400, 400, 1.2, 0, 4, 1, 40, 0, true, false);
+			AnimationController::getInstance().Create(mGraphSummonEffect2, 2, pX, 500, 400, 400, 1.2, 0, 4, 1, 40, 0, true, false);
+
+			BackGround::get().setBlackCounter(mPlayerId, 60);
+
+			PlaySoundMem(mSoundSummon, DX_PLAYTYPE_BACK);
+
+			if(mArms[mArmsId]->getProfile().category == Parameter::PS)mVoice->PlayVoiceOver(Parameter::VOICE_SUMMON1,3);
+			else mVoice->PlayVoiceOver(Parameter::VOICE_SUMMON1, GetRand(2));
+		}
+
+		//ブレイズ
+		if (mArms[mCircleCursor]->getProfile().type == 4 && mEXP >= 50) {
+			mBlaze = mArms[mCircleCursor];
+			mBlaze->StartAtack();
+
+			BackGround::get().setBlackCounter(mPlayerId, 60);
+			mEXP -= 50;
+
+			PlaySoundMem(mSoundSummon, DX_PLAYTYPE_BACK);
+
+			mVoice->PlayVoiceOver(Parameter::VOICE_SUMMON3, GetRand(1));
+
+			mHitStop = 40;
+		}
 	}
 }
 
@@ -430,8 +500,10 @@ void Player::StartThrow(Player& another) {
 			mThrowDirection = true;
 			mState = Parameter::S_PLAYER_CATCH;
 			another.mState = Parameter::S_PLAYER_CAUGHT;
-			mCounter = 30;
+			mCounter = 20;
 			PlaySoundMem(mSoundCatch, DX_PLAYTYPE_BACK);
+
+			mVoice->PlayVoiceOver(Parameter::VOICE_THROW,0);
 		}
 	}
 	if (mController.getKey(1) == 1 && mController.getLeft() > 0 && mController.getLeft() < 3) {
@@ -442,8 +514,10 @@ void Player::StartThrow(Player& another) {
 			mThrowDirection = true;
 			mState = Parameter::S_PLAYER_CATCH;
 			another.mState = Parameter::S_PLAYER_CAUGHT;
-			mCounter = 30;
+			mCounter = 20;
 			PlaySoundMem(mSoundCatch, DX_PLAYTYPE_BACK);
+
+			mVoice->PlayVoiceOver(Parameter::VOICE_THROW, 0);
 		}
 	}
 }
@@ -654,6 +728,8 @@ void Player::DoAtack() {
 void Player::StartDash() {
 	mState = Parameter::S_PLAYER_DASH;
 	mCounter = 15;
+
+	mVoice->PlayVoiceIf(Parameter::VOICE_DASH, 0);
 }
 
 /*ダッシュ*/
@@ -666,6 +742,8 @@ void Player::DoDash() {
 void Player::StartStep() {
 	mState = Parameter::S_PLAYER_STEP;
 	mCounter = 15;
+
+	mVoice->PlayVoiceIf(Parameter::VOICE_BACKSTEP, 0);
 }
 
 /*ステップ*/
@@ -698,7 +776,9 @@ void Player::DecrementCounter(Player &another) {
 			else if (isDamageState() && mState != Parameter::S_PLAYER_DAMAGE_AIR2) {
 				if(!mController.getDown())mState = Parameter::S_PLAYER_NORMAL;
 				else mState = Parameter::S_PLAYER_SQUAT;
+				if (another.getChain() >= 15)mVoice->PlayVoice(Parameter::VOICE_AFTERCOMBO, GetRand(1));
 				another.setChain(0);
+				mArms[mArmsId]->ResetPosition();
 			}
 
 			//ダウン→通常
@@ -721,7 +801,7 @@ void Player::DecrementCounter(Player &another) {
 			}
 			else if (mState == Parameter::S_PLAYER_CATCH) {
 				mState = Parameter::S_PLAYER_THROW;
-				mCounter = 30;
+				mCounter = 40;
 				if (mRight && mController.getLeft() || !mRight && mController.getRight())mThrowDirection = false;
 			}
 			else if (mState == Parameter::S_PLAYER_THROW) {
@@ -742,13 +822,19 @@ void Player::DecrementHitStop() {
 void Player::ChangeDirection(Player& another) {
 	if (mRight) {
 		if (mGround && mPositionX > another.mPositionX
-			&& mState == Parameter::S_PLAYER_NORMAL)mRight = false;
+			&& mState == Parameter::S_PLAYER_NORMAL) {
+			mRight = false;
+			///if(mAcceleX == 0) mVoice->PlayVoiceIf(Parameter::VOICE_CD, GetRand(1));
+		}
 	}
 	else {
 		if (mGround && mPositionX < another.mPositionX
-			&& mState == Parameter::S_PLAYER_NORMAL)mRight = true;
+			&& mState == Parameter::S_PLAYER_NORMAL) {
+			mRight = true;
+			//if (mAcceleX == 0)mVoice->PlayVoiceIf(Parameter::VOICE_CD, GetRand(1));
+		}
 	}
-	mArms[mArmsId]->setRight(mRight);
+	if(!mArms[mArmsId]->isAtackState())mArms[mArmsId]->setRight(mRight);
 }
 
 /*攻撃を食らう*/
@@ -843,6 +929,8 @@ void Player::EatDamage(Player& another) {
 					mState = Parameter::S_PLAYER_DAMAGE_AIR;
 					mGround = false;
 				}
+
+				mVoice->PlayVoiceIf(Parameter::VOICE_DAMAGE1, GetRand(2));
 			}
 			else {
 				mState = Parameter::S_PLAYER_DAMAGE_AIR;
@@ -854,6 +942,8 @@ void Player::EatDamage(Player& another) {
 				mAcceleX = mEatAtackRight ? mEatAtackData.getAirVectorX() : -mEatAtackData.getAirVectorX();
 
 				mAcceleY = mEatAtackData.getAirVectorY();
+
+				mVoice->PlayVoiceIf(Parameter::VOICE_DAMAGE2, GetRand(1));
 			}
 
 			if (mEatAtackData.getForceDown())mState = Parameter::S_PLAYER_DAMAGE_AIR2;
@@ -878,9 +968,13 @@ void Player::EatDamage(Player& another) {
 				else effectY = mPositionY - 250;
 				SSEffectController::getInstance().Play("mye1/mye1", mPositionX, effectY, 0.9f, 1.0f, 0.6f, GetRand(359), 200);
 			}
+			if (mEatAtackData.getEffectType() == 3) {
+				if (mEatAtackData.getAtackType() == 0)effectY = mPositionY;
+				else effectY = mPositionY + 80;
+				AnimationController::getInstance().Create(mGraphDamage2, 1, mPositionX, effectY, 500, 500, 4.0 , GetRand(359), 4, 2, 48, 0, true, true);
+			
+			}
 
-			mHitStop = 0;
-			another.mHitStop = 0;
 		}
 		
 	}
@@ -897,7 +991,7 @@ void Player::MoveArms() {
 
 /*魔具を描画する*/
 void Player::DrawArms() {
-	mArms[mArmsId]->Draw();
+	if(!isDamageState())mArms[mArmsId]->Draw();
 }
 
 /*魔具を自身の後ろに描画する*/
@@ -1316,13 +1410,84 @@ void Player::CheckPlayersAtackHit(Player& another) {
 /*グラフィックの描画*/
 void Player::Draw() {
 	DrawShadow();
-	mSprite->draw();\
-}
+	mSprite->draw();
 
+	/*
+	int box = LoadGraph("Data/graphic/ui/box.png");
+
+	ss::ResluteState state;
+	if (mPlayerId == 0) {
+		ss::Quad mQuad =  mSprite->getPartQuad("right_wing2");
+
+		DrawModiGraphF(mQuad.tl.x, mQuad.tl.y, mQuad.tr.x, mQuad.tr.y, mQuad.br.x, mQuad.br.y, mQuad.bl.x, mQuad.bl.y, box, true);
+
+	}
+		/*
+		mSprite->getPartState(state, "right_wing2");
+
+		//1
+		float l = sqrtf(pow(state.size_X * state.scaleX * state.pivotX, 2.0) + pow(state.size_Y * state.scaleY * state.pivotY, 2.0));
+		float seta = atan2f(state.size_Y * state.scaleY * state.pivotY, state.size_X * state.scaleX * state.pivotX);
+
+		float x2 = state.x - l * cosf(seta - state.rotationZ * Parameter::PI / 180);
+		float y2 = (Parameter::GROUND_LINE - state.y + 20) - l * sinf(seta - state.rotationZ * Parameter::PI / 180);
+		
+		DrawCircle(x2, y2, 3, Parameter::COLOR_RED, 1, 1);
+
+
+		//2
+		l = sqrtf(pow(state.size_X * state.scaleX * (1.0f - state.pivotX), 2.0) + pow(state.size_Y * state.scaleY * state.pivotY, 2.0));
+		seta = atan2f(state.size_Y * state.scaleY * state.pivotY, state.size_X * state.scaleX * (1.0f - state.pivotX));
+
+		x2 = state.x + l * cosf(seta + state.rotationZ * Parameter::PI / 180);
+		y2 = (Parameter::GROUND_LINE - state.y + 20) - l * sinf(seta + state.rotationZ * Parameter::PI / 180);
+
+		DrawCircle(x2, y2, 3, Parameter::COLOR_RED, 1, 1);
+
+
+		//3
+		l = sqrtf(pow(state.size_X * state.scaleX * state.pivotX, 2.0) + pow(state.size_Y * state.scaleY * (1.0f - state.pivotY), 2.0));
+		seta = atan2f(state.size_Y * state.scaleY * (1.0f - state.pivotY), state.size_X * state.scaleX * state.pivotX);
+
+		x2 = state.x - l * cosf(seta + state.rotationZ * Parameter::PI / 180);
+		y2 = (Parameter::GROUND_LINE - state.y + 20) + l * sinf(seta + state.rotationZ * Parameter::PI / 180);
+
+		DrawCircle(x2, y2, 3, Parameter::COLOR_BLUE, 1, 1);
+
+
+		//4
+		l = sqrtf(pow(state.size_X * state.scaleX * (1.0f - state.pivotX), 2.0) + pow(state.size_Y * state.scaleY * (1.0f - state.pivotY), 2.0));
+		seta = atan2f(state.size_Y * state.scaleY * (1.0f - state.pivotY), state.size_X * state.scaleX * (1.0f - state.pivotX));
+
+		x2 = state.x + l * cosf(seta - state.rotationZ * Parameter::PI / 180);
+		y2 = (Parameter::GROUND_LINE - state.y + 20) + l * sinf(seta - state.rotationZ * Parameter::PI / 180);
+
+		DrawCircle(x2, y2, 3, Parameter::COLOR_BLUE, 1, 1);
+
+
+		DrawFormatString(10, 10, Parameter::COLOR_WHITE, "%5f %5f", state.x, state.y);
+		DrawFormatString(10, 30, Parameter::COLOR_WHITE, "%5f %5f", state.size_X*state.scaleX, state.size_Y*state.scaleY);
+		DrawFormatString(10, 50, Parameter::COLOR_WHITE, "%5f %5f", state.scaleX, state.scaleY);
+		DrawFormatString(10, 70, Parameter::COLOR_WHITE, "%5f %5f", state.pivotX, state.pivotY);
+		DrawFormatString(10, 90, Parameter::COLOR_WHITE, "%5f %5f", l,seta);
+		DrawFormatString(10, 110, Parameter::COLOR_WHITE, "%5f %5f", state.rotationZ, state.rotationZ * Parameter::PI / 180);
+		DrawFormatString(10, 130, Parameter::COLOR_WHITE, "%5f %5f", x2,y2);
+
+	
+
+		//DrawBox(state.x,Parameter::GROUND_LINE - state.y + 20, 
+		//	state.x + state.size_X*state.scaleX, Parameter::GROUND_LINE - (state.y + state.size_Y*state.scaleY) + 20, Parameter::COLOR_RED, true);
+		*/
+}
 /*影を描画*/
 void Player::DrawShadow() {
 	DrawGraph(mPositionX - 60 - (Camera::getInstance().getCenterX() - Parameter::WINDOW_WIDTH / 2), 
 		Parameter::GROUND_LINE - 70 - (Camera::getInstance().getCenterY() - Parameter::WINDOW_HEIGHT / 2), mGraphShadow, true);
+}
+
+void Player::DrawThrowEffect() {
+	DrawGraph(mPositionX - (Camera::getInstance().getCenterX() - Parameter::WINDOW_WIDTH / 2) -200, 0, 
+		mGraphThrow, true);
 }
 
 /*ヒットボックスの描画*/
@@ -1510,7 +1675,8 @@ bool Player::isCanArmsAtackState() {
 	if (
 		mState == Parameter::S_ARMS_NORMAL ||
 		mState == Parameter::S_PLAYER_SQUAT ||
-		isAtackState()
+		isAtackState() ||
+		mState == Parameter::S_PLAYER_THROW
 		)
 	{
 		return true;

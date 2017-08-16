@@ -20,6 +20,7 @@ protected:
 	struct Profile {
 		int category;
 		int id;
+		int type;
 		float size;
 		float speed;
 	};
@@ -51,7 +52,9 @@ public:
 	virtual void LoadArmsGraphic() = 0;
 	virtual void LoadArmsSound() = 0;
 	virtual void Move() = 0;
-	virtual void StartSummon() = 0;
+	virtual void ResetPosition(){}
+	virtual void StartSummon() {};
+	virtual void StartAtack() = 0;
 	virtual void UpdateArmsAnimation() = 0;
 	virtual void Draw() = 0;
 	virtual void DrawBack() {}
@@ -60,7 +63,7 @@ public:
 
 	virtual void CheckArmsAtackHit(Player&) = 0;
 
-	virtual bool isAtackState() = 0;
+	virtual bool isAtackState() { return false; }
 
 protected:
 	Player* mPlayer;				//ÉvÉåÉCÉÑÅ[

@@ -38,10 +38,12 @@ private:
 	int mGraphStand[11];			//キャラ立ち絵のグラフィックハンドル
 	int mGraphEmblem[11];			//エンブレムのグラフィックハンドル
 	int mGraphAnime1;				//背景アニメのグラフィックハンドル
+	int mGraphAnime2;
 	int mGraphShadow;				//影のグラフィックハンドル
 	Player* mPlayer[2];				//プレイヤー
 	ss::Player* mSprite[2];			//プレイヤーのスプライト
 	
+	int voice[11][5];				//選択中ボイス
 
 	int mSoundCursor;				//カーソル移動のサウンドハンドル
 	int mSoundMetal;				//ガチャン音

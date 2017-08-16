@@ -62,6 +62,7 @@ void  Application::AddSpriteResource() {
 
 	Application::resman->addData("Data/arms/HollyKnights/Aries/Aries.ssbp");
 	Application::resman->addData("Data/arms/HollyKnights/Southern/Southern.ssbp");
+	Application::resman->addData("Data/arms/HollyKnights/Hercules/Hercules.ssbp");
 	Application::resman->addData("Data/arms/PrimalSpheres/Cyanos/Cyanos.ssbp");
 	
 	Application::resman->addData("Data/arms/Comander/Cavalier/cavalier.ssbp");

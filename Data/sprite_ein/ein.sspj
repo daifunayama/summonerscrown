@@ -139,9 +139,12 @@
 		<value>chakram.ssce</value>
 		<value>ein.ssce</value>
 		<value>ein2.ssce</value>
+		<value>ein3.ssce</value>
 		<value>einsprite2-2.ssce</value>
+		<value>einsprite3-2.ssce</value>
 		<value>kama.ssce</value>
 		<value>katana.ssce</value>
+		<value>pendulum.ssce</value>
 		<value>spear.ssce</value>
 		<value>ss_effect_c.ssce</value>
 		<value>tate.ssce</value>
@@ -149,14 +152,15 @@
 	<animepackNames>
 		<value>ein1.ssae</value>
 		<value>ein2.ssae</value>
+		<value>ein3.ssae</value>
 	</animepackNames>
 	<effectFileNames>
 		<value>light.ssee</value>
 	</effectFileNames>
 	<lastAnimeFile>ein1.ssae</lastAnimeFile>
-	<lastAnimeName>jb</lastAnimeName>
+	<lastAnimeName>damage_air</lastAnimeName>
 	<lastCellMapFile>ein.ssce</lastCellMapFile>
 	<lastEffectFile>light.ssee</lastEffectFile>
-	<lastCell>right_tail</lastCell>
+	<lastCell>left_wing3</lastCell>
 	<setupmode>0</setupmode>
 </SpriteStudioProject>

@@ -8,7 +8,7 @@ HPゲージの制御を行うクラス
 class HPGauge {
 public:
 	void setPlayerId(int id) { mPlayerId = id; }
-	void Load();
+	void Load(Player&);
 	void Process(Player&, Player&);
 	void Draw();
 	void DrawDegitNumber(int x, int y, int value);
