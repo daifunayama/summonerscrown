@@ -5,7 +5,6 @@ Arms::Profile Enikuma::getProfile() {
 	Arms::Profile p;
 	p.category = Parameter::EA;
 	p.id = 2;
-	p.type = 1;
 	p.size = 0.25f;
 	p.speed = 0.6f;
 	return p;
@@ -27,9 +26,6 @@ void Enikuma::LoadArmsGraphic() {
 
 /*サウンドのロード*/
 void Enikuma::LoadArmsSound() {
-	mSoundAtack[1] = LoadSoundMem("Data/se/手足・空振り04.mp3");
-	mSoundAtack[2] = LoadSoundMem("Data/se/ロボット・殴る、蹴る02.mp3");
-
 }
 
 /*アニメーションの更新*/
@@ -93,18 +89,6 @@ void Enikuma::StartAtack() {
 			mSprite->setStep(0.7);
 		}
 	}
-}
-
-void Enikuma::DoAssult() {
-	ResetPosition();
-	mState = Parameter::S_ARMS_ATACK_D;
-
-	mAtack[Parameter::ATACK_D].InitAtack();
-	mRight = mPlayer->getRight();
-
-	mSprite->play("arms/d");
-	mSprite->setStep(0.7);
-	mPlayer->setEX(mPlayer->getEX() - 50);
 }
 
 /*召喚可能かどうかのチェック*/

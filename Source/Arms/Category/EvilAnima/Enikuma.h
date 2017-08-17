@@ -18,7 +18,7 @@ public:
 
 	//オーバーライド
 	void StartAtack();
-	void DoAssult();
+
 
 private:
 };

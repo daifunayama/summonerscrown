@@ -4,9 +4,7 @@
 #include "../../Utility.h"
 #include "../../Atack/FrameData.h"
 #include "../../Effekseer/AnimationController.h"
-#include "../../SSEffect/SSEffectController.h"
 #include "Ein.h"
-#include "../../Voice/Character/VoiceEin.h"
 
 Profile Ein::getProfile() {
 	Profile p;
@@ -47,8 +45,8 @@ void Ein::LoadSound() {
 
 /*ボイスのロード*/
 void Ein::LoadVoice() {
-	mVoice = new VoiceEin();
-	mVoice->Load();
+	mPlayerAtack[Parameter::P_ATACK_A].setVoiceHandle(LoadSoundMem("Data/voice/ein/16_さとうささら_えい.wav"));
+	mPlayerAtack[Parameter::P_ATACK_B].setVoiceHandle(LoadSoundMem("Data/voice/ein/17_さとうささら_きりさけ.wav"));
 }
 
 /*プレイヤーデータをロード*/
@@ -302,14 +300,9 @@ void Ein::UpdateAnimation() {
 
 			//プレイヤーが静止している
 			if (mAcceleX == 0) {
-				if (mSprite->getPlayAnimeName() != "idle" && mSprite->getPlayAnimeName() != "wait") {
+				if (mSprite->getPlayAnimeName() != "idle") {
 					mSprite->play(name + "idle");
 				}
-				if (mIdleCounter == 300 && mPlayerId == 0) {
-					mSprite->play(name + "wait");
-					mSprite->setStep(0.5f);
-				}
-				if (mIdleCounter == 400 && mPlayerId == 0)mSprite->play(name + "idle");
 			}
 			//プレイヤーが右に進んでいる
 			else if (mAcceleX > 0) {
@@ -475,19 +468,6 @@ void Ein::UpdateAnimation() {
 		mSprite->play(name + "jb");
 		mSprite->setStep(1.2);
 	}
-	//つかみ
-	else if (mState == Parameter::S_PLAYER_CATCH) {
-		if (mSprite->getPlayAnimeName() != "catch") {
-			mSprite->play(name + "catch");
-		}
-	}
-	//投げ
-	else if (mState == Parameter::S_PLAYER_THROW) {
-		if (mSprite->getPlayAnimeName() != "throw") {
-			mSprite->play(name + "throw");
-			mSprite->setStep(0.55f);
-		}
-	}
 
 	//表示位置の更新
 	mSprite->setPosition(mPositionX -(Camera::getInstance().getCenterX() - Parameter::WINDOW_WIDTH / 2), 
@@ -508,7 +488,7 @@ void Ein::StartAtack() {
 		mState = Parameter::S_PLAYER_ATACK_A;
 		mAcceleX = 0;
 		mPlayerAtack[Parameter::P_ATACK_A].InitAtack();
-		mVoice->PlayVoiceIf(Parameter::VOICE_PATACK, 0);
+		//mPlayerAtack[Parameter::P_ATACK_A].PlayVoice();
 	}
 	//A下攻撃
 	if (mController.getKey(1) == 3 && !mController.getUp() &&
@@ -517,7 +497,7 @@ void Ein::StartAtack() {
 		mState = Parameter::S_PLAYER_ATACK_2A;
 		mAcceleX = 0;
 		mPlayerAtack[Parameter::P_ATACK_2A].InitAtack();
-		mVoice->PlayVoiceIf(Parameter::VOICE_PATACK, 0);
+		//mPlayerAtack[Parameter::P_ATACK_A].PlayVoice();
 	}
 	//B攻撃
 	if (mController.getKey(2) == 1 && !mController.getUp() && !mController.getDown() && !mController.getRight() && !mController.getLeft()
@@ -526,7 +506,7 @@ void Ein::StartAtack() {
 		mState = Parameter::S_PLAYER_ATACK_B;
 		mAcceleX = 0;
 		mPlayerAtack[Parameter::P_ATACK_B].InitAtack();
-		mVoice->PlayVoiceOver(Parameter::VOICE_PATACK, 6);
+		//mPlayerAtack[Parameter::P_ATACK_B].PlayVoice();
 	}
 	//B下攻撃
 	if (mController.getKey(2) == 1 && !mController.getUp() &&
@@ -536,7 +516,7 @@ void Ein::StartAtack() {
 		mState = Parameter::S_PLAYER_ATACK_2B;
 		mAcceleX = 0;
 		mPlayerAtack[Parameter::P_ATACK_2B].InitAtack();
-		mVoice->PlayVoiceOver(Parameter::VOICE_PATACK, 5);
+		//mPlayerAtack[Parameter::P_ATACK_A].PlayVoice();
 	}
 	//3B攻撃
 	if (mController.getKey(2) == 1 && !mController.getUp() &&
@@ -546,7 +526,7 @@ void Ein::StartAtack() {
 		mState = Parameter::S_PLAYER_ATACK_3B;
 		mAcceleX = 0;
 		mPlayerAtack[Parameter::P_ATACK_3B].InitAtack();
-		mVoice->PlayVoiceOver(Parameter::VOICE_PATACK, 8);
+		//mPlayerAtack[Parameter::P_ATACK_A].PlayVoice();
 	}
 	//6B攻撃
 	if (mController.getKey(2) == 1 && !mController.getUp() && !mController.getDown() && (mRight && mController.getRight() || !mRight && mController.getLeft()) && mGround)
@@ -554,7 +534,7 @@ void Ein::StartAtack() {
 		mState = Parameter::S_PLAYER_ATACK_6B;
 		mAcceleX = 0;
 		mPlayerAtack[Parameter::P_ATACK_6B].InitAtack();
-		mVoice->PlayVoiceOver(Parameter::VOICE_PATACK, 7);
+		//mPlayerAtack[Parameter::P_ATACK_A].PlayVoice();
 	}
 
 	//JA攻撃
@@ -563,7 +543,7 @@ void Ein::StartAtack() {
 		mState = Parameter::S_PLAYER_ATACK_JA;
 
 		mPlayerAtack[Parameter::P_ATACK_JA].InitAtack();
-		mVoice->PlayVoiceOver(Parameter::VOICE_PATACK, 1);
+		//mPlayerAtack[Parameter::P_ATACK_A].PlayVoice();
 	}
 
 	//JB攻撃
@@ -572,7 +552,7 @@ void Ein::StartAtack() {
 		mState = Parameter::S_PLAYER_ATACK_JB;
 		
 		mPlayerAtack[Parameter::P_ATACK_JB].InitAtack();
-		mVoice->PlayVoiceOver(Parameter::VOICE_PATACK, 0);
+		//mPlayerAtack[Parameter::P_ATACK_A].PlayVoice();
 	}
 }
 
@@ -581,8 +561,6 @@ void Ein::StartDash() {
 	mState = Parameter::S_PLAYER_DASH;
 	mCounter = 15;
 	PlaySoundMem(mSoundDash, DX_PLAYTYPE_BACK);
-
-	mVoice->PlayVoiceIf(Parameter::VOICE_DASH, 0);
 }
 
 /*ステップを始める*/
@@ -590,8 +568,6 @@ void Ein::StartStep() {
 	mState = Parameter::S_PLAYER_STEP;
 	mCounter = 15;
 	PlaySoundMem(mSoundStep, DX_PLAYTYPE_BACK);
-
-	mVoice->PlayVoiceIf(Parameter::VOICE_BACKSTEP, GetRand(1));
 }
 
 void Ein::ProcessAtack() {
@@ -624,23 +600,5 @@ void Ein::ProcessAtack() {
 			mAcceleY = 0;
 		}
 		else if (mState == Parameter::S_PLAYER_ATACK_JA && mChain > 0)mAcceleY += 1;
-	}
-}
-
-/*投げる*/
-void Ein::DoThrow(Player& another) {
-
-	if (mCounter == 39)PlaySoundMem(mSoundPlayerAtack[1], DX_PLAYTYPE_BACK);
-
-	if (mCounter == 20) {
-		if (mRight)another.setAcceleX(mThrowDirection ? 40.0 : -40.0);
-		else another.setAcceleX(mThrowDirection ? -40.0 : 40.0);
-		another.setAcceleY(40.0);
-		another.setGround(false);
-		another.setState(Parameter::S_PLAYER_DAMAGE_AIR);
-		another.setDamageCounter(0);
-		another.setCounter(30);
-
-		SSEffectController::getInstance().Play("mye1/mye1", mRight? mPositionX+100:mPositionX-100, 300, 0.9f, 1.0f, 0.6f, GetRand(359), 200);
 	}
 }

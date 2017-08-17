@@ -35,12 +35,6 @@ void ContractCircle::Process(Player& player) {
 		mCondition = "";
 	}
 
-	for (int i = 0; i < 8; i++) {
-		if (!player.getArmsExist(i)) {
-			mIconlist[i] = 0;
-		}
-	}
-
 	mAngle++;
 	if (mAngle >= 1440)mAngle = 0;
 }
@@ -56,10 +50,10 @@ void ContractCircle::Draw() {
 		DrawGraph(centerX-30, centerY-30, mIcon, true);
 		if (mOpenCircle) {
 			DrawRotaGraph(centerX, centerY, 1, Parameter::PI / 360 * (double)mAngle*0.5, mGraphCircle, true, false);
-			if (mIconlist[0])DrawGraph(centerX-30, centerY-115-30, mIconlist[0], true);
-			if (mIconlist[1])DrawGraph(centerX+81-30, centerY-81-30, mIconlist[1], true);
-			if (mIconlist[4])DrawGraph(centerX-30, centerY+115-30, mIconlist[4], true);
-			if (mIconlist[7])DrawGraph(centerX + -81 - 30, centerY - 81 - 30, mIconlist[7], true);
+			DrawGraph(centerX-30, centerY-115-30, mIconlist[0], true);
+			DrawGraph(centerX+81-30, centerY-81-30, mIconlist[1], true);
+			DrawGraph(centerX-30, centerY+115-30, mIconlist[4], true);
+			DrawGraph(centerX + -81 - 30, centerY - 81 - 30, mIconlist[7], true);
 			
 			if (mCursor == 0)DrawRotaGraph(centerX, centerY - 115, 1, Parameter::PI / 360 * (double)mAngle, mGraphCursor, true, false);
 			if (mCursor == 1)DrawRotaGraph(centerX+81, centerY-81, 1, Parameter::PI / 360 * (double)mAngle, mGraphCursor, true, false);

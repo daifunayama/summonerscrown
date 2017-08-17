@@ -13,12 +13,9 @@ public:
 	void LoadArmsData();
 	void Move();
 	virtual void FollowPlayer(int,int);
-	virtual void ResetPosition();
 	virtual void StartAtack();
 	virtual void StartSummon();
 	virtual void DoAtack();
-	void DoCancel();
-	virtual void DoAssult();
 	void Draw();
 	void DrawAtackBox();
 	void CheckArmsAtackHit(Player&);
@@ -37,5 +34,4 @@ public:
 
 protected:
 	FollowerArmsAtack mAtack[8];
-
 };

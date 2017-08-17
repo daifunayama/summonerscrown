@@ -629,8 +629,6 @@ struct ResluteState
 	int	part_boundsType;			/// 当たり判定種類
 	int	part_alphaBlendType;		/// BlendType
 	int	part_labelcolor;			/// ラベルカラー
-
-	SSV3F_C4B_T2F_Quad quad;
 };
 
 //プロジェクトフラグ
@@ -829,17 +827,6 @@ enum
 
 //------------------------------------------------------------------------------
 
-struct Vertex {
-	float x;
-	float y;
-};
-
-struct Quad {
-	Vertex tl;
-	Vertex tr;
-	Vertex bl;
-	Vertex br;
-};
 
 /**
  * Player
@@ -1072,10 +1059,6 @@ public:
 	* @param  frameNo       取得するフレーム番号 -1の場合は現在再生しているフレームが適用される
 	*/
 	bool getPartState(ResluteState& result, const char* name, int frameNo = -1);
-
-
-
-	Quad getPartQuad(const char* name);
 
 	/**
 	* パーツ名からパーツの表示、非表示を設定します.

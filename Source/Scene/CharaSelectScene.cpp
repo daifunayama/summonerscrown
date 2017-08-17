@@ -14,7 +14,6 @@ void CharaSelectScene::Load() {
 
 	mGraphBackground = LoadGraph("Data/graphic/charaselect/background.png");
 	mGraphAnime1 = LoadGraph("Data/graphic/charaselect/l.png");
-	mGraphAnime2 = LoadGraph("Data/graphic/charaselect/ring.png");
 
 	mGraphShadow = LoadGraph("Data/graphic/game/shadow.png");
 
@@ -57,11 +56,6 @@ void CharaSelectScene::Load() {
 	//mGraphEmblem[7] = LoadGraph("Data/graphic/emblem/ArticArts.png");
 	//mGraphEmblem[8] = LoadGraph("Data/graphic/emblem/Comander.png");
 	mGraphEmblem[9] = LoadGraph("Data/graphic/emblem/EvilAnima.png");
-
-	voice[0][0] = LoadSoundMem("Data/voice/ein/select.mp3");
-	voice[0][1] = LoadSoundMem("Data/voice/ein/wait.mp3");
-	voice[0][2] = LoadSoundMem("Data/voice/ein/select3.mp3");
-
 
 	mSoundCursor = LoadSoundMem("Data/se/sen_ge_pis_kamaeru02.mp3");
 	mSoundMetal = LoadSoundMem("Data/se/gun-reload1.mp3");
@@ -141,7 +135,7 @@ void CharaSelectScene::Process() {
 			}
 
 			if (mController[p].getDown() == 1 && !mDecided[p]) {
-				if (mColor[p] < 3) {
+				if (mColor[p] < 2) {
 					mColor[p]++;
 					ChangePlayerSprite(p, mCursor[p]);
 					PlaySoundMem(mSoundCursor, DX_PLAYTYPE_BACK);
@@ -153,7 +147,6 @@ void CharaSelectScene::Process() {
 			if (!mDecided[p]) {
 				mDecided[p] = true;
 				PlaySoundMem(mSoundEnter, DX_PLAYTYPE_BACK);
-				PlaySoundMem(voice[mCursor[p]][2], DX_PLAYTYPE_BACK);
 			}
 		}
 
@@ -175,9 +168,6 @@ void CharaSelectScene::Process() {
 
 	//アニメーションのプロセス
 	AnimationController::getInstance().Process();
-
-	if (mAnimeCounter[0] == 300 && mCursor[0] == 0 && !mDecided[0])PlaySoundMem(voice[0][0], DX_PLAYTYPE_BACK);
-	if (mAnimeCounter[0] == 600 && mCursor[0] == 0 && !mDecided[0])PlaySoundMem(voice[0][1], DX_PLAYTYPE_BACK);
 
 	mCounter++;
 	mAnimeCounter[0]++;
@@ -238,8 +228,6 @@ void CharaSelectScene::Drawing() {
 	//アニメーションの描画
 	AnimationController::getInstance().Draw();
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
-
-	DrawRotaGraph(640, 350, 1, (Parameter::PI / 360)*mCounter, mGraphAnime2, true, false);
 
 	if (CheckHitKey(KEY_INPUT_R) == 1)mCounter = 0;
 

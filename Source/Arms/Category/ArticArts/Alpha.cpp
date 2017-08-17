@@ -5,7 +5,6 @@ Arms::Profile Alpha::getProfile() {
 	Arms::Profile p;
 	p.category = Parameter::AA;
 	p.id = 0;
-	p.type = 1;
 	p.size = 0.25f;
 	p.speed = 0.5f;
 	return p;

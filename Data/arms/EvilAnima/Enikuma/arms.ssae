@@ -998,7 +998,7 @@
 				<fps>30</fps>
 				<frameCount>52</frameCount>
 				<sortMode>prio</sortMode>
-				<canvasSize>2500 1500</canvasSize>
+				<canvasSize>1500 1500</canvasSize>
 				<pivot>0 0</pivot>
 				<bgColor>FF323232</bgColor>
 				<gridSize>32</gridSize>
@@ -2322,7 +2322,7 @@
 				<fps>30</fps>
 				<frameCount>31</frameCount>
 				<sortMode>prio</sortMode>
-				<canvasSize>1000 1200</canvasSize>
+				<canvasSize>320 320</canvasSize>
 				<pivot>0 0</pivot>
 				<bgColor>FF323232</bgColor>
 				<gridSize>32</gridSize>

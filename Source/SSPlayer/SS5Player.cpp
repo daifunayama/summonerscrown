@@ -5,7 +5,7 @@
 #include "SS5PlayerData.h"
 #include "SS5PlayerTypes.h"
 #include "common/Animator/ssplayer_matrix.h"
-#include "../Parameter.h"
+
 
 namespace ss
 {
@@ -1881,8 +1881,8 @@ bool Player::getPartState(ResluteState& result, const char* name, int frameNo)
 					result.rotationX = sprite->_state.rotationX;				// X回転（親子関係計算済）
 					result.rotationY = sprite->_state.rotationY;				// Y回転（親子関係計算済）
 					result.rotationZ = sprite->_state.rotationZ;				// Z回転（親子関係計算済）
-					result.scaleX = sprite->_state.scaleX * sprite->_state.mat[0];						// Xスケール（親子関係計算済）
-					result.scaleY = sprite->_state.scaleY * sprite->_state.mat[5];						// Yスケール（親子関係計算済）
+					result.scaleX = sprite->_state.scaleX;						// Xスケール（親子関係計算済）
+					result.scaleY = sprite->_state.scaleY;						// Yスケール（親子関係計算済）
 					result.opacity = sprite->_state.opacity;					// 不透明度（0～255）（親子関係計算済）
 					result.size_X = sprite->_state.size_X;						// SS5アトリビュート：Xサイズ
 					result.size_Y = sprite->_state.size_Y;						// SS5アトリビュート：Xサイズ
@@ -1902,9 +1902,6 @@ bool Player::getPartState(ResluteState& result, const char* name, int frameNo)
 					result.part_type = partData->type;							//パーツ種別
 					result.part_boundsType = partData->boundsType;				//当たり判定種類
 					result.part_alphaBlendType = partData->alphaBlendType;		// BlendType
-
-					result.quad = sprite->_state.quad;
-
 					//ラベルカラー
 					std::string colorName = static_cast<const char*>(ptr(partData->colorLabel));
 					if (colorName == COLORLABELSTR_NONE)
@@ -1969,45 +1966,6 @@ bool Player::getPartState(ResluteState& result, const char* name, int frameNo)
 	return rc;
 }
 
-ss::Quad Player::getPartQuad(const char* name) {
-	int frameNo = getFrameNo();
-	bool rc = false;
-
-	float l,seta;
-	Quad quad;
-
-	ResluteState state;
-	getPartState(state, name);
-	
-	l = sqrtf(pow(state.size_X * state.scaleX * state.pivotX, 2.0) + pow(state.size_Y * state.scaleY * state.pivotY, 2.0));
-	seta = atan2f(state.size_Y * state.scaleY * state.pivotY, state.size_X * state.scaleX * state.pivotX);
-
-	quad.tl.x = state.x - l * cosf(seta - state.rotationZ * Parameter::PI / 180);
-	quad.tl.y = (Parameter::GROUND_LINE - state.y + 20) - l * sinf(seta - state.rotationZ * Parameter::PI / 180);
-
-
-	l = sqrtf(pow(state.size_X * state.scaleX * (1.0f - state.pivotX), 2.0) + pow(state.size_Y * state.scaleY * state.pivotY, 2.0));
-	seta = atan2f(state.size_Y * state.scaleY * state.pivotY, state.size_X * state.scaleX * (1.0f - state.pivotX));
-
-	quad.tr.x = state.x + l * cosf(seta + state.rotationZ * Parameter::PI / 180);
-	quad.tr.y = (Parameter::GROUND_LINE - state.y + 20) - l * sinf(seta + state.rotationZ * Parameter::PI / 180);
-
-
-	l = sqrtf(pow(state.size_X * state.scaleX * state.pivotX, 2.0) + pow(state.size_Y * state.scaleY * (1.0f - state.pivotY), 2.0));
-	seta = atan2f(state.size_Y * state.scaleY * (1.0f - state.pivotY), state.size_X * state.scaleX * state.pivotX);
-
-	quad.bl.x = state.x - l * cosf(seta + state.rotationZ * Parameter::PI / 180);
-	quad.bl.y = (Parameter::GROUND_LINE - state.y + 20) + l * sinf(seta + state.rotationZ * Parameter::PI / 180);
-
-
-	l = sqrtf(pow(state.size_X * state.scaleX * (1.0f - state.pivotX), 2.0) + pow(state.size_Y * state.scaleY * (1.0f - state.pivotY), 2.0));
-	seta = atan2f(state.size_Y * state.scaleY * (1.0f - state.pivotY), state.size_X * state.scaleX * (1.0f - state.pivotX));
-
-	quad.br.x = state.x + l * cosf(seta - state.rotationZ * Parameter::PI / 180);
-	quad.br.y = (Parameter::GROUND_LINE - state.y + 20) + l * sinf(seta - state.rotationZ * Parameter::PI / 180);
-
-	return quad;
-}
 
 //ラベル名からラベルの設定されているフレームを取得
 //ラベルが存在しない場合は戻り値が-1となります。

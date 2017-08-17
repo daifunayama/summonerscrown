@@ -5,7 +5,6 @@ Arms::Profile Southern::getProfile() {
 	Arms::Profile p;
 	p.category = Parameter::HK;
 	p.id = 3;
-	p.type = 1;
 	p.size = 0.3f;
 	p.speed = 0.6f;
 	return p;

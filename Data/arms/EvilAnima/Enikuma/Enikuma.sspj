@@ -96,7 +96,7 @@
 		<filterMode>linear</filterMode>
 		<interpolationType>linear</interpolationType>
 		<renderingSettings>
-			<outputFolder>C:/GitProject/summonerscrown/Data/arms/EvilAnima/Enikuma/Export</outputFolder>
+			<outputFolder></outputFolder>
 			<outputType>AVI</outputType>
 			<bgColor>FF606060</bgColor>
 			<addAnimeName>0</addAnimeName>
@@ -148,6 +148,6 @@
 	<lastCellMapFile>arms.ssce</lastCellMapFile>
 	<lastEffectFile>oraora.ssee</lastEffectFile>
 	<lastCell>body</lastCell>
-	<lastPart>root</lastPart>
+	<lastPart>effect_1</lastPart>
 	<setupmode>0</setupmode>
 </SpriteStudioProject>

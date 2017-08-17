@@ -3,7 +3,6 @@
 #include "../HitBox/HitBox.h"
 #include "../Atack/PlayerAtack.h"
 #include "../Arms/Arms.h"
-#include "../Voice/BattleVoice.h"
 #include "../Input/Controller.h"
 #include "../Camera/Camera.h"
 #include "Profile.h"
@@ -31,8 +30,6 @@ public:
 	inline bool getRight() { return mRight; }
 	inline bool getOpenCircle() { return mOpenCircle; }
 	inline Arms* getArms(int n) { return mArms[n]; }
-	inline Arms* getBlaze() { return mBlaze; }
-	inline BattleVoice* getVoice() { return mVoice; }
 	inline bool getArmsExist(int n) { return mArmsExist[n]; }
 	inline int getArmsId() { return mArmsId; }
 	inline int getCircleCursor() { return mCircleCursor; }
@@ -40,15 +37,8 @@ public:
 	inline HitBox getDamageBox(int n1, int n2) { return mDamageBox[n1][n2]; }
 
 	inline void setPlayerId(int playerId) { mPlayerId = playerId; }
-	inline void setEX(int ex) { mEXP = ex; }
 	inline void setChain(int chain) { mChain = chain; }
 	inline void setArmsExist(int n,bool t) { mArmsExist[n] = t; }
-	inline void setCounter(int counter) { mCounter = counter; }
-	inline void setDamageCounter(int damageCounter) { mDamageCounter = damageCounter; }
-	inline void setState(int state) { mState = state; }
-	inline void setAcceleX(double acceleX) { mAcceleX = acceleX; }
-	inline void setAcceleY(double acceleY) { mAcceleY = acceleY; }
-	inline void setGround(bool ground) { mGround = ground; }
 
 	void Init(int);
 	void InitVolume();
@@ -89,7 +79,6 @@ public:
 	void MoveArms();
 	void DrawArms();
 	void DrawArmsBack();
-	void DrawThrowEffect();
 	void MoveCircleCursor();
 
 	void CheckPlayersHit(Player&);
@@ -122,7 +111,6 @@ protected:
 	int mDamageCounter;				//ダメージカウンタ
 	int mRightCounter;				//右キーのカウンター
 	int mLeftCounter;				//左キーのカウンター
-	int mIdleCounter;				//移動していないカウンター
 	int mHitStop;
 	int mPositionX;					//X座標
 	int mPositionY;					//Y座標
@@ -149,8 +137,6 @@ protected:
 	BoxData mEatAtackData;			//食らった攻撃を保存しておくボックスデータ
 	ss::Player *mSprite;			//プレイヤーのスプライト
 	Arms* mArms[8];					//魔具8種
-	Arms* mBlaze;					//ブレイズ
-	BattleVoice* mVoice;			//ボイス
 	bool mArmsExist[8];				//魔具の存在フラグ
 	int mArmsId;					//召喚中魔具
 	int mCircleCursor;				//契約陣のカーソル位置
@@ -158,13 +144,10 @@ protected:
 	int mBarrierId;					//バリアのアニメID
 
 	int mGraphShadow;				//影のグラフィックハンドル
-	int mGraphThrow;				//投げの吹き出し
 	int mGraphSummonEffect1;		//召喚陣のグラフィックハンドル1
 	int mGraphSummonEffect2;		//召喚陣のグラフィックハンドル2
 	int mGraphDamage;				//ダメージエフェクトのグラフィックハンドル
-	int mGraphDamage2;
 	int mAnimeBarrier;				//バリアのグラフィックハンドル
-	int mAnimeCancel;
 	int mAnimeBurst1;
 	int mAnimeBurst2;
 
@@ -174,7 +157,6 @@ protected:
 	int mSoundGuard;				//ガードSE
 	int mSoundCatch;				//つかみSE
 	int mSoundEscape;
-	int mSoundCancel;
 	int mSoundBurst;				//バーストSE
 	int mSoundPlayerAtack[10];		//攻撃用SE
 };

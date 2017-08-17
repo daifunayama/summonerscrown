@@ -64,6 +64,7 @@ void ContractScene::Load() {
 	
 	ChangeArmsSprite(0);
 	mSprite[0]->setPosition(400, 400);
+	mSprite[0]->setScale(0.5f,0.5f);
 
 	AnimationController::getInstance().Create(mGraphAnime1, 1, 640, 350, 1024, 620, 1.25, 0, 4, 4, 204, 204, 0, 0);
 }

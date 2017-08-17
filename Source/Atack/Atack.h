@@ -21,7 +21,6 @@ public:
 
 protected:
 	int mCounter;						//汎用カウンタ
-	bool mRight;
 	bool mAtackHit;						//攻撃のヒットフラグ
 	std::vector<FrameData> mFrameData;	//攻撃のフレームデータ配列
 };
