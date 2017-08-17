@@ -6,6 +6,7 @@ Arms::Profile Cyanos::getProfile() {
 	Arms::Profile p;
 	p.category = Parameter::PS;
 	p.id = 1;
+	p.type = 1;
 	p.size = 0.32f;
 	p.speed = 1.0f;
 	return p;

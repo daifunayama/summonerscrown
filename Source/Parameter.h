@@ -113,6 +113,30 @@ public:
 	static const int ATACK_2D = 6;
 	static const int ATACK_JD = 7;
 
+	//ボイス
+	static const int VOICE_SUMMON1 = 0;
+	static const int VOICE_SUMMON2 = 1;
+	static const int VOICE_SUMMON3 = 2;
+	static const int VOICE_ULTIMATE = 3;
+	static const int VOICE_PATACK = 4;
+	static const int VOICE_MATACK = 5;
+	static const int VOICE_MCHARGE = 6;
+	static const int VOICE_THROW = 7;
+	static const int VOICE_ESCAPE = 8;
+	static const int VOICE_DAMAGE1 = 9;
+	static const int VOICE_DAMAGE2 = 10;
+	static const int VOICE_AFTERCOMBO = 11;
+	static const int VOICE_AFTERDOWN = 12;
+	static const int VOICE_REVERSAL = 13;
+	static const int VOICE_GUARD = 14;
+	static const int VOICE_BURST = 15;
+	static const int VOICE_JUMP = 16;
+	static const int VOICE_DASH = 17;
+	static const int VOICE_BACKSTEP = 18;
+	static const int VOICE_WAIT = 19;
+	static const int VOICE_CD = 20;
+
+
 	//画面定義
 	static const int WINDOW_WIDTH = 1280;
 	static const int WINDOW_HEIGHT = 720;

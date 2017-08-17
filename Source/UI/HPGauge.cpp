@@ -3,7 +3,7 @@
 #include "DxLib.h"
 
 /*ÉçÅ[Éh*/
-void HPGauge::Load() {
+void HPGauge::Load(Player& p) {
 	mGraphGauge = LoadGraph("Data/graphic/ui/hpgauge.png");
 
 	mGraphNumber[0] = LoadGraph("Data/graphic/ui/hpnumber/0.png");
@@ -17,14 +17,20 @@ void HPGauge::Load() {
 	mGraphNumber[8] = LoadGraph("Data/graphic/ui/hpnumber/8.png");
 	mGraphNumber[9] = LoadGraph("Data/graphic/ui/hpnumber/9.png");
 
+	//const type_info& id = typeid(p);
+	if (!strcmp(typeid(p).name(),"class Ein"))mGraphFace = LoadGraph("Data/graphic/ui/face_ein.png");
+	if (!strcmp(typeid(p).name(), "class Ria"))mGraphFace = LoadGraph("Data/graphic/ui/face_ria.png");
+	if (!strcmp(typeid(p).name(), "class Carol"))mGraphFace = LoadGraph("Data/graphic/ui/face_carol.png");
+
 	if (mPlayerId == 0) {
-		mGraphFace = LoadGraph("Data/graphic/ui/face_ein.png");
+		
+		//mGraphFace = LoadGraph("Data/graphic/ui/face_ein.png");
 		mGraphBar[0] = LoadGraph("Data/graphic/ui/bar1-1.png");
 		mGraphBar[1] = LoadGraph("Data/graphic/ui/bar2-1.png");
 		mGraphBar[2] = LoadGraph("Data/graphic/ui/bar3-1.png");
 	}
 	else {
-		mGraphFace = LoadGraph("Data/graphic/ui/face_carol.png");
+		//mGraphFace = LoadGraph("Data/graphic/ui/face_carol.png");
 		mGraphBar[0] = LoadGraph("Data/graphic/ui/bar1-2.png");
 		mGraphBar[1] = LoadGraph("Data/graphic/ui/bar2-2.png");
 		mGraphBar[2] = LoadGraph("Data/graphic/ui/bar3-2.png");

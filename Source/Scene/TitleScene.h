@@ -19,8 +19,13 @@ public:
 
 private:
 	Controller mController;
+	int mCounter;
 	ss::Player *mSprite;		//ロゴアニメーション用スプライト
 	int mGraphAnime1;			//背景アニメ
+	int mGraphBack;
 
 	int mSoundEnter;			//決定SE
+	int mSE1;
+	int mSE2;
+	int mSE3;
 };

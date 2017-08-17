@@ -14,7 +14,6 @@ public:
 	inline void setContinueAtackAfterDamage(bool t) { mContinueAtackAfterDamage = t; }
 
 private:
-	bool mRight;						//攻撃の向き
 	bool mAllowCancel[10];				//キャンセル可能フラグ
 	bool mContinueAtackAfterDamage;		//発生保証フラグ
 };

@@ -154,10 +154,12 @@
     <ClCompile Include="Source\Application.cpp" />
     <ClCompile Include="Source\Arms\Arms.cpp" />
     <ClCompile Include="Source\Arms\ArmsList.cpp" />
+    <ClCompile Include="Source\Arms\Blaze.cpp" />
     <ClCompile Include="Source\Arms\Category\ArticArts\Alpha.cpp" />
     <ClCompile Include="Source\Arms\Category\Comander\Cavalier.cpp" />
     <ClCompile Include="Source\Arms\Category\EvilAnima\Enikuma.cpp" />
     <ClCompile Include="Source\Arms\Category\HollyKnights\Aries.cpp" />
+    <ClCompile Include="Source\Arms\Category\HollyKnights\Hercules.cpp" />
     <ClCompile Include="Source\Arms\Category\HollyKnights\Southern.cpp" />
     <ClCompile Include="Source\Arms\Category\PrimalSpheres\Cyanos.cpp" />
     <ClCompile Include="Source\Arms\FollowerArms.cpp" />
@@ -195,6 +197,8 @@
     <ClCompile Include="Source\UI\ContractCircle.cpp" />
     <ClCompile Include="Source\UI\EXGauge.cpp" />
     <ClCompile Include="Source\UI\HPGauge.cpp" />
+    <ClCompile Include="Source\Voice\BattleVoice.cpp" />
+    <ClCompile Include="Source\Voice\Character\VoiceEin.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Input\Input.h" />
@@ -206,10 +210,12 @@
     <ClInclude Include="Source\Application.h" />
     <ClInclude Include="Source\Arms\Arms.h" />
     <ClInclude Include="Source\Arms\ArmsList.h" />
+    <ClInclude Include="Source\Arms\Blaze.h" />
     <ClInclude Include="Source\Arms\Category\ArticArts\Alpha.h" />
     <ClInclude Include="Source\Arms\Category\Comander\Cavalier.h" />
     <ClInclude Include="Source\Arms\Category\EvilAnima\Enikuma.h" />
     <ClInclude Include="Source\Arms\Category\HollyKnights\Aries.h" />
+    <ClInclude Include="Source\Arms\Category\HollyKnights\Hercules.h" />
     <ClInclude Include="Source\Arms\Category\HollyKnights\Southern.h" />
     <ClInclude Include="Source\Arms\Category\PrimalSpheres\Cyanos.h" />
     <ClInclude Include="Source\Arms\FollowerArms.h" />
@@ -268,6 +274,8 @@
     <ClInclude Include="Source\UI\EXGauge.h" />
     <ClInclude Include="Source\UI\HPGauge.h" />
     <ClInclude Include="Source\Utility.h" />
+    <ClInclude Include="Source\Voice\BattleVoice.h" />
+    <ClInclude Include="Source\Voice\Character\VoiceEin.h" />
     <ClInclude Include="SSPlayer\common\Animator\MersenneTwister.h" />
     <ClInclude Include="SSPlayer\common\Animator\ssplayer_cellmap.h" />
     <ClInclude Include="SSPlayer\common\Animator\ssplayer_effect.h" />

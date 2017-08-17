@@ -141,10 +141,9 @@
 		<value>wind.ssee</value>
 	</effectFileNames>
 	<lastAnimeFile>kare-meshi1.ssae</lastAnimeFile>
-	<lastAnimeName>catch</lastAnimeName>
+	<lastAnimeName>caught</lastAnimeName>
 	<lastCellMapFile>kare-meshi.ssce</lastCellMapFile>
 	<lastEffectFile>wind.ssee</lastEffectFile>
-	<lastCell>body</lastCell>
-	<lastPart>body</lastPart>
+	<lastCell>left_arm</lastCell>
 	<setupmode>0</setupmode>
 </SpriteStudioProject>

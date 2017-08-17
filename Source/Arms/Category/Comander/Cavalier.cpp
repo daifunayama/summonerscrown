@@ -5,6 +5,7 @@ Arms::Profile Cavalier::getProfile() {
 	Arms::Profile p;
 	p.category = Parameter::CM;
 	p.id = 1;
+	p.type = 1;
 	p.size = 0.25f;
 	p.speed = 0.5f;
 	return p;

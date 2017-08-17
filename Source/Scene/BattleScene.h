@@ -30,7 +30,6 @@ private:
 	EXGauge mEXGauge[2];					//EXゲージ
 	Chain mChain[2];						//チェーン
 	ContractCircle mContractCircle[2];		//契約陣
-	BackGround mBackGround;					//背景
 
 	int mBGM;								//BGMのサウンドハンドル
 };

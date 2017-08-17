@@ -349,6 +349,13 @@ void KareMeshi::UpdateAnimation() {
 		mSprite->play(name + "down");
 		mSprite->setStep(0.8f);
 	}
+	//‚Â‚©‚Ü‚êó‘Ô
+	else if (mState == Parameter::S_PLAYER_CAUGHT) {
+		if (mSprite->getPlayAnimeName() != "caught") {
+			mSprite->play(name + "caught");
+			mSprite->setStep(0.9f);
+		}
+	}
 	//“Š‚°‚Ê‚¯
 	else if (mState == Parameter::S_PLAYER_ESCAPE) {
 		if (mSprite->getPlayAnimeName() != "damage_u") {

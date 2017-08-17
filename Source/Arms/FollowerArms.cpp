@@ -209,6 +209,12 @@ void FollowerArms::Move() {
 		if (mCounter >= 45)mState = Parameter::S_ARMS_NORMAL;
 	}
 
+	//クイックキャンセル
+	if (!mController.getKey(5) && mController.getKey(6) == 1 && mPlayer->getEX() >= 50)DoCancel();
+
+	//クイックアサルト
+	if (mController.getKey(5) && mController.getKey(3) == 1 && mPlayer->getEX() >= 50)DoAssult();
+
 	//攻撃を開始する
 	StartAtack();
 
@@ -216,6 +222,8 @@ void FollowerArms::Move() {
 	if (isAtackState()) {
 		DoAtack();
 	}
+
+	
 }
 
 /*プレイヤーを追従する*/
@@ -248,6 +256,12 @@ void FollowerArms::FollowPlayer(int pX, int pY) {
 
 	mPositionX += (int)moveX;
 	mPositionY += (int)moveY;
+}
+
+/*位置をリセットする*/
+void FollowerArms::ResetPosition() {
+	mPositionX = mPlayer->getPositionX() +(mPlayer->getRight() ? +mDistX : -mDistX);
+	mPositionY = mPlayer->getPositionY() + mDistY;
 }
 
 /*召喚を始める*/
@@ -316,6 +330,8 @@ void FollowerArms::DoAtack() {
 				}
 			}
 
+			if(mAtack[a].getCounter() == 1)mPlayer->getVoice()->PlayVoiceIf(Parameter::VOICE_MATACK, GetRand(4));
+
 			mAtack[a].IncreaseCounter();
 
 			//攻撃終了時の処理
@@ -325,6 +341,27 @@ void FollowerArms::DoAtack() {
 			}
 		}
 	}
+}
+
+/*クイックキャンセル*/
+void FollowerArms::DoCancel() {
+	mState = Parameter::S_ARMS_NORMAL;
+	ResetPosition();
+	mPlayer->setEX(mPlayer->getEX() - 25);
+}
+
+/*クイックアサルト*/
+void FollowerArms::DoAssult() {
+	ResetPosition();
+	mCounter = 0;
+	mState = Parameter::S_ARMS_ATACK_D;
+
+	mAtack[Parameter::ATACK_D].InitAtack();
+	mRight = mPlayer->getRight();
+
+	mSprite->play("arms/d");
+
+	mPlayer->setEX(mPlayer->getEX() - 50);
 }
 
 /*描画*/
@@ -347,12 +384,12 @@ void FollowerArms::DrawAtackBox() {
 		for (int i = 0; i < 20; i++) {
 			if (mAtack[atackId].getFrameData(counter).getAtackBox(i).getExist()) {
 				DrawBox(
-					mPositionX + mAtack[atackId].getFrameData(counter).getAtackBox(i).getPositionX(),
-					mPositionY + mAtack[atackId].getFrameData(counter).getAtackBox(i).getPositionY(),
+					mPositionX + mAtack[atackId].getFrameData(counter).getAtackBox(i).getPositionX() - (Camera::getInstance().getCenterX() - Parameter::WINDOW_WIDTH / 2),
+					mPositionY + mAtack[atackId].getFrameData(counter).getAtackBox(i).getPositionY() - (Camera::getInstance().getCenterY() - Parameter::WINDOW_HEIGHT / 2),
 					mPositionX + mAtack[atackId].getFrameData(counter).getAtackBox(i).getPositionX()
-					+ mAtack[atackId].getFrameData(counter).getAtackBox(i).getWidth(),
+					+ mAtack[atackId].getFrameData(counter).getAtackBox(i).getWidth() - (Camera::getInstance().getCenterX() - Parameter::WINDOW_WIDTH / 2),
 					mPositionY + mAtack[atackId].getFrameData(counter).getAtackBox(i).getPositionY()
-					+ mAtack[atackId].getFrameData(counter).getAtackBox(i).getHeight(),
+					+ mAtack[atackId].getFrameData(counter).getAtackBox(i).getHeight() - (Camera::getInstance().getCenterY() - Parameter::WINDOW_HEIGHT / 2),
 					Parameter::COLOR_RED, true);
 			}
 		}
@@ -363,12 +400,12 @@ void FollowerArms::DrawAtackBox() {
 		for (int i = 0; i < 20; i++) {
 			if (mAtack[atackId].getFrameData(counter).getAtackBox(i).getExist()) {
 				DrawBox(
-					mPositionX - mAtack[atackId].getFrameData(counter).getAtackBox(i).getPositionX(),
-					mPositionY + mAtack[atackId].getFrameData(counter).getAtackBox(i).getPositionY(),
+					mPositionX - mAtack[atackId].getFrameData(counter).getAtackBox(i).getPositionX() - (Camera::getInstance().getCenterX() - Parameter::WINDOW_WIDTH / 2),
+					mPositionY + mAtack[atackId].getFrameData(counter).getAtackBox(i).getPositionY() - (Camera::getInstance().getCenterY() - Parameter::WINDOW_HEIGHT / 2),
 					mPositionX - mAtack[atackId].getFrameData(counter).getAtackBox(i).getPositionX()
-					- mAtack[atackId].getFrameData(counter).getAtackBox(i).getWidth(),
+					- mAtack[atackId].getFrameData(counter).getAtackBox(i).getWidth() - (Camera::getInstance().getCenterX() - Parameter::WINDOW_WIDTH / 2),
 					mPositionY + mAtack[atackId].getFrameData(counter).getAtackBox(i).getPositionY()
-					+ mAtack[atackId].getFrameData(counter).getAtackBox(i).getHeight(),
+					+ mAtack[atackId].getFrameData(counter).getAtackBox(i).getHeight() - (Camera::getInstance().getCenterY() - Parameter::WINDOW_HEIGHT / 2),
 					Parameter::COLOR_RED, true);
 			}
 		}

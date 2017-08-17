@@ -6,11 +6,21 @@
 */
 class BackGround {
 public:
+	static  BackGround& get(void) {
+		static BackGround background;
+		return background;
+	}
+	BackGround(const  BackGround&) = delete;
+	BackGround& operator = (const  BackGround&) = delete;
+	BackGround(BackGround&&) = delete;
+	BackGround operator = (BackGround&&) = delete;
+
 	inline void setBlackCounter(int p, int n) { mBlackoutCounter[p] = n; }
 	void LoadGraphic();
-	void GetPlayer(Player&, Player&);
+	void Process(Player& player1, Player& player2);
 	void Draw();
 
+private:
 	BackGround() { mBlackoutCounter[0] = 0; mBlackoutCounter[1] = 0; }
 	~BackGround(){}
 
