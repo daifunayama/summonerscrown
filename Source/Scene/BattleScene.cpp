@@ -16,7 +16,7 @@ void BattleScene::Load() {
 	loadGraph = LoadGraph("Data/graphic/game/loading.png");
 
 	mPlayer[0] = new Ein();
-	mPlayer[1] = new Ein();
+	mPlayer[1] = new Carol();
 
 	SetUseASyncLoadFlag(true);
 

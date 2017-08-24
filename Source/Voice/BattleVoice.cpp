@@ -14,12 +14,14 @@ void BattleVoice::PlayVoiceIf(int state, int id) {
 	bool t = false;
 	for (int i = 0; i < 21; i++) {
 		for (int l = 0; l < mVoice[i].size(); l++) {
-			if (CheckSoundMem(mVoice[i][l]))t = true;
+			if (mVoice[i][l] != NULL){
+				if (CheckSoundMem(mVoice[i][l]))t = true;
 
-			if (t) {
-				int a;
-				a = 1;
-				a++;
+				if (t) {
+					int a;
+					a = 1;
+					a++;
+				}
 			}
 		}
 	}
@@ -29,7 +31,9 @@ void BattleVoice::PlayVoiceIf(int state, int id) {
 void BattleVoice::StopVoice() {
 	for (int i = 0; i < 21; i++) {
 		for (int l = 0; l < mVoice[i].size(); l++) {
-			if (CheckSoundMem(mVoice[i][l]))StopSoundMem(mVoice[i][l]);
+			if (mVoice[i][l] != NULL) {
+				if (CheckSoundMem(mVoice[i][l]))StopSoundMem(mVoice[i][l]);
+			}
 		}
 	}
 }

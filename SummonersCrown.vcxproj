@@ -198,6 +198,7 @@
     <ClCompile Include="Source\UI\EXGauge.cpp" />
     <ClCompile Include="Source\UI\HPGauge.cpp" />
     <ClCompile Include="Source\Voice\BattleVoice.cpp" />
+    <ClCompile Include="Source\Voice\Character\VoiceCarol.cpp" />
     <ClCompile Include="Source\Voice\Character\VoiceEin.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -275,6 +276,7 @@
     <ClInclude Include="Source\UI\HPGauge.h" />
     <ClInclude Include="Source\Utility.h" />
     <ClInclude Include="Source\Voice\BattleVoice.h" />
+    <ClInclude Include="Source\Voice\Character\VoiceCarol.h" />
     <ClInclude Include="Source\Voice\Character\VoiceEin.h" />
     <ClInclude Include="SSPlayer\common\Animator\MersenneTwister.h" />
     <ClInclude Include="SSPlayer\common\Animator\ssplayer_cellmap.h" />

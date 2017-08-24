@@ -4,6 +4,7 @@
 #include "../../Utility.h"
 #include "../../Atack/FrameData.h"
 #include "Carol.h"
+#include "../../Voice/Character/VoiceCarol.h"
 
 Profile Carol::getProfile() {
 	Profile p;
@@ -40,8 +41,8 @@ void Carol::LoadSound() {
 
 /*ボイスのロード*/
 void Carol::LoadVoice() {
-	mPlayerAtack[Parameter::P_ATACK_A].setVoiceHandle(LoadSoundMem("Data/voice/carol/16_さとうささら_えい.wav"));
-	mPlayerAtack[Parameter::P_ATACK_B].setVoiceHandle(LoadSoundMem("Data/voice/carol/17_さとうささら_きりさけ.wav"));
+	mVoice = new VoiceCarol();
+	mVoice->Load();
 }
 
 /*プレイヤーデータをロード*/
@@ -273,6 +274,8 @@ void Carol::LoadAtack() {
 
 /*アニメーションの更新*/
 void Carol::UpdateAnimation() {
+	string name;
+	name = getProfile().pass + Utility::IntToString(getColor()) + "/";
 
 	//振り向き
 	if (mRight)mSprite->setScale(0.34, 0.34);
@@ -286,22 +289,29 @@ void Carol::UpdateAnimation() {
 
 			//プレイヤーが静止している
 			if (mAcceleX == 0) {
-				if (mSprite->getPlayAnimeName() != "idle") {
-					mSprite->play("carol/idle");
-					mSprite->setStep(0.4f);
+				if (mSprite->getPlayAnimeName() != "idle" && mSprite->getPlayAnimeName() != "wait") {
+					mSprite->play(name + "idle");
+					mSprite->setStep(0.8f);
 				}
+				if (mIdleCounter == 300 && mPlayerId == 0) {
+					//mSprite->play(name + "wait");
+					//mSprite->setStep(0.5f);
+				}
+				if (mIdleCounter == 400 && mPlayerId == 0)mSprite->play(name + "idle");
 			}
 			//プレイヤーが右に進んでいる
 			else if (mAcceleX > 0) {
 				//プレイヤーが右向き
 				if (mRight) {
 					if (mSprite->getPlayAnimeName() != "walk") {
-						mSprite->play("carol/walk");
+						mSprite->play(name + "walk");
+						mSprite->setStep(0.6f);
 					}
 				}
 				//プレイヤーが左向き
 				else if (mSprite->getPlayAnimeName() != "back") {
-					mSprite->play("carol/back");
+					mSprite->play(name + "back");
+					mSprite->setStep(0.6f);
 				}
 			}
 			//プレイヤーが左に進んでいる
@@ -309,19 +319,22 @@ void Carol::UpdateAnimation() {
 				//プレイヤーが左向き
 				if (!mRight) {
 					if (mSprite->getPlayAnimeName() != "walk") {
-						mSprite->play("carol/walk");
+						mSprite->play(name + "walk");
+						mSprite->setStep(0.6f);
 					}
 				}
 				//プレイヤーが右向き
 				else if (mSprite->getPlayAnimeName() != "back") {
-					mSprite->play("carol/back");
+					mSprite->play(name + "back");
+					mSprite->setStep(0.6f);
 				}
 			}
 		}
 		//プレイヤーが空中にいる
 		else {
-			if (mSprite->getPlayAnimeName() != "jump") {
-				mSprite->play("carol/jump");
+			if (mAcceleY == 36 || mAcceleY == 28) {
+				mSprite->play(name + "jump");
+				mSprite->setStep(0.6f);
 			}
 		}
 
@@ -329,96 +342,161 @@ void Carol::UpdateAnimation() {
 	//ダッシュ
 	else if (mState == Parameter::S_PLAYER_DASH) {
 		if (mSprite->getPlayAnimeName() != "dash") {
-			mSprite->play("carol/dash");
+			mSprite->play(name + "dash");
+			mSprite->setStep(1.2f);
 		}
 	}
 	//バックステップ
 	else if (mState == Parameter::S_PLAYER_STEP) {
 		if (mSprite->getPlayAnimeName() != "backstep") {
-			mSprite->play("carol/backstep");
+			mSprite->play(name + "backstep");
+			mSprite->setStep(1.2f);
 		}
 	}
 	//プレイヤーがしゃがんでいる
 	else if (mState == Parameter::S_PLAYER_SQUAT) {
 		if (mSprite->getPlayAnimeName() != "squat") {
-			mSprite->play("carol/squat");
+			mSprite->play(name + "squat");
+			mSprite->setStep(0.4f);
 		}
 	}
 	//上段ダメージ状態
 	else if (mState == Parameter::S_PLAYER_DAMAGE_U && mDamageCounter == 1) {
-		mSprite->play("carol/damage_u");
-		mSprite->setStep(0.9f);
-
+		mSprite->play(name + "damage_u");
+		mSprite->setStep(0.7f);
 	}
 	//下段ダメージ状態
 	else if (mState == Parameter::S_PLAYER_DAMAGE_D && mDamageCounter == 1) {
-		mSprite->play("carol/damage_d");
+		mSprite->play(name + "damage_d");
+		mSprite->setStep(0.7f);
+	}
+	//空中ダメージ状態
+	else if (mState == Parameter::S_PLAYER_DAMAGE_AIR2 && mDamageCounter == 1) {
+		mSprite->play(name + "damage_air");
+		mSprite->setStep(1.0f);
+	}
+	//空中ダメージ状態
+	else if (mState == Parameter::S_PLAYER_DAMAGE_AIR && mDamageCounter == 1) {
+		mSprite->play(name + "damage_air");
+		mSprite->setStep(1.0f);
+	}
+	//ダウン状態
+	else if (mState == Parameter::S_PLAYER_DOWN && mCounter == 59) {
+		mSprite->play(name + "down");
 		mSprite->setStep(0.9f);
 	}
 	//しゃがみダメージ状態
 	else if (mState == Parameter::S_PLAYER_DAMAGE_S && mDamageCounter == 1) {
-		mSprite->play("carol/damage_squat");
+		mSprite->play(name + "damage_s");
+	}
+	//つかまれ状態
+	else if (mState == Parameter::S_PLAYER_CAUGHT) {
+		if (mSprite->getPlayAnimeName() != "caught") {
+			mSprite->play(name + "caught");
+			mSprite->setStep(0.5f);
+		}
+	}
+	//投げぬけ状態
+	else if (mState == Parameter::S_PLAYER_ESCAPE) {
+		if (mSprite->getPlayAnimeName() != "escape") {
+			mSprite->play(name + "escape");
+			mSprite->setStep(1.2f);
+		}
 	}
 	//立ちガード状態
 	else if (mState == Parameter::S_PLAYER_GUARD) {
 		if (mSprite->getPlayAnimeName() != "guard_u") {
-			mSprite->play("carol/guard_u");
+			mSprite->play(name + "guard_u");
 		}
 	}
 	//しゃがみガード状態
 	else if (mState == Parameter::S_PLAYER_GUARD_S) {
 		if (mSprite->getPlayAnimeName() != "guard_d") {
-			mSprite->play("carol/guard_d");
+			mSprite->play(name + "guard_d");
+		}
+	}
+	//バースト
+	else if (mState == Parameter::S_PLAYER_BURST) {
+		if (mSprite->getPlayAnimeName() != "burst") {
+			mSprite->play(name + "burst");
+			mSprite->setStep(0.5f);
 		}
 	}
 	//A攻撃
 	else if (mState == Parameter::S_PLAYER_ATACK_A &&
 		mPlayerAtack[Parameter::P_ATACK_A].getCounter() == 1)
 	{
-		mSprite->play("carol/a");
+		mSprite->play(name + "a");
 	}
 	//A下攻撃
 	else if (mState == Parameter::S_PLAYER_ATACK_2A &&
 		mPlayerAtack[Parameter::P_ATACK_2A].getCounter() == 1)
 	{
-		mSprite->play("carol/2a");
+		mSprite->play(name + "2a");
 	}
 	//B攻撃
 	else if (mState == Parameter::S_PLAYER_ATACK_B &&
 		mPlayerAtack[Parameter::P_ATACK_B].getCounter() == 1)
 	{
-		mSprite->play("carol/b");
+		mSprite->play(name + "b");
 	}
 	//6B攻撃
 	else if (mState == Parameter::S_PLAYER_ATACK_6B &&
 		mPlayerAtack[Parameter::P_ATACK_6B].getCounter() == 1)
 	{
-		mSprite->play("carol/6b");
+		mSprite->play(name + "6b");
 	}
 	//B下攻撃
 	else if (mState == Parameter::S_PLAYER_ATACK_2B &&
 		mPlayerAtack[Parameter::P_ATACK_2B].getCounter() == 1)
 	{
-		mSprite->play("carol/2b");
+		mSprite->play(name + "2b");
 		mSprite->setStep(0.6);
 	}
 	//3B攻撃
 	else if (mState == Parameter::S_PLAYER_ATACK_3B &&
 		mPlayerAtack[Parameter::P_ATACK_3B].getCounter() == 1)
 	{
-		mSprite->play("carol/3b");
+		mSprite->play(name + "3b");
 		mSprite->setStep(0.8);
 	}
 	//6B攻撃
 	else if (mState == Parameter::S_PLAYER_ATACK_6B &&
 		mPlayerAtack[Parameter::P_ATACK_6B].getCounter() == 1)
 	{
-		mSprite->play("carol/6b");
+		mSprite->play(name + "6b");
 		mSprite->setStep(0.6);
+	}
+	//JB攻撃
+	else if (mState == Parameter::S_PLAYER_ATACK_JA &&
+		mPlayerAtack[Parameter::P_ATACK_JA].getCounter() == 1)
+	{
+		mSprite->play(name + "ja");
+		mSprite->setStep(1.0);
+	}
+	//JB攻撃
+	else if (mState == Parameter::S_PLAYER_ATACK_JB &&
+		mPlayerAtack[Parameter::P_ATACK_JB].getCounter() == 1)
+	{
+		mSprite->play(name + "jb");
+		mSprite->setStep(1.2);
+	}
+	//つかみ
+	else if (mState == Parameter::S_PLAYER_CATCH) {
+		if (mSprite->getPlayAnimeName() != "catch") {
+			mSprite->play(name + "catch");
+		}
+	}
+	//投げ
+	else if (mState == Parameter::S_PLAYER_THROW) {
+		if (mSprite->getPlayAnimeName() != "throw") {
+			mSprite->play(name + "throw");
+			mSprite->setStep(0.55f);
+		}
 	}
 
 	//表示位置の更新
-	mSprite->setPosition(mPositionX - (Camera::getInstance().getCenterX() - Parameter::WINDOW_WIDTH / 2), 
+	mSprite->setPosition(mPositionX - (Camera::getInstance().getCenterX() - Parameter::WINDOW_WIDTH / 2),
 		Parameter::GROUND_LINE - mPositionY + 10 + (Camera::getInstance().getCenterY() - Parameter::WINDOW_HEIGHT / 2));
 	//プレイヤーの更新、引数は前回の更新処理から経過した時間
 	mSprite->update((float)30 / 1000);

@@ -77,7 +77,7 @@ void Player::InitVolume() {
 void Player::LoadGraphic() {
 
 	if(mPlayerId == 0)mColor = 1;
-	else mColor = 3;
+	else mColor = 1;
 
 	//プレイヤーの作成
 	mSprite = ss::Player::create();
@@ -128,7 +128,7 @@ void Player::LoadArms(int p) {
 		mArmsExist[7] = true;
 	}
 	else {
-		mArms[0] = new Aries();
+		mArms[0] = new Enikuma();
 		mArms[1] = new Cyanos();
 		mArms[2] = new Cavalier();
 		mArmsExist[0] = true;
@@ -756,8 +756,8 @@ void Player::DoStep() {
 void Player::DoDamaged() {
 	mDamageCounter++;
 	
-	if (mAcceleX > 0)mAcceleX--;
-	if (mAcceleX < 0)mAcceleX++;
+	if (mGround && mAcceleX > 0)mAcceleX--;
+	if (mGround && mAcceleX < 0)mAcceleX++;
 }
 
 /*カウンターを減らし0のとき次状態へ*/
@@ -991,7 +991,7 @@ void Player::MoveArms() {
 
 /*魔具を描画する*/
 void Player::DrawArms() {
-	if(!isDamageState())mArms[mArmsId]->Draw();
+	if(!isDamageState() && mState != Parameter::S_PLAYER_DOWN)mArms[mArmsId]->Draw();
 }
 
 /*魔具を自身の後ろに描画する*/
@@ -1208,7 +1208,7 @@ void Player::CheckWallHit() {
 		mAirJumped = false;
 		if (mState == Parameter::S_PLAYER_DAMAGE_AIR2) {
 			mState = Parameter::S_PLAYER_DOWN;
-			mCounter = 40;
+			mCounter = 60;
 		}
 	}
 

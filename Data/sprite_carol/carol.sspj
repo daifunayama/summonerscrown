@@ -141,8 +141,8 @@
 		<value>carol1.ssae</value>
 	</animepackNames>
 	<lastAnimeFile>carol1.ssae</lastAnimeFile>
-	<lastAnimeName>idle</lastAnimeName>
+	<lastAnimeName>caught</lastAnimeName>
 	<lastCellMapFile>carol.ssce</lastCellMapFile>
-	<lastCell>face</lastCell>
+	<lastCell>right_arm2</lastCell>
 	<setupmode>0</setupmode>
 </SpriteStudioProject>

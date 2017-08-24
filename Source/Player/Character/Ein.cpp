@@ -633,8 +633,8 @@ void Ein::DoThrow(Player& another) {
 	if (mCounter == 39)PlaySoundMem(mSoundPlayerAtack[1], DX_PLAYTYPE_BACK);
 
 	if (mCounter == 20) {
-		if (mRight)another.setAcceleX(mThrowDirection ? 40.0 : -40.0);
-		else another.setAcceleX(mThrowDirection ? -40.0 : 40.0);
+		if (mRight)another.setAcceleX(mThrowDirection ? 20.0 : -20.0);
+		else another.setAcceleX(mThrowDirection ? -20.0 : 20.0);
 		another.setAcceleY(40.0);
 		another.setGround(false);
 		another.setState(Parameter::S_PLAYER_DAMAGE_AIR);
