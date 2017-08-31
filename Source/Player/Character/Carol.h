@@ -9,7 +9,6 @@ public:
 	void LoadSound();
 	void LoadVoice();
 	void LoadData();
-	void LoadAtack();
 	void UpdateAnimation();
 
 	//オーバーロード
@@ -17,8 +16,10 @@ public:
 	void StartDash();
 	void StartStep();
 	void ProcessAtack();
+	void DoThrow(Player& another);
 
 private:
 	int mSoundDash;
 	int mSoundStep;
+	int mAnimeDrill;
 };

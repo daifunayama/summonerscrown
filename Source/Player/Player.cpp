@@ -98,6 +98,8 @@ void Player::LoadGraphic() {
 	mGraphThrow = LoadGraph("Data/graphic/ui/bikkuri.png");
 	mGraphDamage = LoadGraph("Data/graphic/animation/slash3.png");
 	mGraphDamage2 = LoadGraph("Data/graphic/animation/damage2.png");
+	mGraphDamage3 = LoadGraph("Data/graphic/animation/pipo-btleffect121.png");
+	mGraphDamage4 = LoadGraph("Data/graphic/animation/pipo-btleffect121_2.png");
 
 	mGraphSummonEffect1 = LoadGraph("Data/graphic/animation/summon_effect1.png");
 	mGraphSummonEffect2 = LoadGraph("Data/graphic/animation/summon_effect2.png");
@@ -105,6 +107,140 @@ void Player::LoadGraphic() {
 	mAnimeCancel = LoadGraph("Data/graphic/animation/cancel.png");
 	mAnimeBurst1 = LoadGraph("Data/graphic/animation/burst1.png");
 	mAnimeBurst2 = LoadGraph("Data/graphic/animation/burst2.png");
+	mAnimeReversal = LoadGraph("Data/graphic/animation/reversal.png");
+}
+
+/*攻撃データのロード*/
+void Player::LoadAtack() {
+	ifstream ifs;
+	int n;
+	int boxId;
+	int boxCounter = 0;
+	string tmp;
+
+	FrameData frameData;
+	BoxData boxData;
+	HitBox hitBox;
+
+	for (int a = 0; a < 17; a++) {
+
+		mPlayerAtack[a].ClearFrameData();
+
+		hitBox.setExist(false);
+		for (int i = 0; i < 20; i++) {
+			frameData.setAtackBox(i, hitBox);
+		}
+
+		ifs.clear();
+
+		ifs.open(Utility::GetPAtackPass(getProfile().pass, a));
+
+		if (ifs) {
+			mPlayerAtack[a].setExist(1);
+
+			for (int i = 0; i < 9; i++) {
+				ifs >> tmp;
+				mPlayerAtack[a].setAllowCancel(i, Utility::StringToInt(tmp));
+			}
+
+
+			//ボックスデータの読み込み
+			for (int i = 0; i < 5; i++) {
+				ifs >> tmp;
+				boxData.setAtackType(Utility::StringToInt(tmp));
+				ifs >> tmp;
+				boxData.setEffectType(Utility::StringToInt(tmp));
+				ifs >> tmp;
+				boxData.setSEType(Utility::StringToInt(tmp));
+				ifs >> tmp;
+				boxData.setGuardType(Utility::StringToInt(tmp));
+				ifs >> tmp;
+				boxData.setAllowMultHit(Utility::StringToInt(tmp));
+				ifs >> tmp;
+				boxData.setHitStop(Utility::StringToInt(tmp));
+				ifs >> tmp;
+				boxData.setDecHitStop(Utility::StringToInt(tmp));
+				ifs >> tmp;
+				boxData.setBindTime(Utility::StringToInt(tmp));
+				ifs >> tmp;
+				boxData.setContinueAtackAfterOffset(Utility::StringToInt(tmp));
+				ifs >> tmp;
+				boxData.setForceDown(Utility::StringToInt(tmp));
+				ifs >> tmp;
+				boxData.setFloorBound(Utility::StringToInt(tmp));
+				ifs >> tmp;
+				boxData.setWallBound(Utility::StringToInt(tmp));
+				ifs >> tmp;
+				boxData.setShakeWindow(Utility::StringToInt(tmp));
+				ifs >> tmp;
+				boxData.setVectorX(Utility::StringToInt(tmp));
+				ifs >> tmp;
+				boxData.setVectorY(Utility::StringToInt(tmp));
+				ifs >> tmp;
+				boxData.setAirVectorX(Utility::StringToInt(tmp));
+				ifs >> tmp;
+				boxData.setAirVectorY(Utility::StringToInt(tmp));
+				ifs >> tmp;
+				boxData.setPower(Utility::StringToInt(tmp));
+				ifs >> tmp;
+				boxData.setEXGain(Utility::StringToInt(tmp));
+
+				frameData.setAtackBoxData(i, boxData);
+			}
+
+			while (!ifs.eof()) {
+				ifs >> n;
+
+				//フレーム切り替え
+				if (n == 0) {
+					mPlayerAtack[a].PushFrameData(frameData);
+
+					boxCounter = 0;
+
+					hitBox.setExist(false);
+					for (int i = 0; i < 20; i++) {
+						frameData.setAtackBox(i, hitBox);
+					}
+
+					//キャンセル可能フラグ
+					ifs >> tmp;
+					frameData.setAllowCancel(Utility::StringToInt(tmp));
+
+					//デフォルトではサウンドはなし
+					frameData.setSoundId(0);
+				}
+
+				//ヒットボックス
+				if (n == 50) {
+					ifs >> boxId;
+
+					hitBox.setBoxId(boxId);
+					hitBox.setExist(true);
+					ifs >> tmp;
+					hitBox.setPositionX(Utility::StringToInt(tmp));
+					ifs >> tmp;
+					hitBox.setPositionY(Utility::StringToInt(tmp));
+					ifs >> tmp;
+					hitBox.setWidth(Utility::StringToInt(tmp));
+					ifs >> tmp;
+					hitBox.setHeight(Utility::StringToInt(tmp));
+
+					frameData.setAtackBox(boxCounter, hitBox);
+
+					boxCounter++;
+				}
+
+				//サウンドID
+				if (n == 30) {
+					ifs >> tmp;
+					frameData.setSoundId(Utility::StringToInt(tmp));
+				}
+
+			}
+
+		}
+		ifs.close();
+	}
 }
 
 /*武器データのロード*/
@@ -261,10 +397,36 @@ void Player::Move(Player& another) {
 		DoStep();
 	}
 
+	//受け身可能
+	else if (mState == Parameter::S_PLAYER_DAMAGE_AIR_R) {
+		//受け身をする
+		if (mController.getKey(1)) {
+			mCounter = 30;
+			mState = Parameter::S_PLAYER_REVERSAL;
+			mAcceleY = 10;
+			
+			another.setChain(0);
+			mArms[mArmsId]->ResetPosition();
+
+			mVoice->PlayVoiceOver(Parameter::VOICE_REVERSAL, 1);
+			PlaySoundMem(mSoundCancel, DX_PLAYTYPE_BACK);
+			AnimationController::getInstance().Create(mAnimeReversal, 1, mPositionX, mPositionY, 300, 300, 1, 0, 4, 1, 30, -1, 1, 1);
+		}
+	}
+
+	//受け身
+	else if (mState == Parameter::S_PLAYER_REVERSAL) {
+
+	}
+
 	//バースト
 	else if (mState == Parameter::S_PLAYER_BURST) {
 		mAcceleX = 0;
 		mAcceleY = 0;
+	}
+
+	else if (mState == Parameter::S_PLAYER_DOWN) {
+		if (mCounter == 30)mVoice->PlayVoiceOver(Parameter::VOICE_AFTERDOWN, GetRand(1));
 	}
 
 	//ダメージ中
@@ -772,6 +934,14 @@ void Player::DecrementCounter(Player &another) {
 			//ステップ→通常
 			else if (mState == Parameter::S_PLAYER_STEP)mState = Parameter::S_PLAYER_NORMAL;
 
+			//受け身→通常
+			else if (mState == Parameter::S_PLAYER_REVERSAL)mState = Parameter::S_PLAYER_NORMAL;
+
+			//空中ダメージ
+			else if (mState == Parameter::S_PLAYER_DAMAGE_AIR) {
+				mState = Parameter::S_PLAYER_DAMAGE_AIR_R;
+			}
+
 			//ダメージ→通常
 			else if (isDamageState() && mState != Parameter::S_PLAYER_DAMAGE_AIR2) {
 				if(!mController.getDown())mState = Parameter::S_PLAYER_NORMAL;
@@ -801,7 +971,9 @@ void Player::DecrementCounter(Player &another) {
 			}
 			else if (mState == Parameter::S_PLAYER_CATCH) {
 				mState = Parameter::S_PLAYER_THROW;
-				mCounter = 40;
+				if (!strcmp(getProfile().pass.c_str(), "ein"))mCounter = 40;
+				if (!strcmp(getProfile().pass.c_str(), "carol"))mCounter = 40;
+			
 				if (mRight && mController.getLeft() || !mRight && mController.getRight())mThrowDirection = false;
 			}
 			else if (mState == Parameter::S_PLAYER_THROW) {
@@ -858,7 +1030,7 @@ void Player::EatDamage(Player& another) {
 	if (mEatAtackFlag) {
 
 		//バリアガード
-		if (mBarrier && mEatAtackFlag == 1 && (mController.getRight() && !mRight || mController.getLeft() && mRight)) {
+		if (isCanGuardState() && mBarrier && mEatAtackFlag == 1 && (mController.getRight() && !mRight || mController.getLeft() && mRight)) {
 			if (mController.getDown())mState = Parameter::S_PLAYER_GUARD_S;
 			else mState = Parameter::S_PLAYER_GUARD;
 			mCounter = 10;
@@ -867,7 +1039,7 @@ void Player::EatDamage(Player& another) {
 		}
 
 		//上段ガード成功
-		else if (mGround && mEatAtackData.getAtackType() == 0 &&
+		else if (isCanGuardState() && mGround && mEatAtackData.getAtackType() == 0 &&
 			(mController.getRight() && !mRight || mController.getLeft() && mRight)) {
 
 			if (mController.getDown())mState = Parameter::S_PLAYER_GUARD_S;
@@ -878,7 +1050,7 @@ void Player::EatDamage(Player& another) {
 		}
 
 		//下段ガード成功
-		else if (mGround && mEatAtackData.getAtackType() == 1 && mController.getDown() &&
+		else if (isCanGuardState() && mGround && mEatAtackData.getAtackType() == 1 && mController.getDown() &&
 			(mController.getRight() && !mRight || mController.getLeft() && mRight)) {
 
 			mState = Parameter::S_PLAYER_GUARD_S;
@@ -888,7 +1060,7 @@ void Player::EatDamage(Player& another) {
 		}
 
 		//中段ガード成功
-		else if (mGround && mEatAtackData.getAtackType() == 2 && !mController.getDown() &&
+		else if (isCanGuardState() && mGround && mEatAtackData.getAtackType() == 2 && !mController.getDown() &&
 			(mController.getRight() && !mRight || mController.getLeft() && mRight)) {
 
 			mState = Parameter::S_PLAYER_GUARD;
@@ -898,7 +1070,7 @@ void Player::EatDamage(Player& another) {
 		}
 
 		//空中ガード
-		else if (!mGround && (mController.getRight() && !mRight || mController.getLeft() && mRight)) {
+		else if (isCanGuardState() && !mGround && (mController.getRight() && !mRight || mController.getLeft() && mRight)) {
 			mState = Parameter::S_PLAYER_GUARD;
 			mCounter = 10;
 
@@ -972,7 +1144,16 @@ void Player::EatDamage(Player& another) {
 				if (mEatAtackData.getAtackType() == 0)effectY = mPositionY;
 				else effectY = mPositionY + 80;
 				AnimationController::getInstance().Create(mGraphDamage2, 1, mPositionX, effectY, 500, 500, 4.0 , GetRand(359), 4, 2, 48, 0, true, true);
-			
+			}
+			if (mEatAtackData.getEffectType() == 4) {
+				if (mEatAtackData.getAtackType() == 0)effectY = mPositionY;
+				else effectY = mPositionY + 80;
+				AnimationController::getInstance().Create(mGraphDamage3, 1, mPositionX, effectY, 240, 240, 3.5, GetRand(359), 4, 2, 40, 0, true,false);
+			}
+			if (mEatAtackData.getEffectType() == 5) {
+				if (mEatAtackData.getAtackType() == 0)effectY = mPositionY;
+				else effectY = mPositionY + 80;
+				AnimationController::getInstance().Create(mGraphDamage4, 1, mPositionX, effectY, 240, 240, 3.0, GetRand(359), 4, 2, 40, 0, true, false);
 			}
 
 		}
@@ -991,7 +1172,7 @@ void Player::MoveArms() {
 
 /*魔具を描画する*/
 void Player::DrawArms() {
-	if(!isDamageState() && mState != Parameter::S_PLAYER_DOWN)mArms[mArmsId]->Draw();
+	if(!isDamageState() && mState != Parameter::S_PLAYER_DOWN && mState != Parameter::S_PLAYER_CAUGHT)mArms[mArmsId]->Draw();
 }
 
 /*魔具を自身の後ろに描画する*/
@@ -1112,13 +1293,13 @@ void Player::CheckPlayersHit(Player& another) {
 
 	//←　→
 	if (!mRight && another.mRight) {
-		//P1のボックス
-		box1.x = another.mPositionX + another.mHitBox[mState].getPositionX();
-		box1.y = another.mPositionY + another.mHitBox[another.mState].getPositionY();
-		box1.width = another.mHitBox[mState].getWidth();
-		box1.height = another.mHitBox[mState].getHeight();
-
 		//P2のボックス
+		box1.x = another.mPositionX + another.mHitBox[another.mState].getPositionX();
+		box1.y = another.mPositionY + another.mHitBox[another.mState].getPositionY();
+		box1.width = another.mHitBox[another.mState].getWidth();
+		box1.height = another.mHitBox[another.mState].getHeight();
+
+		//P1のボックス
 		box2.x = mPositionX - mHitBox[mState].getPositionX() - mHitBox[mState].getWidth();
 		box2.y = mPositionY + mHitBox[mState].getPositionY();
 		box2.width = mHitBox[mState].getWidth();
@@ -1134,7 +1315,7 @@ void Player::CheckPlayersHit(Player& another) {
 					mPositionX = (int)mPositionDX;
 				}
 				//2Pが1Pに近づいてくる
-				else if (another.mAcceleX == 0 && mAcceleX < 0) {
+				else if (another.mAcceleX == 0 && mAcceleX > 0) {
 					another.mPositionDX = (mPositionX - mHitBox[mState].getPositionX() - mHitBox[mState].getWidth())
 						- another.mHitBox[another.mState].getPositionX() - another.mHitBox[another.mState].getWidth();
 					another.mPositionX = (int)another.mPositionDX;
@@ -1206,7 +1387,8 @@ void Player::CheckWallHit() {
 		mAcceleX = 0;
 		mGround = true;
 		mAirJumped = false;
-		if (mState == Parameter::S_PLAYER_DAMAGE_AIR2) {
+		if (mState == Parameter::S_PLAYER_DAMAGE_AIR2 || mState == Parameter::S_PLAYER_DAMAGE_AIR_R || 
+			mState == Parameter::S_PLAYER_DAMAGE_AIR) {
 			mState = Parameter::S_PLAYER_DOWN;
 			mCounter = 60;
 		}
@@ -1412,72 +1594,7 @@ void Player::Draw() {
 	DrawShadow();
 	mSprite->draw();
 
-	/*
-	int box = LoadGraph("Data/graphic/ui/box.png");
-
-	ss::ResluteState state;
-	if (mPlayerId == 0) {
-		ss::Quad mQuad =  mSprite->getPartQuad("right_wing2");
-
-		DrawModiGraphF(mQuad.tl.x, mQuad.tl.y, mQuad.tr.x, mQuad.tr.y, mQuad.br.x, mQuad.br.y, mQuad.bl.x, mQuad.bl.y, box, true);
-
-	}
-		/*
-		mSprite->getPartState(state, "right_wing2");
-
-		//1
-		float l = sqrtf(pow(state.size_X * state.scaleX * state.pivotX, 2.0) + pow(state.size_Y * state.scaleY * state.pivotY, 2.0));
-		float seta = atan2f(state.size_Y * state.scaleY * state.pivotY, state.size_X * state.scaleX * state.pivotX);
-
-		float x2 = state.x - l * cosf(seta - state.rotationZ * Parameter::PI / 180);
-		float y2 = (Parameter::GROUND_LINE - state.y + 20) - l * sinf(seta - state.rotationZ * Parameter::PI / 180);
-		
-		DrawCircle(x2, y2, 3, Parameter::COLOR_RED, 1, 1);
-
-
-		//2
-		l = sqrtf(pow(state.size_X * state.scaleX * (1.0f - state.pivotX), 2.0) + pow(state.size_Y * state.scaleY * state.pivotY, 2.0));
-		seta = atan2f(state.size_Y * state.scaleY * state.pivotY, state.size_X * state.scaleX * (1.0f - state.pivotX));
-
-		x2 = state.x + l * cosf(seta + state.rotationZ * Parameter::PI / 180);
-		y2 = (Parameter::GROUND_LINE - state.y + 20) - l * sinf(seta + state.rotationZ * Parameter::PI / 180);
-
-		DrawCircle(x2, y2, 3, Parameter::COLOR_RED, 1, 1);
-
-
-		//3
-		l = sqrtf(pow(state.size_X * state.scaleX * state.pivotX, 2.0) + pow(state.size_Y * state.scaleY * (1.0f - state.pivotY), 2.0));
-		seta = atan2f(state.size_Y * state.scaleY * (1.0f - state.pivotY), state.size_X * state.scaleX * state.pivotX);
-
-		x2 = state.x - l * cosf(seta + state.rotationZ * Parameter::PI / 180);
-		y2 = (Parameter::GROUND_LINE - state.y + 20) + l * sinf(seta + state.rotationZ * Parameter::PI / 180);
-
-		DrawCircle(x2, y2, 3, Parameter::COLOR_BLUE, 1, 1);
-
-
-		//4
-		l = sqrtf(pow(state.size_X * state.scaleX * (1.0f - state.pivotX), 2.0) + pow(state.size_Y * state.scaleY * (1.0f - state.pivotY), 2.0));
-		seta = atan2f(state.size_Y * state.scaleY * (1.0f - state.pivotY), state.size_X * state.scaleX * (1.0f - state.pivotX));
-
-		x2 = state.x + l * cosf(seta - state.rotationZ * Parameter::PI / 180);
-		y2 = (Parameter::GROUND_LINE - state.y + 20) + l * sinf(seta - state.rotationZ * Parameter::PI / 180);
-
-		DrawCircle(x2, y2, 3, Parameter::COLOR_BLUE, 1, 1);
-
-
-		DrawFormatString(10, 10, Parameter::COLOR_WHITE, "%5f %5f", state.x, state.y);
-		DrawFormatString(10, 30, Parameter::COLOR_WHITE, "%5f %5f", state.size_X*state.scaleX, state.size_Y*state.scaleY);
-		DrawFormatString(10, 50, Parameter::COLOR_WHITE, "%5f %5f", state.scaleX, state.scaleY);
-		DrawFormatString(10, 70, Parameter::COLOR_WHITE, "%5f %5f", state.pivotX, state.pivotY);
-		DrawFormatString(10, 90, Parameter::COLOR_WHITE, "%5f %5f", l,seta);
-		DrawFormatString(10, 110, Parameter::COLOR_WHITE, "%5f %5f", state.rotationZ, state.rotationZ * Parameter::PI / 180);
-		DrawFormatString(10, 130, Parameter::COLOR_WHITE, "%5f %5f", x2,y2);
-
-	
-
-		//DrawBox(state.x,Parameter::GROUND_LINE - state.y + 20, 
-		//	state.x + state.size_X*state.scaleX, Parameter::GROUND_LINE - (state.y + state.size_Y*state.scaleY) + 20, Parameter::COLOR_RED, true);
-		*/
+	if(mPlayerId == 1)DrawFormatString(10, 10, Parameter::COLOR_RED, "%d", mState);
 }
 /*影を描画*/
 void Player::DrawShadow() {
@@ -1614,6 +1731,17 @@ void Player::DrawAtackBox() {
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 }
 
+
+/*待機状態かどうか*/
+bool Player::isIdleState() {
+	if (mState == Parameter::S_PLAYER_NORMAL
+		|| mState == Parameter::S_PLAYER_SQUAT)
+	{
+		return true;
+	}
+	else return false;
+}
+
 /*加速度の影響を受ける状態かどうか*/
 bool Player::isAcceledState() {
 	if (mState == Parameter::S_PLAYER_DASH
@@ -1653,7 +1781,8 @@ bool Player::isDamageState() {
 		|| mState == Parameter::S_PLAYER_DAMAGE_D
 		|| mState == Parameter::S_PLAYER_DAMAGE_S
 		|| mState == Parameter::S_PLAYER_DAMAGE_AIR
-		|| mState == Parameter::S_PLAYER_DAMAGE_AIR2)
+		|| mState == Parameter::S_PLAYER_DAMAGE_AIR2
+		|| mState == Parameter::S_PLAYER_DAMAGE_AIR_R)
 	{
 		return true;
 	}
@@ -1663,6 +1792,19 @@ bool Player::isDamageState() {
 /*ガード状態かどうか*/
 bool Player::isGuardState() {
 	if (mState == Parameter::S_PLAYER_GUARD
+		|| mState == Parameter::S_PLAYER_GUARD_S)
+	{
+		return true;
+	}
+	else return false;
+}
+
+/*ガード可能状態かどうか*/
+bool Player::isCanGuardState() {
+	if (mState == Parameter::S_PLAYER_NORMAL
+		|| mState == Parameter::S_PLAYER_SQUAT
+		|| mState == Parameter::S_PLAYER_REVERSAL
+		|| mState == Parameter::S_PLAYER_GUARD
 		|| mState == Parameter::S_PLAYER_GUARD_S)
 	{
 		return true;

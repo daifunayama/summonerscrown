@@ -5,7 +5,27 @@
 */
 class BoxData {
 public:
-	BoxData(){}
+	BoxData(){
+		mAtackType = 0;
+		mEffectType = 0;
+		mSEType = 0;
+		mGuardType = 0;
+		mAllowMultiHit = 0;
+		mHitStop = 0;
+		mDecHitStop = 0;
+		mBindTime = 0;
+		mContinueAtackAfterOffset = 0;
+		mForceDown = 0;
+		mFloorBound = 0;
+		mWallBound = 0;
+		mShakeWindow = 0;
+		mVectorX = 0;
+		mVectorY = 0;
+		mAirVectorX = 0;
+		mAirVectorY = 0;
+		mPower = 0;
+		mEXGain = 0;
+	}
 	~BoxData(){}
 
 	inline int getAtackType() { return mAtackType; }

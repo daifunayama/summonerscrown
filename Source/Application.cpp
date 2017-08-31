@@ -40,6 +40,11 @@ void Application::MainLoop() {
 		case Parameter::SCENE_BATTLE :
 			mScene = new BattleScene();
 			break;
+
+
+		case Parameter::SCENE_ATACKEDIT:
+			mScene = new AtackEditScene();
+			break;
 		}
 
 		mOldSceneId = mNextSceneId;

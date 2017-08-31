@@ -3,6 +3,7 @@
 #include "../../SSPlayer/SS5Player.h"
 #include "../../Utility.h"
 #include "../../Atack/FrameData.h"
+#include "../../Effekseer/AnimationController.h"
 #include "Carol.h"
 #include "../../Voice/Character/VoiceCarol.h"
 
@@ -27,10 +28,12 @@ Profile Carol::getProfile() {
 
 /*サウンドのロード*/
 void Carol::LoadSound() {
+	mAnimeDrill = LoadGraph("Data/graphic/animation/dorill2.png");
+
 	mSoundDash = LoadSoundMem("Data/se/highspeed-movement1.mp3");
 	mSoundStep = mSoundDash;
 
-	mSoundPlayerAtack[1] = LoadSoundMem("Data/se/Cyber06-1.mp3");
+	mSoundPlayerAtack[1] = LoadSoundMem("Data/se/手足・空振り04.mp3");
 	mSoundPlayerAtack[2] = LoadSoundMem("Data/se/ロボット・殴る、蹴る02.mp3");
 	mSoundPlayerAtack[3] = mSoundDash;
 
@@ -115,160 +118,13 @@ void Carol::LoadData() {
 		}
 	}
 	ifs.close();
-}
 
-/*攻撃データのロード*/
-void Carol::LoadAtack() {
-	ifstream ifs;
-	int n;
-	int boxId;
-	int frameCounter;
-	int boxCounter = 0;
-	string tmp;
-
-	FrameData frameData;
-	BoxData boxData;
-	HitBox hitBox;
-
-	for (int a = 0; a < 6; a++) {
-
-		if (a == 0)mPlayerAtack[Parameter::P_ATACK_A].ClearFrameData();
-		if (a == 1)mPlayerAtack[Parameter::P_ATACK_B].ClearFrameData();
-		if (a == 2)mPlayerAtack[Parameter::P_ATACK_2A].ClearFrameData();
-		if (a == 3)mPlayerAtack[Parameter::P_ATACK_2B].ClearFrameData();
-		if (a == 4)mPlayerAtack[Parameter::P_ATACK_3B].ClearFrameData();
-		if (a == 5)mPlayerAtack[Parameter::P_ATACK_6B].ClearFrameData();
-
-		hitBox.setExist(false);
-		for (int i = 0; i < 20; i++) {
-			frameData.setAtackBox(i, hitBox);
-		}
-
-		ifs.clear();
-
-		if (a == 0)ifs.open("Data/character/carol/a.txt");
-		if (a == 1)ifs.open("Data/character/carol/b.txt");
-		if (a == 2)ifs.open("Data/character/carol/2a.txt");
-		if (a == 3)ifs.open("Data/character/carol/2b.txt");
-		if (a == 4)ifs.open("Data/character/carol/3b.txt");
-		if (a == 5)ifs.open("Data/character/carol/6b.txt");
-
-
-		if (ifs) {
-
-			for (int i = 0; i < 9; i++) {
-				ifs >> tmp;
-				if (a == 0)mPlayerAtack[Parameter::P_ATACK_A].setAllowCancel(i, Utility::StringToInt(tmp));
-				if (a == 1)mPlayerAtack[Parameter::P_ATACK_B].setAllowCancel(i, Utility::StringToInt(tmp));
-				if (a == 2)mPlayerAtack[Parameter::P_ATACK_2A].setAllowCancel(i, Utility::StringToInt(tmp));
-				if (a == 3)mPlayerAtack[Parameter::P_ATACK_2B].setAllowCancel(i, Utility::StringToInt(tmp));
-				if (a == 4)mPlayerAtack[Parameter::P_ATACK_3B].setAllowCancel(i, Utility::StringToInt(tmp));
-				if (a == 5)mPlayerAtack[Parameter::P_ATACK_6B].setAllowCancel(i, Utility::StringToInt(tmp));
-			}
-
-
-			//ボックスデータの読み込み
-			for (int i = 0; i < 5; i++) {
-				ifs >> tmp;
-				boxData.setAtackType(Utility::StringToInt(tmp));
-				ifs >> tmp;
-				boxData.setEffectType(Utility::StringToInt(tmp));
-				ifs >> tmp;
-				boxData.setSEType(Utility::StringToInt(tmp));
-				ifs >> tmp;
-				boxData.setGuardType(Utility::StringToInt(tmp));
-				ifs >> tmp;
-				boxData.setAllowMultHit(Utility::StringToInt(tmp));
-				ifs >> tmp;
-				boxData.setHitStop(Utility::StringToInt(tmp));
-				ifs >> tmp;
-				boxData.setDecHitStop(Utility::StringToInt(tmp));
-				ifs >> tmp;
-				boxData.setBindTime(Utility::StringToInt(tmp));
-				ifs >> tmp;
-				boxData.setContinueAtackAfterOffset(Utility::StringToInt(tmp));
-				ifs >> tmp;
-				boxData.setForceDown(Utility::StringToInt(tmp));
-				ifs >> tmp;
-				boxData.setFloorBound(Utility::StringToInt(tmp));
-				ifs >> tmp;
-				boxData.setWallBound(Utility::StringToInt(tmp));
-				ifs >> tmp;
-				boxData.setShakeWindow(Utility::StringToInt(tmp));
-				ifs >> tmp;
-				boxData.setVectorX(Utility::StringToInt(tmp));
-				ifs >> tmp;
-				boxData.setVectorY(Utility::StringToInt(tmp));
-				ifs >> tmp;
-				boxData.setAirVectorX(Utility::StringToInt(tmp));
-				ifs >> tmp;
-				boxData.setAirVectorY(Utility::StringToInt(tmp));
-				ifs >> tmp;
-				boxData.setPower(Utility::StringToInt(tmp));
-				ifs >> tmp;
-				boxData.setEXGain(Utility::StringToInt(tmp));
-
-				frameData.setAtackBoxData(i, boxData);
-			}
-
-			while (!ifs.eof()) {
-				ifs >> n;
-
-				//フレーム切り替え
-				if (n == 0) {
-					if (a == 0)mPlayerAtack[Parameter::P_ATACK_A].PushFrameData(frameData);
-					if (a == 1)mPlayerAtack[Parameter::P_ATACK_B].PushFrameData(frameData);
-					if (a == 2)mPlayerAtack[Parameter::P_ATACK_2A].PushFrameData(frameData);
-					if (a == 3)mPlayerAtack[Parameter::P_ATACK_2B].PushFrameData(frameData);
-					if (a == 4)mPlayerAtack[Parameter::P_ATACK_3B].PushFrameData(frameData);
-					if (a == 5)mPlayerAtack[Parameter::P_ATACK_6B].PushFrameData(frameData);
-
-					boxCounter = 0;
-
-					hitBox.setExist(false);
-					for (int i = 0; i < 20; i++) {
-						frameData.setAtackBox(i, hitBox);
-					}
-
-					//キャンセル可能フラグ
-					ifs >> tmp;
-					frameData.setAllowCancel(Utility::StringToInt(tmp));
-
-					//デフォルトではサウンドはなし
-					frameData.setSoundId(0);
-				}
-
-				//ヒットボックス
-				if (n == 50) {
-					ifs >> boxId;
-
-					hitBox.setBoxId(boxId);
-					hitBox.setExist(true);
-					ifs >> tmp;
-					hitBox.setPositionX(Utility::StringToInt(tmp));
-					ifs >> tmp;
-					hitBox.setPositionY(Utility::StringToInt(tmp));
-					ifs >> tmp;
-					hitBox.setWidth(Utility::StringToInt(tmp));
-					ifs >> tmp;
-					hitBox.setHeight(Utility::StringToInt(tmp));
-
-					frameData.setAtackBox(boxCounter, hitBox);
-
-					boxCounter++;
-				}
-
-				//サウンドID
-				if (n == 30) {
-					ifs >> tmp;
-					frameData.setSoundId(Utility::StringToInt(tmp));
-				}
-
-
-			}
-
-		}
-		ifs.close();
+	for (int i = 15; i < 40; i++) {
+		mHitBox[i].setPositionX(mHitBox[0].getPositionX());
+		mHitBox[i].setPositionY(mHitBox[0].getPositionY());
+		mHitBox[i].setWidth(mHitBox[0].getWidth());
+		mHitBox[i].setHeight(mHitBox[0].getHeight());
+		mHitBox[i].setExist(1);
 	}
 }
 
@@ -379,6 +235,7 @@ void Carol::UpdateAnimation() {
 	else if (mState == Parameter::S_PLAYER_DAMAGE_AIR && mDamageCounter == 1) {
 		mSprite->play(name + "damage_air");
 		mSprite->setStep(1.0f);
+		mSprite->setLoop(1);
 	}
 	//ダウン状態
 	else if (mState == Parameter::S_PLAYER_DOWN && mCounter == 59) {
@@ -388,6 +245,13 @@ void Carol::UpdateAnimation() {
 	//しゃがみダメージ状態
 	else if (mState == Parameter::S_PLAYER_DAMAGE_S && mDamageCounter == 1) {
 		mSprite->play(name + "damage_s");
+	}
+	//受け身状態
+	else if (mState == Parameter::S_PLAYER_REVERSAL) {
+		if (mSprite->getPlayAnimeName() != "reversal") {
+			mSprite->play(name + "reversal");
+			mSprite->setStep(0.7f);
+		}
 	}
 	//つかまれ状態
 	else if (mState == Parameter::S_PLAYER_CAUGHT) {
@@ -427,25 +291,31 @@ void Carol::UpdateAnimation() {
 		mPlayerAtack[Parameter::P_ATACK_A].getCounter() == 1)
 	{
 		mSprite->play(name + "a");
+		//mSprite->setStep(0.7f);
 	}
 	//A下攻撃
 	else if (mState == Parameter::S_PLAYER_ATACK_2A &&
 		mPlayerAtack[Parameter::P_ATACK_2A].getCounter() == 1)
 	{
 		mSprite->play(name + "2a");
+		//mSprite->setStep(0.7f);
 	}
 	//B攻撃
 	else if (mState == Parameter::S_PLAYER_ATACK_B &&
 		mPlayerAtack[Parameter::P_ATACK_B].getCounter() == 1)
 	{
 		mSprite->play(name + "b");
+		mSprite->setStep(0.7f);
 	}
+	
 	//6B攻撃
 	else if (mState == Parameter::S_PLAYER_ATACK_6B &&
 		mPlayerAtack[Parameter::P_ATACK_6B].getCounter() == 1)
 	{
 		mSprite->play(name + "6b");
+		mSprite->setStep(0.8f);
 	}
+	/*
 	//B下攻撃
 	else if (mState == Parameter::S_PLAYER_ATACK_2B &&
 		mPlayerAtack[Parameter::P_ATACK_2B].getCounter() == 1)
@@ -481,6 +351,7 @@ void Carol::UpdateAnimation() {
 		mSprite->play(name + "jb");
 		mSprite->setStep(1.2);
 	}
+	*/
 	//つかみ
 	else if (mState == Parameter::S_PLAYER_CATCH) {
 		if (mSprite->getPlayAnimeName() != "catch") {
@@ -491,7 +362,7 @@ void Carol::UpdateAnimation() {
 	else if (mState == Parameter::S_PLAYER_THROW) {
 		if (mSprite->getPlayAnimeName() != "throw") {
 			mSprite->play(name + "throw");
-			mSprite->setStep(0.55f);
+			mSprite->setStep(0.6f);
 		}
 	}
 
@@ -514,7 +385,6 @@ void Carol::StartAtack() {
 		mState = Parameter::S_PLAYER_ATACK_A;
 		mAcceleX = 0;
 		mPlayerAtack[Parameter::P_ATACK_A].InitAtack();
-		//mPlayerAtack[Parameter::P_ATACK_A].PlayVoice();
 	}
 	//A下攻撃
 	if (mController.getKey(1) == 1 && !mController.getUp() &&
@@ -523,7 +393,6 @@ void Carol::StartAtack() {
 		mState = Parameter::S_PLAYER_ATACK_2A;
 		mAcceleX = 0;
 		mPlayerAtack[Parameter::P_ATACK_2A].InitAtack();
-		//mPlayerAtack[Parameter::P_ATACK_A].PlayVoice();
 	}
 	//B攻撃
 	if (mController.getKey(2) == 1 && !mController.getUp() && !mController.getDown() && !mController.getRight() && !mController.getLeft()
@@ -532,7 +401,6 @@ void Carol::StartAtack() {
 		mState = Parameter::S_PLAYER_ATACK_B;
 		mAcceleX = 0;
 		mPlayerAtack[Parameter::P_ATACK_B].InitAtack();
-		//mPlayerAtack[Parameter::P_ATACK_B].PlayVoice();
 	}
 	//B下攻撃
 	if (mController.getKey(2) == 1 && !mController.getUp() &&
@@ -542,7 +410,6 @@ void Carol::StartAtack() {
 		mState = Parameter::S_PLAYER_ATACK_2B;
 		mAcceleX = 0;
 		mPlayerAtack[Parameter::P_ATACK_2B].InitAtack();
-		//mPlayerAtack[Parameter::P_ATACK_A].PlayVoice();
 	}
 	//3B攻撃
 	if (mController.getKey(2) == 1 && !mController.getUp() &&
@@ -552,7 +419,6 @@ void Carol::StartAtack() {
 		mState = Parameter::S_PLAYER_ATACK_3B;
 		mAcceleX = 0;
 		mPlayerAtack[Parameter::P_ATACK_3B].InitAtack();
-		//mPlayerAtack[Parameter::P_ATACK_A].PlayVoice();
 	}
 	//6B攻撃
 	if (mController.getKey(2) == 1 && !mController.getUp() && !mController.getDown() && (mRight && mController.getRight() || !mRight && mController.getLeft()) && mGround)
@@ -560,7 +426,6 @@ void Carol::StartAtack() {
 		mState = Parameter::S_PLAYER_ATACK_6B;
 		mAcceleX = 0;
 		mPlayerAtack[Parameter::P_ATACK_6B].InitAtack();
-		//mPlayerAtack[Parameter::P_ATACK_A].PlayVoice();
 	}
 }
 
@@ -579,20 +444,46 @@ void Carol::StartStep() {
 }
 
 void Carol::ProcessAtack() {
+	static int animeKey;
+
 	if (mState == Parameter::S_PLAYER_ATACK_6B) {
-		if (mPlayerAtack[Parameter::P_ATACK_6B].getCounter() >= 2 && mPlayerAtack[Parameter::P_ATACK_6B].getCounter() < 20) {
-			if (mRight)mAcceleX = 25;
-			else mAcceleX = -25;
+		if (mPlayerAtack[Parameter::P_ATACK_6B].getCounter() == 10) {
+			animeKey = AnimationController::getInstance().Create(mAnimeDrill, 2, 0, 0, 500, 300, 2.5, 0, 4, 1, 30, -1, mRight, true);
 		}
-		if (mPlayerAtack[Parameter::P_ATACK_6B].getCounter() >= 20) {
+
+		if (mPlayerAtack[Parameter::P_ATACK_6B].getCounter() >= 10 && mPlayerAtack[Parameter::P_ATACK_6B].getCounter() < 30) {
+			if (mRight)mAcceleX = 30;
+			else mAcceleX = -30;
+		}
+		if (mPlayerAtack[Parameter::P_ATACK_6B].getCounter() >= 25) {
 			if (mRight) {
-				mAcceleX -= 5;
+				mAcceleX -= 4;
 				if (mAcceleX < 0)mAcceleX = 0;
 			}
 			else {
-				mAcceleX += 5;
+				mAcceleX += 4;
 				if (mAcceleX > 0)mAcceleX = 0;
 			}
 		}
+		AnimationController::getInstance().SetPosition(animeKey, mPositionX + (mRight ? -200 : 200), mPositionY - 20);
+	}
+}
+
+/*投げる*/
+void Carol::DoThrow(Player& another) {
+
+	if (mCounter == 39 || mCounter == 34 || mCounter == 29 || mCounter == 24 || mCounter == 19)PlaySoundMem(mSoundPlayerAtack[1], DX_PLAYTYPE_BACK);
+
+	if (mCounter == 15) {
+		if (mRight)another.setAcceleX(mThrowDirection ? 5.0 : -5.0);
+		else another.setAcceleX(mThrowDirection ? -5.0 : 5.0);
+		another.setAcceleY(50.0);
+		another.setGround(false);
+		another.setState(Parameter::S_PLAYER_DAMAGE_AIR);
+		another.setDamageCounter(0);
+		another.setCounter(30);
+
+		PlaySoundMem(mSoundPlayerAtack[2], DX_PLAYTYPE_BACK);
+		AnimationController::getInstance().Create(mGraphDamage, 1, mRight?mPositionX+100:mPositionX-100, mPositionY, 600, 400, 2, GetRand(359), 4, 2, 48, 0, true, true);
 	}
 }

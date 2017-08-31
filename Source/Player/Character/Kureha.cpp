@@ -40,8 +40,6 @@ void Kureha::LoadSound() {
 
 /*ボイスのロード*/
 void Kureha::LoadVoice() {
-	mPlayerAtack[Parameter::P_ATACK_A].setVoiceHandle(LoadSoundMem("Data/voice/kureha/16_さとうささら_えい.wav"));
-	mPlayerAtack[Parameter::P_ATACK_B].setVoiceHandle(LoadSoundMem("Data/voice/kureha/17_さとうささら_きりさけ.wav"));
 }
 
 /*プレイヤーデータをロード*/

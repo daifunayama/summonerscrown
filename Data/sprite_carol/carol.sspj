@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<SpriteStudioProject version="2.00.00">
+<SpriteStudioProject version="1.02.02">
 	<name>carol</name>
 	<exportPath></exportPath>
 	<settings>
@@ -36,14 +36,6 @@
 		<interpolateVertexOffsetAsVer4>1</interpolateVertexOffsetAsVer4>
 		<restrictXYAsInteger>0</restrictXYAsInteger>
 		<inheritRatesNoKeySave>1</inheritRatesNoKeySave>
-		<availableInterpolationTypes>
-			<item>none</item>
-			<item>linear</item>
-			<item>hermite</item>
-			<item>bezier</item>
-			<item>acceleration</item>
-			<item>deceleration</item>
-		</availableInterpolationTypes>
 		<availableAttributes>
 			<item>CELL</item>
 			<item>POSX</item>
@@ -96,23 +88,14 @@
 		<filterMode>linear</filterMode>
 		<interpolationType>linear</interpolationType>
 		<renderingSettings>
-			<outputFolder>C:/Users/舩山大/Documents/Visual Studio 2017/Projects/SummonersCrown/Data/sprite_carol/Export</outputFolder>
+			<outputFolder>C:/Users/舩山大/Desktop</outputFolder>
 			<outputType>GIF</outputType>
 			<bgColor>FF2296FF</bgColor>
 			<addAnimeName>0</addAnimeName>
 			<addTimeStamp>0</addTimeStamp>
 			<addAlphaChanel>0</addAlphaChanel>
-			<imageSizeRatioW>50</imageSizeRatioW>
-			<imageSizeRatioH>50</imageSizeRatioH>
-			<imageSizeRatioFix>1</imageSizeRatioFix>
-			<imageSizeIsPixcel>1</imageSizeIsPixcel>
 		</renderingSettings>
-		<effectSettings>
-			<gridSize>50</gridSize>
-		</effectSettings>
 		<cellTags />
-		<useDecimalDigit>2</useDecimalDigit>
-		<canvasFrameColor>1</canvasFrameColor>
 	</settings>
 	<animeSettings>
 		<fps>30</fps>
@@ -123,8 +106,6 @@
 		<bgColor>FF323232</bgColor>
 		<gridSize>32</gridSize>
 		<gridColor>FF808080</gridColor>
-		<startFrame>0</startFrame>
-		<endFrame>10</endFrame>
 		<outStartNum>0</outStartNum>
 	</animeSettings>
 	<texPackSettings>
@@ -141,8 +122,7 @@
 		<value>carol1.ssae</value>
 	</animepackNames>
 	<lastAnimeFile>carol1.ssae</lastAnimeFile>
-	<lastAnimeName>caught</lastAnimeName>
+	<lastAnimeName>idle</lastAnimeName>
 	<lastCellMapFile>carol.ssce</lastCellMapFile>
-	<lastCell>right_arm2</lastCell>
-	<setupmode>0</setupmode>
+	<lastCell>crow2</lastCell>
 </SpriteStudioProject>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<SpriteStudioCellMap version="2.00.00">
+<SpriteStudioCellMap version="1.00.02">
 	<name>carol</name>
 	<exportPath></exportPath>
 	<generator>SpriteStudio</generator>
@@ -27,12 +27,6 @@
 			<rotated>0</rotated>
 			<orgImageName></orgImageName>
 			<posStable>0</posStable>
-			<ismesh>0</ismesh>
-			<divtype>unkown</divtype>
-			<innerPoint />
-			<outerPoint />
-			<meshPointList />
-			<meshTriList />
 		</cell>
 		<cell>
 			<name>panda_body</name>
@@ -42,12 +36,6 @@
 			<rotated>0</rotated>
 			<orgImageName></orgImageName>
 			<posStable>0</posStable>
-			<ismesh>0</ismesh>
-			<divtype>unkown</divtype>
-			<innerPoint />
-			<outerPoint />
-			<meshPointList />
-			<meshTriList />
 		</cell>
 		<cell>
 			<name>panda_right_arm</name>
@@ -57,12 +45,24 @@
 			<rotated>0</rotated>
 			<orgImageName></orgImageName>
 			<posStable>0</posStable>
-			<ismesh>0</ismesh>
-			<divtype>unkown</divtype>
-			<innerPoint />
-			<outerPoint />
-			<meshPointList />
-			<meshTriList />
+		</cell>
+		<cell>
+			<name>right_arm2_1</name>
+			<pos>408 245</pos>
+			<size>84 104</size>
+			<pivot>0 0</pivot>
+			<rotated>0</rotated>
+			<orgImageName></orgImageName>
+			<posStable>0</posStable>
+		</cell>
+		<cell>
+			<name>spin_arm</name>
+			<pos>523 100</pos>
+			<size>236 226</size>
+			<pivot>0 0</pivot>
+			<rotated>0</rotated>
+			<orgImageName></orgImageName>
+			<posStable>0</posStable>
 		</cell>
 		<cell>
 			<name>panda_left_arm</name>
@@ -72,12 +72,6 @@
 			<rotated>0</rotated>
 			<orgImageName></orgImageName>
 			<posStable>0</posStable>
-			<ismesh>0</ismesh>
-			<divtype>unkown</divtype>
-			<innerPoint />
-			<outerPoint />
-			<meshPointList />
-			<meshTriList />
 		</cell>
 		<cell>
 			<name>body1_s</name>
@@ -87,12 +81,6 @@
 			<rotated>0</rotated>
 			<orgImageName></orgImageName>
 			<posStable>0</posStable>
-			<ismesh>0</ismesh>
-			<divtype>unkown</divtype>
-			<innerPoint />
-			<outerPoint />
-			<meshPointList />
-			<meshTriList />
 		</cell>
 		<cell>
 			<name>body2_s</name>
@@ -102,12 +90,6 @@
 			<rotated>0</rotated>
 			<orgImageName></orgImageName>
 			<posStable>0</posStable>
-			<ismesh>0</ismesh>
-			<divtype>unkown</divtype>
-			<innerPoint />
-			<outerPoint />
-			<meshPointList />
-			<meshTriList />
 		</cell>
 		<cell>
 			<name>right_foot1_s</name>
@@ -117,12 +99,6 @@
 			<rotated>0</rotated>
 			<orgImageName></orgImageName>
 			<posStable>0</posStable>
-			<ismesh>0</ismesh>
-			<divtype>unkown</divtype>
-			<innerPoint />
-			<outerPoint />
-			<meshPointList />
-			<meshTriList />
 		</cell>
 		<cell>
 			<name>right_foot2_s</name>
@@ -132,12 +108,6 @@
 			<rotated>0</rotated>
 			<orgImageName></orgImageName>
 			<posStable>0</posStable>
-			<ismesh>0</ismesh>
-			<divtype>unkown</divtype>
-			<innerPoint />
-			<outerPoint />
-			<meshPointList />
-			<meshTriList />
 		</cell>
 		<cell>
 			<name>left_foot1_s</name>
@@ -147,12 +117,6 @@
 			<rotated>0</rotated>
 			<orgImageName></orgImageName>
 			<posStable>0</posStable>
-			<ismesh>0</ismesh>
-			<divtype>unkown</divtype>
-			<innerPoint />
-			<outerPoint />
-			<meshPointList />
-			<meshTriList />
 		</cell>
 		<cell>
 			<name>left_foot2_s</name>
@@ -162,12 +126,6 @@
 			<rotated>0</rotated>
 			<orgImageName></orgImageName>
 			<posStable>0</posStable>
-			<ismesh>0</ismesh>
-			<divtype>unkown</divtype>
-			<innerPoint />
-			<outerPoint />
-			<meshPointList />
-			<meshTriList />
 		</cell>
 		<cell>
 			<name>panda_right_foot</name>
@@ -177,12 +135,6 @@
 			<rotated>0</rotated>
 			<orgImageName></orgImageName>
 			<posStable>0</posStable>
-			<ismesh>0</ismesh>
-			<divtype>unkown</divtype>
-			<innerPoint />
-			<outerPoint />
-			<meshPointList />
-			<meshTriList />
 		</cell>
 		<cell>
 			<name>panda_left_foot</name>
@@ -192,12 +144,6 @@
 			<rotated>0</rotated>
 			<orgImageName></orgImageName>
 			<posStable>0</posStable>
-			<ismesh>0</ismesh>
-			<divtype>unkown</divtype>
-			<innerPoint />
-			<outerPoint />
-			<meshPointList />
-			<meshTriList />
 		</cell>
 		<cell>
 			<name>face</name>
@@ -207,12 +153,6 @@
 			<rotated>0</rotated>
 			<orgImageName></orgImageName>
 			<posStable>0</posStable>
-			<ismesh>0</ismesh>
-			<divtype>unkown</divtype>
-			<innerPoint />
-			<outerPoint />
-			<meshPointList />
-			<meshTriList />
 		</cell>
 		<cell>
 			<name>eye2</name>
@@ -222,12 +162,6 @@
 			<rotated>0</rotated>
 			<orgImageName></orgImageName>
 			<posStable>0</posStable>
-			<ismesh>0</ismesh>
-			<divtype>unkown</divtype>
-			<innerPoint />
-			<outerPoint />
-			<meshPointList />
-			<meshTriList />
 		</cell>
 		<cell>
 			<name>mouth2</name>
@@ -237,12 +171,6 @@
 			<rotated>0</rotated>
 			<orgImageName></orgImageName>
 			<posStable>0</posStable>
-			<ismesh>0</ismesh>
-			<divtype>unkown</divtype>
-			<innerPoint />
-			<outerPoint />
-			<meshPointList />
-			<meshTriList />
 		</cell>
 		<cell>
 			<name>mayuge2</name>
@@ -252,12 +180,6 @@
 			<rotated>0</rotated>
 			<orgImageName></orgImageName>
 			<posStable>0</posStable>
-			<ismesh>0</ismesh>
-			<divtype>unkown</divtype>
-			<innerPoint />
-			<outerPoint />
-			<meshPointList />
-			<meshTriList />
 		</cell>
 		<cell>
 			<name>eye1</name>
@@ -267,12 +189,6 @@
 			<rotated>0</rotated>
 			<orgImageName></orgImageName>
 			<posStable>0</posStable>
-			<ismesh>0</ismesh>
-			<divtype>unkown</divtype>
-			<innerPoint />
-			<outerPoint />
-			<meshPointList />
-			<meshTriList />
 		</cell>
 		<cell>
 			<name>mayuge</name>
@@ -282,12 +198,6 @@
 			<rotated>0</rotated>
 			<orgImageName></orgImageName>
 			<posStable>0</posStable>
-			<ismesh>0</ismesh>
-			<divtype>unkown</divtype>
-			<innerPoint />
-			<outerPoint />
-			<meshPointList />
-			<meshTriList />
 		</cell>
 		<cell>
 			<name>mouth1</name>
@@ -297,12 +207,6 @@
 			<rotated>0</rotated>
 			<orgImageName></orgImageName>
 			<posStable>0</posStable>
-			<ismesh>0</ismesh>
-			<divtype>unkown</divtype>
-			<innerPoint />
-			<outerPoint />
-			<meshPointList />
-			<meshTriList />
 		</cell>
 		<cell>
 			<name>hair2</name>
@@ -312,12 +216,6 @@
 			<rotated>0</rotated>
 			<orgImageName></orgImageName>
 			<posStable>0</posStable>
-			<ismesh>0</ismesh>
-			<divtype>unkown</divtype>
-			<innerPoint />
-			<outerPoint />
-			<meshPointList />
-			<meshTriList />
 		</cell>
 		<cell>
 			<name>hair1</name>
@@ -327,12 +225,6 @@
 			<rotated>0</rotated>
 			<orgImageName></orgImageName>
 			<posStable>0</posStable>
-			<ismesh>0</ismesh>
-			<divtype>unkown</divtype>
-			<innerPoint />
-			<outerPoint />
-			<meshPointList />
-			<meshTriList />
 		</cell>
 		<cell>
 			<name>tail1</name>
@@ -342,12 +234,6 @@
 			<rotated>0</rotated>
 			<orgImageName></orgImageName>
 			<posStable>0</posStable>
-			<ismesh>0</ismesh>
-			<divtype>unkown</divtype>
-			<innerPoint />
-			<outerPoint />
-			<meshPointList />
-			<meshTriList />
 		</cell>
 		<cell>
 			<name>tail2</name>
@@ -357,12 +243,6 @@
 			<rotated>0</rotated>
 			<orgImageName></orgImageName>
 			<posStable>0</posStable>
-			<ismesh>0</ismesh>
-			<divtype>unkown</divtype>
-			<innerPoint />
-			<outerPoint />
-			<meshPointList />
-			<meshTriList />
 		</cell>
 		<cell>
 			<name>right_arm1</name>
@@ -372,12 +252,6 @@
 			<rotated>0</rotated>
 			<orgImageName></orgImageName>
 			<posStable>0</posStable>
-			<ismesh>0</ismesh>
-			<divtype>unkown</divtype>
-			<innerPoint />
-			<outerPoint />
-			<meshPointList />
-			<meshTriList />
 		</cell>
 		<cell>
 			<name>left_arm1</name>
@@ -387,12 +261,6 @@
 			<rotated>0</rotated>
 			<orgImageName></orgImageName>
 			<posStable>0</posStable>
-			<ismesh>0</ismesh>
-			<divtype>unkown</divtype>
-			<innerPoint />
-			<outerPoint />
-			<meshPointList />
-			<meshTriList />
 		</cell>
 		<cell>
 			<name>right_arm2</name>
@@ -402,12 +270,6 @@
 			<rotated>0</rotated>
 			<orgImageName></orgImageName>
 			<posStable>0</posStable>
-			<ismesh>0</ismesh>
-			<divtype>unkown</divtype>
-			<innerPoint />
-			<outerPoint />
-			<meshPointList />
-			<meshTriList />
 		</cell>
 		<cell>
 			<name>body1</name>
@@ -417,12 +279,6 @@
 			<rotated>0</rotated>
 			<orgImageName></orgImageName>
 			<posStable>0</posStable>
-			<ismesh>0</ismesh>
-			<divtype>unkown</divtype>
-			<innerPoint />
-			<outerPoint />
-			<meshPointList />
-			<meshTriList />
 		</cell>
 		<cell>
 			<name>body2</name>
@@ -432,12 +288,6 @@
 			<rotated>0</rotated>
 			<orgImageName></orgImageName>
 			<posStable>0</posStable>
-			<ismesh>0</ismesh>
-			<divtype>unkown</divtype>
-			<innerPoint />
-			<outerPoint />
-			<meshPointList />
-			<meshTriList />
 		</cell>
 		<cell>
 			<name>body2_2</name>
@@ -447,12 +297,6 @@
 			<rotated>0</rotated>
 			<orgImageName></orgImageName>
 			<posStable>0</posStable>
-			<ismesh>0</ismesh>
-			<divtype>unkown</divtype>
-			<innerPoint />
-			<outerPoint />
-			<meshPointList />
-			<meshTriList />
 		</cell>
 		<cell>
 			<name>mouth3</name>
@@ -462,12 +306,6 @@
 			<rotated>0</rotated>
 			<orgImageName></orgImageName>
 			<posStable>0</posStable>
-			<ismesh>0</ismesh>
-			<divtype>unkown</divtype>
-			<innerPoint />
-			<outerPoint />
-			<meshPointList />
-			<meshTriList />
 		</cell>
 		<cell>
 			<name>face2</name>
@@ -477,12 +315,6 @@
 			<rotated>0</rotated>
 			<orgImageName></orgImageName>
 			<posStable>0</posStable>
-			<ismesh>0</ismesh>
-			<divtype>unkown</divtype>
-			<innerPoint />
-			<outerPoint />
-			<meshPointList />
-			<meshTriList />
 		</cell>
 		<cell>
 			<name>crow1</name>
@@ -492,12 +324,6 @@
 			<rotated>0</rotated>
 			<orgImageName></orgImageName>
 			<posStable>0</posStable>
-			<ismesh>0</ismesh>
-			<divtype>unkown</divtype>
-			<innerPoint />
-			<outerPoint />
-			<meshPointList />
-			<meshTriList />
 		</cell>
 		<cell>
 			<name>crow2</name>
@@ -507,12 +333,6 @@
 			<rotated>0</rotated>
 			<orgImageName></orgImageName>
 			<posStable>0</posStable>
-			<ismesh>0</ismesh>
-			<divtype>unkown</divtype>
-			<innerPoint />
-			<outerPoint />
-			<meshPointList />
-			<meshTriList />
 		</cell>
 		<cell>
 			<name>crow3</name>
@@ -522,12 +342,6 @@
 			<rotated>0</rotated>
 			<orgImageName></orgImageName>
 			<posStable>0</posStable>
-			<ismesh>0</ismesh>
-			<divtype>unkown</divtype>
-			<innerPoint />
-			<outerPoint />
-			<meshPointList />
-			<meshTriList />
 		</cell>
 		<cell>
 			<name>right_foot1</name>
@@ -537,12 +351,6 @@
 			<rotated>0</rotated>
 			<orgImageName></orgImageName>
 			<posStable>0</posStable>
-			<ismesh>0</ismesh>
-			<divtype>unkown</divtype>
-			<innerPoint />
-			<outerPoint />
-			<meshPointList />
-			<meshTriList />
 		</cell>
 		<cell>
 			<name>left_foot1</name>
@@ -552,12 +360,6 @@
 			<rotated>0</rotated>
 			<orgImageName></orgImageName>
 			<posStable>0</posStable>
-			<ismesh>0</ismesh>
-			<divtype>unkown</divtype>
-			<innerPoint />
-			<outerPoint />
-			<meshPointList />
-			<meshTriList />
 		</cell>
 		<cell>
 			<name>right_foot2</name>
@@ -567,12 +369,6 @@
 			<rotated>0</rotated>
 			<orgImageName></orgImageName>
 			<posStable>0</posStable>
-			<ismesh>0</ismesh>
-			<divtype>unkown</divtype>
-			<innerPoint />
-			<outerPoint />
-			<meshPointList />
-			<meshTriList />
 		</cell>
 		<cell>
 			<name>left_foot2</name>
@@ -582,12 +378,6 @@
 			<rotated>0</rotated>
 			<orgImageName></orgImageName>
 			<posStable>0</posStable>
-			<ismesh>0</ismesh>
-			<divtype>unkown</divtype>
-			<innerPoint />
-			<outerPoint />
-			<meshPointList />
-			<meshTriList />
 		</cell>
 	</cells>
 </SpriteStudioCellMap>

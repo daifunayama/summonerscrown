@@ -123,168 +123,6 @@ void Ein::LoadData() {
 	ifs.close();
 }
 
-/*攻撃データのロード*/
-void Ein::LoadAtack() {
-	ifstream ifs;
-	int n;
-	int boxId;
-	int frameCounter;
-	int boxCounter = 0;
-	string tmp;
-	
-	FrameData frameData;
-	BoxData boxData;
-	HitBox hitBox;
-
-	for (int a = 0; a < 8; a++) {
-		
-		if (a == 0)mPlayerAtack[Parameter::P_ATACK_A].ClearFrameData();
-		if (a == 1)mPlayerAtack[Parameter::P_ATACK_B].ClearFrameData();
-		if (a == 2)mPlayerAtack[Parameter::P_ATACK_2A].ClearFrameData();
-		if (a == 3)mPlayerAtack[Parameter::P_ATACK_2B].ClearFrameData();
-		if (a == 4)mPlayerAtack[Parameter::P_ATACK_3B].ClearFrameData();
-		if (a == 5)mPlayerAtack[Parameter::P_ATACK_6B].ClearFrameData();
-		if (a == 6)mPlayerAtack[Parameter::P_ATACK_JA].ClearFrameData();
-		if (a == 7)mPlayerAtack[Parameter::P_ATACK_JB].ClearFrameData();
-
-		hitBox.setExist(false);
-		for (int i = 0; i < 20; i++) {
-			frameData.setAtackBox(i, hitBox);
-		}
-
-		ifs.clear();
-
-		if (a == 0)ifs.open("Data/character/ein/a.txt");
-		if (a == 1)ifs.open("Data/character/ein/b.txt");
-		if (a == 2)ifs.open("Data/character/ein/2a.txt");
-		if (a == 3)ifs.open("Data/character/ein/2b.txt");
-		if (a == 4)ifs.open("Data/character/ein/3b.txt");
-		if (a == 5)ifs.open("Data/character/ein/6b.txt");
-		if (a == 6)ifs.open("Data/character/ein/ja.txt");
-		if (a == 7)ifs.open("Data/character/ein/jb.txt");
-
-		if (ifs) {
-
-			for (int i = 0; i < 9; i++) {
-				ifs >> tmp;
-				if (a == 0)mPlayerAtack[Parameter::P_ATACK_A].setAllowCancel(i, Utility::StringToInt(tmp));
-				if (a == 1)mPlayerAtack[Parameter::P_ATACK_B].setAllowCancel(i, Utility::StringToInt(tmp));
-				if (a == 2)mPlayerAtack[Parameter::P_ATACK_2A].setAllowCancel(i, Utility::StringToInt(tmp));
-				if (a == 3)mPlayerAtack[Parameter::P_ATACK_2B].setAllowCancel(i, Utility::StringToInt(tmp));
-				if (a == 4)mPlayerAtack[Parameter::P_ATACK_3B].setAllowCancel(i, Utility::StringToInt(tmp));
-				if (a == 5)mPlayerAtack[Parameter::P_ATACK_6B].setAllowCancel(i, Utility::StringToInt(tmp));
-				if (a == 6)mPlayerAtack[Parameter::P_ATACK_JA].setAllowCancel(i, Utility::StringToInt(tmp));
-				if (a == 7)mPlayerAtack[Parameter::P_ATACK_JB].setAllowCancel(i, Utility::StringToInt(tmp));
-			}
-
-
-			//ボックスデータの読み込み
-			for (int i = 0; i < 5; i++) {
-				ifs >> tmp;
-				boxData.setAtackType(Utility::StringToInt(tmp));
-				ifs >> tmp;
-				boxData.setEffectType(Utility::StringToInt(tmp));
-				ifs >> tmp;
-				boxData.setSEType(Utility::StringToInt(tmp));
-				ifs >> tmp;
-				boxData.setGuardType(Utility::StringToInt(tmp));
-				ifs >> tmp;
-				boxData.setAllowMultHit(Utility::StringToInt(tmp));
-				ifs >> tmp;
-				boxData.setHitStop(Utility::StringToInt(tmp));
-				ifs >> tmp;
-				boxData.setDecHitStop(Utility::StringToInt(tmp));
-				ifs >> tmp;
-				boxData.setBindTime(Utility::StringToInt(tmp));
-				ifs >> tmp;
-				boxData.setContinueAtackAfterOffset(Utility::StringToInt(tmp));
-				ifs >> tmp;
-				boxData.setForceDown(Utility::StringToInt(tmp));
-				ifs >> tmp;
-				boxData.setFloorBound(Utility::StringToInt(tmp));
-				ifs >> tmp;
-				boxData.setWallBound(Utility::StringToInt(tmp));
-				ifs >> tmp;
-				boxData.setShakeWindow(Utility::StringToInt(tmp));
-				ifs >> tmp;
-				boxData.setVectorX(Utility::StringToInt(tmp));
-				ifs >> tmp;
-				boxData.setVectorY(Utility::StringToInt(tmp));
-				ifs >> tmp;
-				boxData.setAirVectorX(Utility::StringToInt(tmp));
-				ifs >> tmp;
-				boxData.setAirVectorY(Utility::StringToInt(tmp));
-				ifs >> tmp;
-				boxData.setPower(Utility::StringToInt(tmp));
-				ifs >> tmp;
-				boxData.setEXGain(Utility::StringToInt(tmp));
-
-				frameData.setAtackBoxData(i, boxData);
-			}
-
-			while (!ifs.eof()) {
-				ifs >> n;
-
-				//フレーム切り替え
-				if (n == 0) {
-					if (a == 0)mPlayerAtack[Parameter::P_ATACK_A].PushFrameData(frameData);
-					if (a == 1)mPlayerAtack[Parameter::P_ATACK_B].PushFrameData(frameData);
-					if (a == 2)mPlayerAtack[Parameter::P_ATACK_2A].PushFrameData(frameData);
-					if (a == 3)mPlayerAtack[Parameter::P_ATACK_2B].PushFrameData(frameData);
-					if (a == 4)mPlayerAtack[Parameter::P_ATACK_3B].PushFrameData(frameData);
-					if (a == 5)mPlayerAtack[Parameter::P_ATACK_6B].PushFrameData(frameData);
-					if (a == 6)mPlayerAtack[Parameter::P_ATACK_JA].PushFrameData(frameData);
-					if (a == 7)mPlayerAtack[Parameter::P_ATACK_JB].PushFrameData(frameData);
-
-					boxCounter = 0;
-
-					hitBox.setExist(false);
-					for (int i = 0; i < 20; i++) {
-						frameData.setAtackBox(i, hitBox);
-					}
-
-					//キャンセル可能フラグ
-					ifs >> tmp;
-					frameData.setAllowCancel(Utility::StringToInt(tmp));
-
-					//デフォルトではサウンドはなし
-					frameData.setSoundId(0);
-				}
-
-				//ヒットボックス
-				if (n == 50) {
-					ifs >> boxId;
-
-					hitBox.setBoxId(boxId);
-					hitBox.setExist(true);
-					ifs >> tmp;
-					hitBox.setPositionX(Utility::StringToInt(tmp));
-					ifs >> tmp;
-					hitBox.setPositionY(Utility::StringToInt(tmp));
-					ifs >> tmp;
-					hitBox.setWidth(Utility::StringToInt(tmp));
-					ifs >> tmp;
-					hitBox.setHeight(Utility::StringToInt(tmp));
-
-					frameData.setAtackBox(boxCounter, hitBox);
-
-					boxCounter++;
-				}
-
-				//サウンドID
-				if (n == 30) {
-					ifs >> tmp;
-					frameData.setSoundId(Utility::StringToInt(tmp));
-				}
-
-				
-			}
-
-		}
-		ifs.close();
-	}
-}
-
 /*アニメーションの更新*/
 void Ein::UpdateAnimation() {
 	string name;
@@ -379,9 +217,21 @@ void Ein::UpdateAnimation() {
 		mSprite->play(name + "damage_air");
 		mSprite->setStep(0.9f);
 	}
+	//ダウン状態
+	else if (mState == Parameter::S_PLAYER_DOWN && mCounter == 59) {
+		mSprite->play(name + "down");
+		mSprite->setStep(0.7f);
+	}
 	//しゃがみダメージ状態
 	else if (mState == Parameter::S_PLAYER_DAMAGE_S && mDamageCounter == 1) {
 		mSprite->play(name + "damage_squat");
+	}
+	//受け身状態
+	else if (mState == Parameter::S_PLAYER_REVERSAL) {
+		if (mSprite->getPlayAnimeName() != "reversal") {
+			mSprite->play(name + "reversal");
+			mSprite->setStep(1.2f);
+		}
 	}
 	//つかまれ状態
 	else if (mState == Parameter::S_PLAYER_CAUGHT) {
@@ -454,14 +304,7 @@ void Ein::UpdateAnimation() {
 		mSprite->play(name + "3b");
 		mSprite->setStep(0.8);
 	}
-	//6B攻撃
-	else if (mState == Parameter::S_PLAYER_ATACK_6B &&
-		mPlayerAtack[Parameter::P_ATACK_6B].getCounter() == 1)
-	{
-		mSprite->play(name + "6b");
-		mSprite->setStep(0.6);
-	}
-	//JB攻撃
+	//JA攻撃
 	else if (mState == Parameter::S_PLAYER_ATACK_JA &&
 		mPlayerAtack[Parameter::P_ATACK_JA].getCounter() == 1)
 	{
@@ -491,7 +334,7 @@ void Ein::UpdateAnimation() {
 
 	//表示位置の更新
 	mSprite->setPosition(mPositionX -(Camera::getInstance().getCenterX() - Parameter::WINDOW_WIDTH / 2), 
-		Parameter::GROUND_LINE - mPositionY+20 + (Camera::getInstance().getCenterY() - Parameter::WINDOW_HEIGHT / 2));
+		Parameter::GROUND_LINE - mPositionY + (Camera::getInstance().getCenterY() - Parameter::WINDOW_HEIGHT / 2));
 	//プレイヤーの更新、引数は前回の更新処理から経過した時間
 	mSprite->update((float)30 / 1000);
 }
@@ -503,7 +346,7 @@ void Ein::UpdateAnimation() {
 void Ein::StartAtack() {
 	//A攻撃
 	if (mController.getKey(1) == 3 && !mController.getUp() &&
-		!mController.getDown() && mGround && isCanCancelTiming(Parameter::P_ATACK_A))
+		!mController.getDown() && mGround && isCanCancelTiming(Parameter::P_ATACK_A) && mPlayerAtack[Parameter::P_ATACK_A].getExist())
 	{
 		mState = Parameter::S_PLAYER_ATACK_A;
 		mAcceleX = 0;
@@ -512,7 +355,7 @@ void Ein::StartAtack() {
 	}
 	//A下攻撃
 	if (mController.getKey(1) == 3 && !mController.getUp() &&
-		mController.getDown() && mGround && isCanCancelTiming(Parameter::P_ATACK_2A))
+		mController.getDown() && mGround && isCanCancelTiming(Parameter::P_ATACK_2A) && mPlayerAtack[Parameter::P_ATACK_2A].getExist())
 	{
 		mState = Parameter::S_PLAYER_ATACK_2A;
 		mAcceleX = 0;
@@ -521,7 +364,7 @@ void Ein::StartAtack() {
 	}
 	//B攻撃
 	if (mController.getKey(2) == 1 && !mController.getUp() && !mController.getDown() && !mController.getRight() && !mController.getLeft()
-		&& mGround && isCanCancelTiming(Parameter::P_ATACK_B))
+		&& mGround && isCanCancelTiming(Parameter::P_ATACK_B) && mPlayerAtack[Parameter::P_ATACK_B].getExist())
 	{
 		mState = Parameter::S_PLAYER_ATACK_B;
 		mAcceleX = 0;
@@ -531,7 +374,7 @@ void Ein::StartAtack() {
 	//B下攻撃
 	if (mController.getKey(2) == 1 && !mController.getUp() &&
 		mController.getDown() && !mController.getRight() && !mController.getLeft() && mGround &&
-		isCanCancelTiming(Parameter::P_ATACK_2B))
+		isCanCancelTiming(Parameter::P_ATACK_2B) && mPlayerAtack[Parameter::P_ATACK_2B].getExist())
 	{
 		mState = Parameter::S_PLAYER_ATACK_2B;
 		mAcceleX = 0;
@@ -541,7 +384,7 @@ void Ein::StartAtack() {
 	//3B攻撃
 	if (mController.getKey(2) == 1 && !mController.getUp() &&
 		mController.getDown() && (mRight && mController.getRight() || !mRight && mController.getLeft()) && mGround &&
-		isCanCancelTiming(Parameter::P_ATACK_3B))
+		isCanCancelTiming(Parameter::P_ATACK_3B) && mPlayerAtack[Parameter::P_ATACK_3B].getExist())
 	{
 		mState = Parameter::S_PLAYER_ATACK_3B;
 		mAcceleX = 0;
@@ -549,7 +392,8 @@ void Ein::StartAtack() {
 		mVoice->PlayVoiceOver(Parameter::VOICE_PATACK, 8);
 	}
 	//6B攻撃
-	if (mController.getKey(2) == 1 && !mController.getUp() && !mController.getDown() && (mRight && mController.getRight() || !mRight && mController.getLeft()) && mGround)
+	if (mController.getKey(2) == 1 && !mController.getUp() && !mController.getDown() && (mRight && mController.getRight() || 
+		!mRight && mController.getLeft()) && mGround && mPlayerAtack[Parameter::P_ATACK_6B].getExist())
 	{
 		mState = Parameter::S_PLAYER_ATACK_6B;
 		mAcceleX = 0;
@@ -558,7 +402,7 @@ void Ein::StartAtack() {
 	}
 
 	//JA攻撃
-	if (mController.getKey(1) == 1 && !mController.getDown() && !mGround)
+	if (mController.getKey(1) == 1 && !mController.getDown() && !mGround && mPlayerAtack[Parameter::P_ATACK_JA].getExist())
 	{
 		mState = Parameter::S_PLAYER_ATACK_JA;
 
@@ -567,7 +411,7 @@ void Ein::StartAtack() {
 	}
 
 	//JB攻撃
-	if (mController.getKey(2) == 1 && !mController.getDown() && !mGround)
+	if (mController.getKey(2) == 1 && !mController.getDown() && !mGround && mPlayerAtack[Parameter::P_ATACK_JB].getExist())
 	{
 		mState = Parameter::S_PLAYER_ATACK_JB;
 		

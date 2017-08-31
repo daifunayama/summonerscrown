@@ -92,7 +92,7 @@ void BattleScene::Process() {
 		mPlayer[0]->LoadData();
 		mPlayer[1]->LoadData();
 		mPlayer[0]->LoadArms(0);
-		mPlayer[0]->LoadArms(1);
+		mPlayer[1]->LoadArms(1);
 	}
 
 	if (Input::getInstance().GetKey(KEY_INPUT_A) == 1 || Input::getInstance().GetKey(PAD_INPUT_10) == 1) {
@@ -276,6 +276,10 @@ int BattleScene::CheckDrawPriority(Player& p1, Player& p2) {
 	if (p1.isDamageState() && !p2.isDamageState())return 1;
 	if (p2.isDamageState() && !p1.isDamageState())return 0;
 	if (p1.isDamageState() && p2.isDamageState())return 0;
+
+	//掴まれ中のプレイヤーを後ろに
+	if (p1.getState() == Parameter::S_PLAYER_CAUGHT && p2.getState() != Parameter::S_PLAYER_CAUGHT)return 1;
+	if (p2.getState() == Parameter::S_PLAYER_CAUGHT && p1.getState() != Parameter::S_PLAYER_CAUGHT)return 0;
 
 	//ガード中のプレイヤーを後ろに
 	if (p1.isGuardState() && !p2.isGuardState())return 1;

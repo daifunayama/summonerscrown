@@ -9,7 +9,6 @@ public:
 	void LoadSound();
 	void LoadVoice();
 	void LoadData();
-	void LoadAtack();
 	void UpdateAnimation();
 
 	//オーバーロード

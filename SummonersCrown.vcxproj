@@ -166,6 +166,7 @@
     <ClCompile Include="Source\Atack\Atack.cpp" />
     <ClCompile Include="Source\BackGround\BackGround.cpp" />
     <ClCompile Include="Source\Camera\Camera.cpp" />
+    <ClCompile Include="Source\Scene\AtackEditScene.cpp" />
     <ClCompile Include="Source\Effekseer\AnimationController.cpp" />
     <ClCompile Include="Source\Input\Controller.cpp" />
     <ClCompile Include="Source\Input\Input.cpp" />
@@ -226,6 +227,7 @@
     <ClInclude Include="Source\Atack\PlayerAtack.h" />
     <ClInclude Include="Source\BackGround\BackGround.h" />
     <ClInclude Include="Source\Camera\Camera.h" />
+    <ClInclude Include="Source\Scene\AtackEditScene.h" />
     <ClInclude Include="Source\HitBox\Box.h" />
     <ClInclude Include="Source\Effekseer\AnimationController.h" />
     <ClInclude Include="Source\Effekseer\EffAnimation.h" />

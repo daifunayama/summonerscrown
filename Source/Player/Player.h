@@ -59,7 +59,7 @@ public:
 	virtual void LoadSound() = 0;
 	virtual void LoadVoice() = 0;
 	virtual void LoadData() = 0;
-	virtual void LoadAtack() = 0;
+	virtual void LoadAtack();
 	void LoadArms(int);
 
 	void Move(Player&);
@@ -103,10 +103,11 @@ public:
 	void DrawHitBox();
 	void DrawDamageBox();
 	void DrawAtackBox();
-
+	bool isIdleState();
 	bool isAcceledState();
 	bool isAtackState();
 	bool isDamageState();
+	bool isCanGuardState();
 	bool isGuardState();
 	bool isCanArmsAtackState();
 	bool isCanCancelTiming(int atackId);
@@ -142,8 +143,8 @@ protected:
 	bool mAirJumped;				//空中ジャンプフラグ
 	bool mThrowDirection;			//投げのむき
 	PlayerAtack mPlayerAtack[30];	//プレイヤーの攻撃データ
-	HitBox mHitBox[30];				//プレイヤーの当たり判定用ヒットボックス
-	HitBox mDamageBox[15][10];		//プレイヤーのダメージ食らい判定用のヒットボックス
+	HitBox mHitBox[40];				//プレイヤーの当たり判定用ヒットボックス
+	HitBox mDamageBox[40][10];		//プレイヤーのダメージ食らい判定用のヒットボックス
 	int mEatAtackFlag;				//攻撃を食らったかどうかのフラグ
 	bool mEatAtackRight;			//攻撃を食らった向き
 	BoxData mEatAtackData;			//食らった攻撃を保存しておくボックスデータ
@@ -163,10 +164,13 @@ protected:
 	int mGraphSummonEffect2;		//召喚陣のグラフィックハンドル2
 	int mGraphDamage;				//ダメージエフェクトのグラフィックハンドル
 	int mGraphDamage2;
+	int mGraphDamage3;
+	int mGraphDamage4;
 	int mAnimeBarrier;				//バリアのグラフィックハンドル
 	int mAnimeCancel;
 	int mAnimeBurst1;
 	int mAnimeBurst2;
+	int mAnimeReversal;
 
 	int mSoundOpenCircle;			//契約陣を開くSE
 	int mSoundSummon;				//召喚SE

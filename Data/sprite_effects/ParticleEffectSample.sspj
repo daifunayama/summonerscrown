@@ -225,9 +225,9 @@
 		<value>mye1.ssee</value>
 	</effectFileNames>
 	<lastAnimeFile>mye1.ssae</lastAnimeFile>
-	<lastAnimeName>mye1</lastAnimeName>
+	<lastAnimeName>anime_1</lastAnimeName>
 	<lastCellMapFile>ss_effect.ssce</lastCellMapFile>
-	<lastEffectFile>mye1.ssee</lastEffectFile>
+	<lastEffectFile>001a.ssee</lastEffectFile>
 	<lastCell>starbow</lastCell>
-	<lastPart>effect_1</lastPart>
+	<lastPart>root</lastPart>
 </SpriteStudioProject>

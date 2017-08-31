@@ -41,8 +41,6 @@ void Remnant::LoadSound() {
 
 /*ボイスのロード*/
 void Remnant::LoadVoice() {
-	mPlayerAtack[Parameter::P_ATACK_A].setVoiceHandle(LoadSoundMem("Data/voice/remnant/16_さとうささら_えい.wav"));
-	mPlayerAtack[Parameter::P_ATACK_B].setVoiceHandle(LoadSoundMem("Data/voice/remnant/17_さとうささら_きりさけ.wav"));
 }
 
 /*プレイヤーデータをロード*/

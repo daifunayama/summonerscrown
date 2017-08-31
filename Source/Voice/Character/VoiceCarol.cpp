@@ -41,6 +41,12 @@ void VoiceCarol::Load() {
 	mVoice[Parameter::VOICE_DAMAGE2].push_back(LoadSoundMem("Data/voice/carol/damage2-1.mp3"));
 	mVoice[Parameter::VOICE_DAMAGE2].push_back(LoadSoundMem("Data/voice/carol/damage2-2.mp3"));
 
+	mVoice[Parameter::VOICE_REVERSAL].push_back(LoadSoundMem("Data/voice/carol/reversal1.mp3"));
+	mVoice[Parameter::VOICE_REVERSAL].push_back(LoadSoundMem("Data/voice/carol/reversal2.mp3"));
+
+	mVoice[Parameter::VOICE_AFTERDOWN].push_back(LoadSoundMem("Data/voice/carol/afterdown1.mp3"));
+	mVoice[Parameter::VOICE_AFTERDOWN].push_back(LoadSoundMem("Data/voice/carol/afterdown3.mp3"));
+
 	mVoice[Parameter::VOICE_AFTERCOMBO].push_back(LoadSoundMem("Data/voice/carol/aftercombo1.mp3"));
 	mVoice[Parameter::VOICE_AFTERCOMBO].push_back(LoadSoundMem("Data/voice/carol/aftercombo2.mp3"));
 

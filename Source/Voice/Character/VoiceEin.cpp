@@ -41,6 +41,12 @@ void VoiceEin::Load() {
 	mVoice[Parameter::VOICE_DAMAGE2].push_back(LoadSoundMem("Data/voice/ein/damage2-1.mp3"));
 	mVoice[Parameter::VOICE_DAMAGE2].push_back(LoadSoundMem("Data/voice/ein/damage2-2.mp3"));
 
+	mVoice[Parameter::VOICE_REVERSAL].push_back(LoadSoundMem("Data/voice/ein/reversal1.mp3"));
+	mVoice[Parameter::VOICE_REVERSAL].push_back(LoadSoundMem("Data/voice/ein/reversal2.mp3"));
+
+	mVoice[Parameter::VOICE_AFTERDOWN].push_back(LoadSoundMem("Data/voice/ein/afterdown1.mp3"));
+	mVoice[Parameter::VOICE_AFTERDOWN].push_back(LoadSoundMem("Data/voice/ein/afterdown3.mp3"));
+
 	mVoice[Parameter::VOICE_AFTERCOMBO].push_back(LoadSoundMem("Data/voice/ein/aftercombo1.mp3"));
 	mVoice[Parameter::VOICE_AFTERCOMBO].push_back(LoadSoundMem("Data/voice/ein/aftercombo2.mp3"));
 

@@ -27,6 +27,7 @@ public:
 	static const int SCENE_CONTRACT = 3;
 	static const int SCENE_EYECATCH = 4;
 	static const int SCENE_BATTLE = 5;
+	static const int SCENE_ATACKEDIT = 6;
 
 	//魔具のカテゴリID
 	static const int HK = 0;
@@ -46,11 +47,11 @@ public:
 	static const int S_PLAYER_WALK = 2;
 	static const int S_PLAYER_BACK = 3;
 	static const int S_PLAYER_SQUAT = 4;
-	static const int S_PLAYER_JUMP = 5;
-	static const int S_PLAYER_DAMAGE_U = 6;
-	static const int S_PLAYER_DAMAGE_D = 7;
-	static const int S_PLAYER_DAMAGE_AIR = 8;
-	static const int S_PLAYER_DAMAGE_AIR2 = 9;
+	static const int S_PLAYER_DAMAGE_U = 5;
+	static const int S_PLAYER_DAMAGE_D = 6;
+	static const int S_PLAYER_DAMAGE_AIR = 7;
+	static const int S_PLAYER_DAMAGE_AIR2 = 8;
+	static const int S_PLAYER_DAMAGE_AIR_R = 9;
 	static const int S_PLAYER_DAMAGE_S = 10;
 	static const int S_PLAYER_SUMMON = 11;
 	static const int S_PLAYER_DASH = 12;
@@ -60,20 +61,30 @@ public:
 	static const int S_PLAYER_STOP = 16;
 	static const int S_PLAYER_DOWN = 17;
 	static const int S_PLAYER_ATACK_A = 18;
-	static const int S_PLAYER_ATACK_8A = 19;
-	static const int S_PLAYER_ATACK_2A = 20;
+	static const int S_PLAYER_ATACK_2A = 19;
+	static const int S_PLAYER_ATACK_8A = 20;
 	static const int S_PLAYER_ATACK_JA = 21;
 	static const int S_PLAYER_ATACK_B = 22;
-	static const int S_PLAYER_ATACK_8B = 23;
-	static const int S_PLAYER_ATACK_2B = 24;
-	static const int S_PLAYER_ATACK_JB = 25;
-	static const int S_PLAYER_ATACK_3B = 26;
-	static const int S_PLAYER_ATACK_6B = 27;
-	static const int S_PLAYER_CATCH = 28;
-	static const int S_PLAYER_CAUGHT = 29;
-	static const int S_PLAYER_ESCAPE = 30;
-	static const int S_PLAYER_THROW = 31;
-	static const int S_PLAYER_BURST = 32;
+	static const int S_PLAYER_ATACK_2B = 23;
+	static const int S_PLAYER_ATACK_3B = 24;
+	static const int S_PLAYER_ATACK_4B = 25;
+	static const int S_PLAYER_ATACK_6B = 26;
+	static const int S_PLAYER_ATACK_8B = 27;
+	static const int S_PLAYER_ATACK_JB = 28;
+	static const int S_PLAYER_ATACK_J2B = 29;
+	static const int S_PLAYER_ATACK_D1 = 30;
+	static const int S_PLAYER_ATACK_D2 = 31;
+	static const int S_PLAYER_ATACK_D3 = 32;
+	static const int S_PLAYER_ATACK_D4 = 33;
+	static const int S_PLAYER_ATACK_D5 = 34;
+
+
+	static const int S_PLAYER_CATCH = 35;
+	static const int S_PLAYER_CAUGHT = 36;
+	static const int S_PLAYER_ESCAPE = 37;
+	static const int S_PLAYER_THROW = 38;
+	static const int S_PLAYER_BURST = 39;
+	static const int S_PLAYER_REVERSAL = 40;
 
 	//魔具の状態
 	static const int S_ARMS_NORMAL = 1;
@@ -89,15 +100,22 @@ public:
 
 	//プレイヤーの攻撃
 	static const int P_ATACK_A = 0;
-	static const int P_ATACK_8A = 1;
-	static const int P_ATACK_2A = 2;
+	static const int P_ATACK_2A = 1;
+	static const int P_ATACK_8A = 2;
 	static const int P_ATACK_JA = 3;
 	static const int P_ATACK_B = 4;
-	static const int P_ATACK_8B = 5;
-	static const int P_ATACK_2B = 6;
-	static const int P_ATACK_JB = 7;
-	static const int P_ATACK_3B = 8;
-	static const int P_ATACK_6B = 9;
+	static const int P_ATACK_2B = 5;
+	static const int P_ATACK_3B = 6;
+	static const int P_ATACK_4B = 7;
+	static const int P_ATACK_6B = 8;
+	static const int P_ATACK_8B = 9;
+	static const int P_ATACK_JB = 10;
+	static const int P_ATACK_J2B = 11;
+	static const int P_ATACK_D1 = 12;
+	static const int P_ATACK_D2 = 13;
+	static const int P_ATACK_D3 = 14;
+	static const int P_ATACK_D4 = 15;
+	static const int P_ATACK_D5 = 16;
 	static const int P_ATACK_THROW = 21;
 	static const int P_ATACK_THROW_R = 22;
 	static const int P_ATACK_THROW_AIR = 23;
@@ -151,6 +169,7 @@ public:
 	static const int COLOR_BLUE;
 	static const int COLOR_GREEN;
 	static const int COLOR_YELLOW;
+	static const int COLOR_GRAY;
 
 	static void InitFont();
 };

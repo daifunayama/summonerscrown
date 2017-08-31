@@ -2,9 +2,10 @@
 #include "Arms\ArmsList.h"
 #include "Scene/TitleScene.h"
 #include "Scene/BattleScene.h"
-#include "Scene\/EyecatchScene.h"
+#include "Scene/EyecatchScene.h"
 #include "Scene/CharaSelectScene.h"
-#include "Scene\/\ContractScene.h"
+#include "Scene/ContractScene.h"
+#include "Scene/AtackEditScene.h"
 #include "SSPlayer/SS5Player.h"
 #include "DxLib.h"
 
@@ -24,7 +25,7 @@ public:
 			mScene = new BattleScene();
 			mOldSceneId = Parameter::SCENE_BATTLE;
 		}
-		else if (CheckHitKey(KEY_INPUT_E) == 1) {
+		else if (CheckHitKey(KEY_INPUT_I) == 1) {
 			mScene = new EyecatchScene();
 			mOldSceneId = Parameter::SCENE_EYECATCH;
 		}
@@ -35,6 +36,10 @@ public:
 		else if (CheckHitKey(KEY_INPUT_C) == 1) {
 			mScene = new ContractScene();
 			mOldSceneId = Parameter::SCENE_CONTRACT;
+		}
+		else if (CheckHitKey(KEY_INPUT_E) == 1) {
+			mScene = new AtackEditScene();
+			mOldSceneId = Parameter::SCENE_ATACKEDIT;
 		}
 		else {
 			mScene = new TitleScene();

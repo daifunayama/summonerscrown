@@ -5,6 +5,10 @@
 */
 class HitBox {
 public:
+	HitBox() {
+		mExist = 0;
+	}
+
 	inline bool getExist() { return mExist; }
 	inline int getBoxId() { return mBoxId; }
 	inline int getPositionX() { return mPositionX; }

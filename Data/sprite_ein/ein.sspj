@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<SpriteStudioProject version="2.00.00">
+<SpriteStudioProject version="1.02.02">
 	<name>ein</name>
 	<exportPath></exportPath>
 	<settings>
@@ -36,14 +36,6 @@
 		<interpolateVertexOffsetAsVer4>1</interpolateVertexOffsetAsVer4>
 		<restrictXYAsInteger>0</restrictXYAsInteger>
 		<inheritRatesNoKeySave>1</inheritRatesNoKeySave>
-		<availableInterpolationTypes>
-			<item>none</item>
-			<item>linear</item>
-			<item>hermite</item>
-			<item>bezier</item>
-			<item>acceleration</item>
-			<item>deceleration</item>
-		</availableInterpolationTypes>
 		<availableAttributes>
 			<item>CELL</item>
 			<item>POSX</item>
@@ -102,17 +94,8 @@
 			<addAnimeName>0</addAnimeName>
 			<addTimeStamp>0</addTimeStamp>
 			<addAlphaChanel>0</addAlphaChanel>
-			<imageSizeRatioW>25</imageSizeRatioW>
-			<imageSizeRatioH>25</imageSizeRatioH>
-			<imageSizeRatioFix>1</imageSizeRatioFix>
-			<imageSizeIsPixcel>1</imageSizeIsPixcel>
 		</renderingSettings>
-		<effectSettings>
-			<gridSize>50</gridSize>
-		</effectSettings>
 		<cellTags />
-		<useDecimalDigit>2</useDecimalDigit>
-		<canvasFrameColor>1</canvasFrameColor>
 	</settings>
 	<animeSettings>
 		<fps>30</fps>
@@ -123,8 +106,6 @@
 		<bgColor>FF323232</bgColor>
 		<gridSize>32</gridSize>
 		<gridColor>FF808080</gridColor>
-		<startFrame>0</startFrame>
-		<endFrame>10</endFrame>
 		<outStartNum>0</outStartNum>
 	</animeSettings>
 	<texPackSettings>
@@ -158,9 +139,9 @@
 		<value>light.ssee</value>
 	</effectFileNames>
 	<lastAnimeFile>ein1.ssae</lastAnimeFile>
-	<lastAnimeName>damage_air</lastAnimeName>
+	<lastAnimeName>reversal</lastAnimeName>
 	<lastCellMapFile>ein.ssce</lastCellMapFile>
 	<lastEffectFile>light.ssee</lastEffectFile>
-	<lastCell>left_wing3</lastCell>
-	<setupmode>0</setupmode>
+	<lastCell>body2</lastCell>
+	<lastPart>body2</lastPart>
 </SpriteStudioProject>
